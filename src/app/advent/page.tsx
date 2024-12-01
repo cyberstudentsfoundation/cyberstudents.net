@@ -9,34 +9,6 @@ import { FaTableCellsRowLock, FaMagnifyingGlassChart, FaGear } from "react-icons
 import { LuBinary } from "react-icons/lu";
 import { BiNetworkChart } from "react-icons/bi";
 
-const CALENDAR_CHALLENGES: { title: string | null; category: string; points: number | null }[] = [
-  { title: "Logical Exclusivity", category: "Cryptography", points: 40 },
-  { title: null, category: "Web exploitation", points: null },
-  { title: null, category: "Forensics", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Binary exploitation", points: null },
-  { title: null, category: "Web exploitation", points: null },
-  { title: null, category: "Web exploitation", points: null },
-];
-
 export default async function Advent() {
   const session = await getServerAuthSession();
 
@@ -44,6 +16,8 @@ export default async function Advent() {
   if (session?.user) {
     user = await api.user.me();
   }
+
+  const eventChallenges = await api.challenge.fetchPreview({ event: "aoc2024" });
 
   return (
     <main className="mx-4">
@@ -128,7 +102,7 @@ export default async function Advent() {
                 <div className="flex items-center justify-center">S</div>
               </div>
               <div className="grid w-full max-w-3xl grid-cols-7 grid-rows-4 rounded-lg outline outline-1 outline-gray-500">
-                {CALENDAR_CHALLENGES.map(({ title, category, points }, index) => (
+                {eventChallenges.challenges.map(({ title, category, points }, index) => (
                   <div
                     className="flex cursor-pointer flex-col justify-between border-b border-r border-gray-700 bg-gray-800 p-3 hover:bg-gray-700"
                     key={index}
@@ -145,9 +119,11 @@ export default async function Advent() {
                       </div>
                     </div>
                     <div className="hidden sm:block">
-                      <div className="mb-0.5 text-xs text-gray-400">{category}</div>
-                      <div className={`text-xs text-gray-400 opacity-80`}>
-                        <span className={!points ? "font-mono" : ""}>{points ?? "???"}</span> pts
+                      <div className={`mb-0.5 text-xs text-gray-400 ${!category ? "font-mono" : ""}`}>
+                        {category ?? "???"}
+                      </div>
+                      <div className={`text-xs text-gray-400 opacity-80 ${!points ? "font-mono" : ""}`}>
+                        {points ?? "???"} pts
                       </div>
                     </div>
                   </div>

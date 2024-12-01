@@ -1,6 +1,6 @@
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
 import { TRPCError } from "@trpc/server";
-import { challengeFetchSchema, submitFlagSchema } from "~/lib/schemas";
+import { challengeFetchPreviewSchema, challengeFetchSchema, submitFlagSchema } from "~/lib/schemas";
 import { sendNotification } from "~/server/send-notification";
 
 export const challengeRouter = createTRPCRouter({
@@ -140,6 +140,52 @@ export const challengeRouter = createTRPCRouter({
     // TODO: figure out a way to make challs private? or have smth to distinguish between unpublished and private
   }),
 
+  fetchPreview: publicProcedure.input(challengeFetchPreviewSchema).query(async ({ ctx, input }) => {
+    if (input.event !== "aoc2024") {
+      throw new TRPCError({ message: "Event not found.", code: "NOT_FOUND" });
+    }
+
+    const event = await ctx.db.event.findUnique({
+      where: { name: input.event },
+      include: {
+        challenges: {
+          where: { eventName: input.event },
+          include: { author: true },
+          orderBy: { publishDate: "asc" },
+        },
+      },
+    });
+
+    if (!event) throw new TRPCError({ message: "Event not found.", code: "NOT_FOUND" });
+
+    const eventChallenges = {
+      name: event.name,
+      challenges: event.challenges.map((challenge) => ({
+        id: challenge.id,
+        published: challenge.published,
+        publishDate: challenge.publishDate,
+        title: challenge.published ? challenge.title : null,
+        category: challenge.category as string | null,
+        points: challenge.points as number | null,
+      })),
+    };
+
+    const now = new Date();
+
+    for (let i = eventChallenges.challenges.length + 1; i <= 25; i++) {
+      eventChallenges.challenges.push({
+        id: `placeholder-${i}`,
+        published: false,
+        publishDate: new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), i, 20, 0, 0, 0)),
+        title: null,
+        category: null,
+        points: null,
+      });
+    }
+
+    return eventChallenges;
+  }),
+
   submitFlag: protectedProcedure.input(submitFlagSchema).mutation(async ({ ctx, input }) => {
     const user = await ctx.db.user.findUnique({ where: { id: ctx.session.user.id }, include: { events: true } });
     const challenge = await ctx.db.challenge.findUnique({
@@ -149,6 +195,10 @@ export const challengeRouter = createTRPCRouter({
 
     if (!challenge) {
       throw new TRPCError({ message: "Challenge does not exist.", code: "NOT_FOUND" });
+    }
+
+    if (!challenge.published || !challenge.submissionsEnabled) {
+      throw new TRPCError({ message: "Challenge is not published or submissions are disabled", code: "FORBIDDEN" });
     }
 
     if (!user?.events.some((event) => event.name === "aoc2024")) {

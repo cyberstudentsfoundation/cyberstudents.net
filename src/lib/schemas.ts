@@ -19,6 +19,10 @@ export const challengeFetchSchema = z.object({
   fetchExtended: z.boolean(),
 });
 
+export const challengeFetchPreviewSchema = z.object({
+  event: z.string(),
+});
+
 export const submitFlagSchema = z.object({
   challenge: z.string(),
   flag: z.string(),

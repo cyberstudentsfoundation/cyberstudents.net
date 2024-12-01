@@ -210,7 +210,7 @@ export default function Challenges({
                         </div>
                       </div>
                     </div>
-                    {challenge.published && (
+                    {challenge.published ? (
                       <div className="flex justify-between gap-12">
                         <div className="flex-grow-0 basis-2/3">
                           <h2 className="mb-1 text-xl font-bold text-gray-400">Description</h2>
@@ -269,64 +269,74 @@ export default function Challenges({
                           </Tabs>
                         </div>
                       </div>
+                    ) : (
+                      <div className="text-gray-200">
+                        <p className="text-xl font-bold text-gray-400">This challenge will release in:</p>
+                        <Countdown variant="normal" date={challenge.publishDate} />
+                      </div>
                     )}
                   </div>
-                  <div className="text-gray-400">
-                    <h2 className="mb-1.5 flex items-center gap-1.5 text-lg font-bold text-gray-400">
-                      <HiFlag className="h-5 w-5" />
-                      <span>{challenge.challengeAttempt?.solvedAt ? "Re-check flag" : "Submit flag"}</span>
-                    </h2>
-                    <form
-                      className="flex w-full gap-3 rounded-md bg-gray-700 px-3 py-2"
-                      onSubmit={async (e) => {
-                        e.preventDefault();
+                  {challenge.published && (
+                    <div className="text-gray-400">
+                      <h2 className="mb-1.5 flex items-center gap-1.5 text-lg font-bold text-gray-400">
+                        <HiFlag className="h-5 w-5" />
+                        <span>{challenge.challengeAttempt?.solvedAt ? "Re-check flag" : "Submit flag"}</span>
+                      </h2>
+                      <form
+                        className="flex w-full gap-3 rounded-md bg-gray-700 px-3 py-2"
+                        onSubmit={async (e) => {
+                          e.preventDefault();
 
-                        const input = document.getElementById(`submit-flag-${challenge.id}`) as HTMLInputElement;
+                          const input = document.getElementById(`submit-flag-${challenge.id}`) as HTMLInputElement;
 
-                        if (!input.value?.trim()) return;
-                        const oldIsSolved = !!challenge.challengeAttempt?.solvedAt;
+                          if (!input.value?.trim()) return;
+                          const oldIsSolved = !!challenge.challengeAttempt?.solvedAt;
 
-                        const result = await submitFlagMutation.mutateAsync(
-                          {
-                            challenge: challenge.id,
-                            flag: input.value,
-                          },
-                          {
-                            onError: (error) => {
-                              toast.error(error.message, { position: "top-center" });
+                          const result = await submitFlagMutation.mutateAsync(
+                            {
+                              challenge: challenge.id,
+                              flag: input.value,
                             },
-                          },
-                        );
+                            {
+                              onError: (error) => {
+                                toast.error(error.message, { position: "top-center" });
+                              },
+                            },
+                          );
 
-                        if (result === true) {
-                          if (oldIsSolved) {
-                            toast.success(`That flag is correct.`, {
-                              position: "top-center",
-                            });
+                          if (result === true) {
+                            if (oldIsSolved) {
+                              toast.success(`That flag is correct.`, {
+                                position: "top-center",
+                              });
+                            } else {
+                              toast.success(`Congratulations! You gained ${challenge.points} points.`, {
+                                position: "top-center",
+                              });
+
+                              router.refresh();
+                            }
                           } else {
-                            toast.success(`Congratulations! You gained ${challenge.points} points.`, {
-                              position: "top-center",
-                            });
-
-                            router.refresh();
+                            toast.error("Sorry, that flag is incorrect.", { position: "top-center" });
                           }
-                        } else {
-                          toast.error("Sorry, that flag is incorrect.", { position: "top-center" });
-                        }
-                      }}
-                    >
-                      <Input
-                        key={challenge.id}
-                        id={`submit-flag-${challenge.id}`}
-                        required
-                        placeholder="csd{FLAG}"
-                        className="border-0 bg-gray-700 font-mono text-gray-200"
-                      />
-                      <Button type="submit" className="min-w-20 bg-gray-200 text-gray-800 hover:bg-gray-200/80">
-                        {challenge.challengeAttempt?.solvedAt ? "Check" : "Submit"}
-                      </Button>
-                    </form>
-                  </div>
+                        }}
+                      >
+                        <Input
+                          key={challenge.id}
+                          id={`submit-flag-${challenge.id}`}
+                          required
+                          disabled={!challenge.submissionsEnabled}
+                          placeholder={
+                            challenge.submissionsEnabled ? "csd{FLAG}" : "Flag submissions are temporarily disabled."
+                          }
+                          className="border-0 bg-gray-700 font-mono text-gray-200"
+                        />
+                        <Button type="submit" className="min-w-20 bg-gray-200 text-gray-800 hover:bg-gray-200/80">
+                          {challenge.challengeAttempt?.solvedAt ? "Check" : "Submit"}
+                        </Button>
+                      </form>
+                    </div>
+                  )}
                 </div>
               </div>
             ))
