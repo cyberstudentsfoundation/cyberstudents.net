@@ -15,7 +15,7 @@ export default function Countdown({
     const now = new Date();
 
     // Today or tomorrow's date at 8 pm UTC (3 pm EST)
-    if (now.getUTCHours() > 20) {
+    if (now.getUTCHours() >= 20) {
       date = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 20, 0, 0, 0));
     } else {
       date = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 20, 0, 0, 0));
