@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+
+  preferredEmail String?  @map("preferred_email")
+  flags          String[] // these are NOT ctf flags; "ms_hs_college_eligible" | "challenge_developer"
+  note           String   @default("")
+
+  events             Event[]
+  challengeAttempts  ChallengeAttempt[]
+  authoredChallenges Challenge[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model Event {
+  name         String   @id // e.g., round1, aoc2024, csdctf2025
+  eventStart   DateTime @map("event_start")
+  eventEnd     DateTime @map("event_end")
+  announcement String   @default("")
+
+  users      User[]
+  challenges Challenge[]
+}
+
+model Challenge {
+  id                 String   @id @default(cuid())
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @map("updated_at")
+  published          Boolean
+  publishDate        DateTime @map("publish_date")
+  submissionsEnabled Boolean  @map("submissions_enabled")
+
+  event     Event  @relation(fields: [eventName], references: [name])
+  eventName String @map("event_name")
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String @map("author_id")
+
+  title                       String
+  category                    String // should be one of the categories listed
+  tags                        String[] // should be one of the tags listed
+  points                      Int
+  hints                       ChallengeHint[]
+  description                 String // supports Markdoc markdown
+  files                       String[] // URLs
+  globalFlags                 String[]        @map("global_flags") // flags that are valid for everyone
+  areGlobalFlagsCaseSensitive Boolean         @map("are_global_flags_case_sensitive")
+  flagPrefix                  String?         @map("flag_prefix") // e.g., "heaps_of_fun_in_memory_"
+  flagSecret                  String?         @map("flag_secret") // a secret that is used to generate the flag
+
+  challengeAttempts ChallengeAttempt[]
+}
+
+model ChallengeHint {
+  id     String @id @default(cuid())
+  number Int
+
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  challengeId String    @map("challenge_id")
+
+  challengeAttempts ChallengeAttempt[] @relation("hintsUsed") // the attempts in which the hint was used
+
+  title   String
+  content String
+  points  Int
+}
+
+model ChallengeAttempt {
+  // id is required for the hintsUsed m-n relationship to work
+  id String @id @default(cuid())
+
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String    @map("user_id")
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  challengeId String    @map("challenge_id")
+
+  createdAt     DateTime  @default(now()) @map("created_at")
+  lastAttemptAt DateTime? @map("last_attempt_at")
+  solvedAt      DateTime? @map("solved_at")
+
+  hintsUsed        ChallengeHint[] @relation("hintsUsed")
+  attempts         Int             @default(0) @map("total_attempts")
+  pointsAdjustment Int?            @map("points_adjustment") // manual adjustments for this specific challenge & player; can be + or -
+
+  @@unique([userId, challengeId])
+}

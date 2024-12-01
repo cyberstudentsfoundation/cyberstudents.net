@@ -1,0 +1,40 @@
+import { getServerAuthSession } from "~/server/auth";
+import { api } from "~/trpc/server";
+import { redirect } from "next/navigation";
+import Link from "next/link";
+import { HiChevronLeft } from "react-icons/hi2";
+import Challenges from "./challenges";
+
+export default async function Register() {
+  const session = await getServerAuthSession();
+
+  if (!session?.user) redirect("/advent/register?showError=true");
+
+  const { events } = await api.user.me();
+  if (!events.includes("aoc2024")) redirect("/advent/register?showError=true");
+
+  const eventChallenges = await api.challenge.fetch({ event: "aoc2024", fetchExtended: !!session?.user });
+
+  let user = null;
+  if (session?.user) {
+    user = await api.user.me();
+  }
+
+  return (
+    <main className="mx-4 flex justify-center">
+      <div className="mt-4 flex w-full max-w-screen-2xl flex-col justify-center">
+        <div className="absolute top-20 hidden md:block">
+          <p className="text-base font-bold text-gray-200">CyberStudents&rsquo;</p>
+          <h1 className="mb-4 font-mono text-2xl font-bold">
+            advent of ctf<span className="ml-3 font-sans font-light text-cyan-300">2024</span>
+          </h1>
+        </div>
+        <Link href="/advent" className="mb-4 flex w-fit items-center gap-1 text-gray-300 hover:text-cyan-300">
+          <HiChevronLeft className="mb-0.5 h-4 w-4" />
+          <span>Back to calendar</span>
+        </Link>
+        <Challenges eventChallenges={eventChallenges} session={session} />
+      </div>
+    </main>
+  );
+}
