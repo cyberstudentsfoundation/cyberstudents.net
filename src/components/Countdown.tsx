@@ -38,7 +38,7 @@ export default function Countdown({
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [date]);
+  }, [timeLeft, date]);
 
   return (
     <div className={`flex items-center font-mono ${variant === "small" ? "gap-2 text-xl" : "gap-3 text-2xl"}`}>

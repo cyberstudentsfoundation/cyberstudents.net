@@ -54,13 +54,15 @@ export const challengeRouter = createTRPCRouter({
       },
     });
 
+    const isChallengePublished = (challenge: { publishDate: Date }) => challenge.publishDate.getTime() <= Date.now();
+
     const eventChallenges = {
       name: event.name,
       challenges: event.challenges.map((challenge) => ({
         id: challenge.id,
         createdAt: challenge.createdAt,
         updatedAt: challenge.updatedAt,
-        published: challenge.published,
+        published: challenge.publishDate.getTime() <= Date.now(),
         publishDate: challenge.publishDate,
         submissionsEnabled: challenge.submissionsEnabled,
 
@@ -81,12 +83,12 @@ export const challengeRouter = createTRPCRouter({
               }
             : null,
 
-        title: challenge.published ? challenge.title : null,
+        title: isChallengePublished(challenge) ? challenge.title : null,
         category: challenge.category,
         points: challenge.points,
         hints: [] as { id: string; number: number; title: string; content: string }[], // assigned below
-        description: challenge.published && input.fetchExtended ? challenge.description : null,
-        files: challenge.published && input.fetchExtended ? challenge.files : null,
+        description: isChallengePublished(challenge) && input.fetchExtended ? challenge.description : null,
+        files: isChallengePublished(challenge) && input.fetchExtended ? challenge.files : null,
 
         solvedPlayers: allChallengeAttempts
           .find((c) => c.id === challenge.id)
@@ -106,7 +108,7 @@ export const challengeRouter = createTRPCRouter({
     };
 
     for (const challenge of eventChallenges.challenges) {
-      if (!challenge.published) continue;
+      if (!isChallengePublished(challenge)) continue;
 
       const releasedHints: number[] = [];
 
@@ -162,9 +164,9 @@ export const challengeRouter = createTRPCRouter({
       name: event.name,
       challenges: event.challenges.map((challenge) => ({
         id: challenge.id,
-        published: challenge.published,
+        published: challenge.publishDate.getTime() <= Date.now(),
         publishDate: challenge.publishDate,
-        title: challenge.published ? challenge.title : null,
+        title: challenge.publishDate.getTime() <= Date.now() ? challenge.title : null,
         category: challenge.category as string | null,
         points: challenge.points as number | null,
       })),
@@ -197,7 +199,7 @@ export const challengeRouter = createTRPCRouter({
       throw new TRPCError({ message: "Challenge does not exist.", code: "NOT_FOUND" });
     }
 
-    if (!challenge.published || !challenge.submissionsEnabled) {
+    if (!(challenge.publishDate.getTime() <= Date.now()) || !challenge.submissionsEnabled) {
       throw new TRPCError({ message: "Challenge is not published or submissions are disabled", code: "FORBIDDEN" });
     }
 
