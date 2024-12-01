@@ -22,9 +22,10 @@ export default function Countdown({
     }
   }
 
+  const target = date;
+
   useEffect(() => {
     const now = new Date();
-    const target = date;
     setTimeLeft(target.getTime() - now.getTime());
 
     const interval = setInterval(() => {
@@ -38,7 +39,7 @@ export default function Countdown({
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timeLeft, date]);
+  }, [target]);
 
   return (
     <div className={`flex items-center font-mono ${variant === "small" ? "gap-2 text-xl" : "gap-3 text-2xl"}`}>

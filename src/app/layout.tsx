@@ -8,8 +8,10 @@ import Navbar from "~/components/Navbar";
 import Footer from "~/components/Footer";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "~/components/ui/sonner";
+import { env } from "~/env";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(env.NEXTAUTH_URL),
   title: "CyberStudents",
   description:
     "We create opportunities for cybersecurity students via learning resources, certification pathways, CTFs, and more. Play in our beginner-focused daily cyber CTF challenges and events throughout the year. Join thousands of other students in our community today.",

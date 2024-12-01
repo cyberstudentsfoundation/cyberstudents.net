@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { env } from "~/env";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(env.NEXTAUTH_URL),
   title: "Advent of CTF 2024 · CyberStudents",
   description:
     "Every day from December 1st to 25th, solve beginner-oriented gamified cybersecurity challenges. Get familiar with capture-the-flag challenges and cyber concepts from a wide range of popular categories.",
