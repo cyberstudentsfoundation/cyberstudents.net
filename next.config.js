@@ -16,6 +16,11 @@ const config = {
         destination: "/advent",
         permanent: false,
       },
+      {
+        source: "/discord",
+        destination: "https://discord.com/invite/cyberstudents-916144903686336513",
+        permanent: true,
+      },
     ];
   },
   images: {
