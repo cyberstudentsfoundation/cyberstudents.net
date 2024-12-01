@@ -102,10 +102,11 @@ export default async function Advent() {
                 <div className="flex items-center justify-center">S</div>
               </div>
               <div className="grid w-full max-w-3xl grid-cols-7 grid-rows-4 rounded-lg outline outline-1 outline-gray-500">
-                {eventChallenges.challenges.map(({ title, category, points }, index) => (
-                  <div
-                    className="flex cursor-pointer flex-col justify-between border-b border-r border-gray-700 bg-gray-800 p-3 hover:bg-gray-700"
+                {eventChallenges.challenges.map(({ id, title, category, points }, index) => (
+                  <Link
                     key={index}
+                    href={!id.startsWith("placeholder-") ? `/advent/challenges?challenge=${id}` : ""}
+                    className="flex cursor-pointer flex-col justify-between border-b border-r border-gray-700 bg-gray-800 p-3 hover:bg-gray-700"
                   >
                     <div>
                       <div className="mb-1 hidden font-bold sm:block">
@@ -126,7 +127,7 @@ export default async function Advent() {
                         {points ?? "???"} pts
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
               <div className="mt-2 text-center text-sm text-gray-400 xl:text-start">
