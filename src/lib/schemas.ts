@@ -27,3 +27,8 @@ export const submitFlagSchema = z.object({
   challenge: z.string(),
   flag: z.string(),
 });
+
+export const getLeaderboardSchema = z.object({
+  event: z.string(),
+  onlyShowCurrentUser: z.boolean(),
+});

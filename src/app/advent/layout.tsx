@@ -33,15 +33,12 @@ export default function AdventLayout({ children }: { children: React.ReactNode }
             >
               Challenges
             </Link>
-            {/* <Link
-              href="/advent/challenges"
+            <Link
+              href="/advent/leaderboard"
               className="text-sm font-medium underline transition-colors hover:text-cyan-300 sm:text-lg sm:no-underline"
             >
               Leaderboard
-            </Link> */}
-            <span className="text-sm font-medium underline transition-colors sm:text-lg sm:no-underline">
-              Leaderboard (coming soon)
-            </span>
+            </Link>
             <Link
               href="/advent/register"
               className="text-sm font-medium underline transition-colors hover:text-cyan-300 sm:text-lg sm:no-underline"
