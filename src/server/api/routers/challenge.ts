@@ -248,11 +248,15 @@ export const challengeRouter = createTRPCRouter({
       // For re-checking flags
       if (challenge.challengeAttempts[0]?.solvedAt) return false;
 
-      await ctx.db.challengeAttempt.upsert({
+      const { attempts } = await ctx.db.challengeAttempt.upsert({
         where: { userId_challengeId: { userId: user.id, challengeId: challenge.id } },
         update: { attempts: { increment: 1 }, lastAttemptAt: new Date() },
         create: { challengeId: challenge.id, userId: user.id, attempts: 1, lastAttemptAt: new Date() },
       });
+
+      sendNotification(
+        `**${user.name}** attempted **${challenge.title}** with the incorrect flag \`${input.flag}\` (${attempts} attempt(s) so far).`,
+      );
 
       return false;
     }
