@@ -19,6 +19,9 @@ export const env = createEnv({
     ),
     DISCORD_CLIENT_ID: z.string(),
     DISCORD_CLIENT_SECRET: z.string(),
+    GOOGLE_CLIENT_ID: z.string(),
+    GOOGLE_CLIENT_SECRET: z.string(),
+    ACCESS_CODES: z.string().optional(),
     DISCORD_WEBHOOK_URL: z.string().optional(),
   },
 
@@ -42,6 +45,9 @@ export const env = createEnv({
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
     DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    ACCESS_CODES: process.env.ACCESS_CODES,
     DISCORD_WEBHOOK_URL: process.env.DISCORD_WEBHOOK_URL,
   },
   /**

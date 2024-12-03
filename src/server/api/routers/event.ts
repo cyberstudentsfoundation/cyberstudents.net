@@ -1,15 +1,29 @@
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
 import { TRPCError } from "@trpc/server";
-import { getLeaderboardSchema, registerSchema } from "~/lib/schemas";
+import { checkAccessCodeSchema, getLeaderboardSchema, registerSchema } from "~/lib/schemas";
 import { sendNotification } from "~/server/send-notification";
+import { env } from "~/env";
 
 export const eventRouter = createTRPCRouter({
   adventRegister: protectedProcedure.input(registerSchema).mutation(async ({ ctx, input }) => {
-    const user = await ctx.db.user.findUnique({ where: { id: ctx.session.user.id }, include: { events: true } });
+    const user = await ctx.db.user.findUnique({
+      where: { id: ctx.session.user.id },
+      include: { events: true, accounts: { select: { provider: true } } },
+    });
     const event = await ctx.db.event.findUnique({ where: { name: "aoc2024" } });
 
     if (!user) throw new TRPCError({ message: "User not found.", code: "INTERNAL_SERVER_ERROR" });
     if (!event) throw new TRPCError({ message: "Event not found.", code: "INTERNAL_SERVER_ERROR" });
+
+    if (user.accounts.some((account) => account.provider === "google")) {
+      const codes = env.ACCESS_CODES?.trim().split(",") ?? [];
+      if (!codes.includes(input.accessCode ?? "")) {
+        throw new TRPCError({
+          message: "An access code is required to register with a Google account.",
+          code: "FORBIDDEN",
+        });
+      }
+    }
 
     if (user.events.some((event) => event.name === "aoc2024")) {
       throw new TRPCError({ message: "You have already registered for this event.", code: "FORBIDDEN" });
@@ -40,15 +54,21 @@ export const eventRouter = createTRPCRouter({
     sendNotification(
       [
         `User \`${user.id}\` registered for event \`aoc2024\`.`,
-        `- Discord: \`${ctx.session.user.name}\``,
+        `- ${input.accessCode ? "Google" : "Discord"}: \`${ctx.session.user.name}\``,
         `- Account email: \`${ctx.session.user.email}\``,
         `- Preferred email: \`${input.preferredEmail}\``,
         `- Country: \`${input.country}\``,
         `- Schooling status: \`${input.schoolingStatus}\``,
+        input.accessCode ? `- Access code: \`${input.accessCode}\`` : "",
       ].join("\n"),
     );
 
     return;
+  }),
+
+  checkAccessCode: publicProcedure.input(checkAccessCodeSchema).mutation(async ({ ctx, input }) => {
+    const codes = env.ACCESS_CODES?.trim().split(",") ?? [];
+    return codes.includes(input.code);
   }),
 
   getLeaderboard: publicProcedure.input(getLeaderboardSchema).query(async ({ ctx, input }) => {

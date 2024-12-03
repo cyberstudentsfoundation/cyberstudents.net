@@ -12,6 +12,11 @@ export const registerSchema = z.object({
     ["none", "hs1", "hs2", "hs3", "hs4", "college1", "college2", "college3", "college4", "college5", "other"],
     { message: "Schooling status is invalid" },
   ),
+  accessCode: z.string().optional(),
+});
+
+export const checkAccessCodeSchema = z.object({
+  code: z.string(),
 });
 
 export const challengeFetchSchema = z.object({

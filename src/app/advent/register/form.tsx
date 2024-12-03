@@ -13,7 +13,7 @@ import { getCodeList } from "country-list";
 import { toast } from "sonner";
 import { registerSchema } from "~/lib/schemas";
 import { HiCheckCircle } from "react-icons/hi2";
-import { FaDiscord } from "react-icons/fa6";
+import { FaDiscord, FaGoogle } from "react-icons/fa6";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -39,6 +39,9 @@ export default function RegisterForm({
   const searchParams = useSearchParams();
   const router = useRouter();
 
+  const [accessCode, setAccessCode] = useState<string>("");
+  const [acceptedAccessCode, setAcceptedAccessCode] = useState<boolean>(false);
+
   const preferredEmailRef = useRef<HTMLInputElement>(null);
   const [country, setCountry] = useState<string>();
   const [schoolingStatus, setSchoolingStatus] = useState<string>();
@@ -47,6 +50,7 @@ export default function RegisterForm({
   const [error, setError] = useState<string>("");
 
   const adventRegisterMutation = api.event.adventRegister.useMutation();
+  const checkAccessCodeMutation = api.event.checkAccessCode.useMutation();
 
   const isRegistered = user?.events.includes("aoc2024");
 
@@ -56,6 +60,17 @@ export default function RegisterForm({
       router.replace("/advent/register");
     }
   }, [router, searchParams]);
+
+  useEffect(() => {
+    // this is bypassable, yes, but idc, there's another check when actually registering
+    const localStorageAccessCode = localStorage.getItem("accessCode");
+
+    if (localStorageAccessCode) {
+      setAccessCode(localStorageAccessCode);
+      setAcceptedAccessCode(true);
+      setTimeout(() => toast.info("Access code detected; you can login with Google.", { position: "top-center" }));
+    }
+  }, []);
 
   return (
     <div>
@@ -114,6 +129,7 @@ export default function RegisterForm({
                 preferredEmail: preferredEmailRef.current?.value,
                 country: country,
                 schoolingStatus: schoolingStatus,
+                accessCode: accessCode || undefined,
               });
 
               if (!parsed.success) {
@@ -254,15 +270,56 @@ export default function RegisterForm({
           </form>
         </>
       ) : (
-        <Button
-          className="flex items-center bg-[#5865f2] font-bold text-gray-200 hover:bg-[#5865f2]/70"
-          onClick={() => {
-            signIn("discord", { callbackUrl: "/advent/register#registration" });
-          }}
-        >
-          <FaDiscord className="mr-2 h-6 w-6" />
-          <span>Login with Discord</span>
-        </Button>
+        <div>
+          <Button
+            className="flex items-center bg-[#5865f2] font-bold text-gray-200 hover:bg-[#5865f2]/70"
+            onClick={() => {
+              signIn("discord", { callbackUrl: "/advent/register#registration" });
+            }}
+          >
+            <FaDiscord className="mr-2 h-6 w-6" />
+            <span>Login with Discord</span>
+          </Button>
+          <p className="mb-3 mt-10 text-gray-200">Or if you have an access code:</p>
+          {!acceptedAccessCode ? (
+            <div className="flex items-center gap-2">
+              <Input
+                value={accessCode}
+                onChange={(e) => setAccessCode(e.target.value)}
+                placeholder="Access code"
+                className="max-w-xs bg-gray-900 text-gray-200"
+              />
+              <Button
+                className="bg-gray-200 font-bold text-gray-900"
+                onClick={async () => {
+                  if (!accessCode?.trim()) return;
+
+                  const result = await checkAccessCodeMutation.mutateAsync({ code: accessCode });
+
+                  if (result) {
+                    localStorage.setItem("accessCode", accessCode);
+                    setAcceptedAccessCode(true);
+                    toast.success("Access code accepted; you can login with Google.", { position: "top-center" });
+                  } else {
+                    toast.error("Invalid access code.", { position: "top-center" });
+                  }
+                }}
+              >
+                Submit
+              </Button>
+            </div>
+          ) : (
+            <Button
+              className="mt-2 flex items-center bg-gray-200 font-bold text-gray-900"
+              onClick={() => {
+                signIn("google", { callbackUrl: "/advent/register#registration" });
+              }}
+            >
+              <FaGoogle className="mr-3 h-5 w-5" />
+              <span>Login with Google</span>
+            </Button>
+          )}
+        </div>
       )}
     </div>
   );
