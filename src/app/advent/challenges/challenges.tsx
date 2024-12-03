@@ -251,18 +251,20 @@ export default function Challenges({
                             ) : (
                               ""
                             )}
-                            {challenge.files?.map((file) => (
-                              <a key={file} href={file} download target="_blank" rel="noopener noreferrer">
-                                <Button
-                                  size="sm"
-                                  tabIndex={-1}
-                                  className="flex w-72 items-center justify-start gap-2 bg-gray-300 text-gray-800 hover:bg-gray-300/80"
-                                >
-                                  <HiDocument className="h-5 w-5" />
-                                  <span>{file.replace(/\/$/, "").split("/").at(-1)}</span>
-                                </Button>
-                              </a>
-                            ))}
+                            <div className="flex flex-col gap-2">
+                              {challenge.files?.map((file) => (
+                                <a key={file} href={file} download target="_blank" rel="noopener noreferrer">
+                                  <Button
+                                    size="sm"
+                                    tabIndex={-1}
+                                    className="flex w-72 items-center justify-start gap-2 bg-gray-300 text-gray-800 hover:bg-gray-300/80"
+                                  >
+                                    <HiDocument className="h-5 w-5" />
+                                    <span>{file.replace(/\/$/, "").split("/").at(-1)}</span>
+                                  </Button>
+                                </a>
+                              ))}
+                            </div>
                           </div>
                           <div className="flex-grow-0 basis-1/3">
                             <h2 className="mb-1 text-xl font-bold text-gray-400">Hint</h2>
