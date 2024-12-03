@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { HiArrowsUpDown } from "react-icons/hi2";
 import { Button } from "~/components/ui/button";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "~/components/ui/hover-card";
 
 dayjs.extend(relativeTime);
 
@@ -92,12 +93,42 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
     cell: ({ row }) => {
       const { completedChallenges, totalPublishedChallenges, publishedChallengesCompletion } = row.original;
 
+      const challengesByDay: ((typeof completedChallenges)[0] | null)[] = [];
+
+      for (let i = 0; i < 25; i++) {
+        const challenge = completedChallenges.find((c) => c.publishDate.getUTCDate() === i + 1);
+
+        if (challenge) {
+          challengesByDay.push(challenge);
+        } else {
+          challengesByDay.push(null);
+        }
+      }
+
       return (
         <span>
-          <span>
-            {completedChallenges} / {totalPublishedChallenges}
-          </span>{" "}
-          <span className="text-gray-400">({(publishedChallengesCompletion * 100).toFixed(2)}%)</span>
+          <HoverCard>
+            <HoverCardTrigger>
+              <span>
+                <span className="underline decoration-dotted">
+                  {completedChallenges.length} / {totalPublishedChallenges}
+                </span>{" "}
+                <span className="text-gray-400">({(publishedChallengesCompletion * 100).toFixed(2)}%)</span>
+              </span>
+            </HoverCardTrigger>
+            <HoverCardContent className="border-gray-800 bg-gray-900">
+              <div className="grid grid-cols-7 grid-rows-4 place-items-center gap-1">
+                {challengesByDay.map((day, index) => (
+                  <div
+                    key={index}
+                    className={`w-[2ch] text-center outline-1 outline-gray-800 ${day ? "text-green-400" : "text-gray-500"}`}
+                  >
+                    {index + 1}
+                  </div>
+                ))}
+              </div>
+            </HoverCardContent>
+          </HoverCard>
         </span>
       );
     },
@@ -133,7 +164,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
     cell: ({ row }) => {
       const { flags } = row.original;
 
-      return <span>{flags.includes("ms_hs_college_eligible") ? "MS/HS/College, Open" : "Open"}</span>;
+      return <span>{flags.includes("ms_hs_college_eligible") ? "HS/College, Open" : "Open"}</span>;
     },
   },
 ];

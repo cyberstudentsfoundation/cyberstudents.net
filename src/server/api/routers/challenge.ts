@@ -219,7 +219,9 @@ export const challengeRouter = createTRPCRouter({
       challenge.globalFlags = challenge.globalFlags.map((f) => f.toLowerCase());
     }
 
-    const matchingFlag = challenge.globalFlags.find((f) => f === input.flag.trim());
+    const matchingFlag =
+      challenge.globalFlags.find((f) => f === input.flag.trim()) ||
+      challenge.globalRegexFlags.find((f) => new RegExp(f).test(input.flag.trim()));
 
     if (matchingFlag) {
       // For re-checking flags

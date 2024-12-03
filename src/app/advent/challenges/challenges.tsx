@@ -101,7 +101,7 @@ export default function Challenges({
             <span>{getLeaderboardQuery.data.userPoints ?? 0} points</span>{" "}
             {getLeaderboardQuery.data.userMsHsCollegePlace ? (
               <span className="text-gray-400">
-                (Open: {getLeaderboardQuery.data.userPlace ?? "--"}; MS/HS/College: #
+                (Open: #{getLeaderboardQuery.data.userPlace ?? "--"}; HS/College: #
                 {getLeaderboardQuery.data.userMsHsCollegePlace ?? "--"})
               </span>
             ) : (
@@ -246,7 +246,11 @@ export default function Challenges({
                           <div className="flex-grow-0 basis-2/3">
                             <h2 className="mb-1 text-xl font-bold text-gray-400">Description</h2>
                             <p className="mb-8">{challenge.description}</p>
-                            {challenge.files?.length && <h2 className="mb-2 text-xl font-bold text-gray-400">Files</h2>}
+                            {challenge.files?.length ? (
+                              <h2 className="mb-2 text-xl font-bold text-gray-400">Files</h2>
+                            ) : (
+                              ""
+                            )}
                             {challenge.files?.map((file) => (
                               <a key={file} href={file} download target="_blank" rel="noopener noreferrer">
                                 <Button

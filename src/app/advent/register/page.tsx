@@ -1,6 +1,8 @@
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
 import RegisterForm from "./form";
+import { HiExclamationCircle } from "react-icons/hi2";
+import { Alert, AlertTitle, AlertDescription } from "~/components/ui/alert";
 
 export default async function Register() {
   const session = await getServerAuthSession();
@@ -57,7 +59,34 @@ export default async function Register() {
                 </p>
                 <p></p>
                 <h2>Prizes</h2>
-                <p>The prize pool for this event is $80 USD.</p>
+                <Alert className="my-2 bg-yellow-600 bg-opacity-50 text-gray-100">
+                  <HiExclamationCircle className="h-5 w-5" />
+                  <AlertTitle>Middle school was removed from the MS/HS/College division</AlertTitle>
+                  <AlertDescription className="mt-2 text-gray-300">
+                    Due to legal issues, we had to remove middle school students from our main division in the
+                    leaderboard. That division will now only consist of high school and college students (or
+                    equivalent). Middle school players may still play in the Open - Write-up division.
+                    <div className="mb-2" />
+                    However, the prize pool has been extended to $280 USD as of December 2. For questions and further
+                    information, please join our{" "}
+                    <a
+                      href="https://discord.com/invite/cyberstudents-916144903686336513"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline"
+                    >
+                      Discord server
+                    </a>
+                    .
+                  </AlertDescription>
+                </Alert>
+                <p>
+                  The prize pool for this event is <strong>$280 USD</strong>. Prize sponsor by{" "}
+                  <a href="https://www.ics.red/" target="_blank" rel="noopener noreferrer" className="underline">
+                    ICSRED
+                  </a>
+                  .
+                </p>
                 <table>
                   <thead>
                     <tr>
@@ -68,38 +97,41 @@ export default async function Register() {
                   </thead>
                   <tbody>
                     <tr>
-                      <td rowSpan={4}>Middle/High School &amp; College</td>
+                      <td rowSpan={5}>High School & College</td>
                       <td>1st</td>
+                      <td>$100</td>
+                    </tr>
+                    <tr>
+                      <td className="ps-[0.5714286em]">2nd</td>
+                      <td>$60</td>
+                    </tr>
+                    <tr>
+                      <td className="ps-[0.5714286em]">3rd</td>
                       <td>$30</td>
+                    </tr>
+                    <tr>
+                      <td className="ps-[0.5714286em]">4th</td>
+                      <td>$20</td>
+                    </tr>
+                    <tr>
+                      <td className="ps-[0.5714286em]">5th</td>
+                      <td>$15</td>
+                    </tr>
+                    <tr>
+                      <td rowSpan={2}>Open - Write-up</td>
+                      <td>1st</td>
+                      <td>$40</td>
                     </tr>
                     <tr>
                       <td className="ps-[0.5714286em]">2nd</td>
                       <td>$15</td>
                     </tr>
-                    <tr>
-                      <td className="ps-[0.5714286em]">3rd</td>
-                      <td>$10</td>
-                    </tr>
-                    <tr>
-                      <td className="ps-[0.5714286em]">4th-5th</td>
-                      <td>$5</td>
-                    </tr>
-                    <tr>
-                      <td rowSpan={2}>Open - Write-up</td>
-                      <td>1st</td>
-                      <td>$10</td>
-                    </tr>
-                    <tr>
-                      <td className="ps-[0.5714286em]">2nd</td>
-                      <td>$5</td>
-                    </tr>
                   </tbody>
                 </table>
                 <ul>
                   <li>
-                    Only middle/high school students (or its equivalent in the player&apos;s country) and
-                    college/university students are eligible to win prizes for the Middle/High School & College
-                    division.
+                    Only high school students (or its equivalent in the player&apos;s country) and college/university
+                    students are eligible to win prizes for the High School & College division.
                   </li>
                   <li>
                     Anyone is allowed to participate in the write-up division. We will accept submissions after the

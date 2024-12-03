@@ -203,7 +203,9 @@ export default function RegisterForm({
                     <SelectLabel className="-ml-2">
                       <hr />
                     </SelectLabel>
-                    <SelectItem value="ms">Middle school</SelectItem>
+                    <SelectItem value="ms_disabled" disabled>
+                      Middle school (removed as of 12/2&mdash;see Discord)
+                    </SelectItem>
                     <SelectItem value="hs1">9th grade (high school or equivalent)</SelectItem>
                     <SelectItem value="hs2">10th grade (high school or equivalent)</SelectItem>
                     <SelectItem value="hs3">11th grade (high school or equivalent)</SelectItem>

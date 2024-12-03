@@ -47,12 +47,14 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       <div className="flex items-center justify-between py-4">
-        <Input
-          placeholder="Filter by name"
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
-          className="max-w-sm bg-gray-950"
-        />
+        <div className="flex items-center gap-4">
+          <Input
+            placeholder="Filter by name"
+            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+            onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
+            className="max-w-sm bg-gray-950"
+          />
+        </div>
         {session?.user && (
           <Link href={`/advent/leaderboard#${session.user.name}`}>
             <Button className="" variant="ghost" tabIndex={-1}>

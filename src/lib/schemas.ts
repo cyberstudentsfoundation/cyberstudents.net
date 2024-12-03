@@ -9,7 +9,7 @@ export const registerSchema = z.object({
     .string({ message: "Country of residence is required" })
     .refine((country) => getCodes().includes(country.toUpperCase()), { message: "Country of residence is invalid" }),
   schoolingStatus: z.enum(
-    ["none", "ms", "hs1", "hs2", "hs3", "hs4", "college1", "college2", "college3", "college4", "college5", "other"],
+    ["none", "hs1", "hs2", "hs3", "hs4", "college1", "college2", "college3", "college4", "college5", "other"],
     { message: "Schooling status is invalid" },
   ),
 });

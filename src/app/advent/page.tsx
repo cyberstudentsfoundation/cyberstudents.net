@@ -2,6 +2,8 @@ import { HiOutlineAcademicCap, HiOutlineLifebuoy, HiOutlineTrophy } from "react-
 import { getServerAuthSession } from "~/server/auth";
 import Link from "next/link";
 import { api } from "~/trpc/server";
+import Image from "next/image";
+import icsred from "../../../public/icsred.png";
 import Countdown from "~/components/Countdown";
 import { Button } from "~/components/ui/button";
 import { CgBrowser } from "react-icons/cg";
@@ -40,7 +42,7 @@ export default async function Advent() {
                 </li>
                 <li className="mb-1.5 flex items-center gap-1.5">
                   <HiOutlineTrophy className="h-6 w-6 shrink-0" />
-                  <span>$80 prize pool ($65 for middle/high school and college students)</span>
+                  <span>$280 prize pool ($225 for high school and college students)</span>
                 </li>
                 <li className="mb-1.5 flex items-center gap-1.5">
                   <HiOutlineLifebuoy className="h-6 w-6 shrink-0" />
@@ -85,9 +87,11 @@ export default async function Advent() {
                   </Link>
                   <div className="mt-2 text-sm text-gray-400">Register anytime from now until Dec 31st.</div>
                 </div>
-                <div className="flex flex-col items-center sm:items-start">
-                  <div className="mb-2 text-lg">Next challenge in&hellip;</div>
-                  <Countdown date="next-challenge" />
+                <div className="flex items-center gap-4">
+                  <p className="text-gray-400">Sponsored by</p>
+                  <a href="https://www.ics.red/" target="_blank" rel="noopener noreferrer">
+                    <Image src={icsred} alt="ICSRED Logo" className="h-32 w-32 rounded-lg opacity-70" />
+                  </a>
                 </div>
               </div>
             </div>
@@ -129,9 +133,21 @@ export default async function Advent() {
                     </div>
                   </Link>
                 ))}
+                <div className="col-span-3 hidden flex-col items-center justify-center sm:flex sm:items-start">
+                  <div className="mb-2 flex w-full flex-col items-center">
+                    <div className="mb-2 text-lg">Next challenge in&hellip;</div>
+                    <Countdown date="next-challenge" />
+                  </div>
+                </div>
               </div>
               <div className="mt-2 text-center text-sm text-gray-400 xl:text-start">
                 Click on a day to jump to its challenge!
+              </div>
+            </div>
+            <div className="col-span-3 flex flex-col items-center justify-center sm:hidden sm:items-start">
+              <div className="mb-2 flex w-full flex-col items-center">
+                <div className="mb-2 text-lg">Next challenge in&hellip;</div>
+                <Countdown date="next-challenge" />
               </div>
             </div>
           </div>

@@ -91,6 +91,7 @@ model Challenge {
   description                 String // supports Markdoc markdown
   files                       String[] // URLs
   globalFlags                 String[]        @map("global_flags") // flags that are valid for everyone
+  globalRegexFlags            String[]        @map("global_regex_flags") // regex flags that are valid for everyone
   areGlobalFlagsCaseSensitive Boolean         @map("are_global_flags_case_sensitive")
   flagPrefix                  String?         @map("flag_prefix") // e.g., "heaps_of_fun_in_memory_"
   flagSecret                  String?         @map("flag_secret") // a secret that is used to generate the flag

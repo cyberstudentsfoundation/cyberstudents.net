@@ -113,14 +113,16 @@ export const eventRouter = createTRPCRouter({
       flags: user.flags.filter((flag) => flag === "ms_hs_college_eligible"),
       points: userPointsAndLastSolveMap.get(user.id)!.points,
       lastSolve: userPointsAndLastSolveMap.get(user.id)!.lastSolve,
-      completedChallenges: user.challengeAttempts.filter((a) => a.solvedAt).length,
+      completedChallenges: user.challengeAttempts
+        .filter((a) => a.solvedAt)
+        .map((a) => ({ id: a.challenge.id, publishDate: a.challenge.publishDate })),
       totalPublishedChallenges: challenges.filter((c) => c.publishDate.getTime() <= Date.now()).length,
       publishedChallengesCompletion:
         user.challengeAttempts.filter((a) => a.solvedAt).length /
         challenges.filter((c) => c.publishDate.getTime() <= Date.now()).length,
       accuracy:
         user.challengeAttempts.filter((a) => a.solvedAt).length /
-        user.challengeAttempts.filter((a) => a.attempts > 0).length,
+        user.challengeAttempts.reduce((totalAttempts, attempt) => totalAttempts + attempt.attempts, 0),
     }));
 
     return {
