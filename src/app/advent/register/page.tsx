@@ -33,11 +33,11 @@ export default async function Register() {
                 </p>
                 <h2>Challenges</h2>
                 <p>
-                  <strong>A new challenge is released every day at 3 pm EST.</strong> You need to obtain a flag that is
-                  always in the format <strong className="font-mono">{"csd{example_flag}"}</strong>. Knowing the flag
-                  format may be useful when attempting challenges. A challenge may also have a second part with its own
-                  flag, but they can be solved in any order. You do not need to solve previous challenges before
-                  attempting later-released challenges.
+                  <strong>A new challenge is released every day at 3 pm EST until December 25.</strong> You need to
+                  obtain a flag that is always in the format{" "}
+                  <strong className="font-mono">{"csd{example_flag}"}</strong>. Knowing the flag format may be useful
+                  when attempting challenges. You do not need to solve previous challenges before attempting
+                  later-released challenges.
                 </p>
                 <p>
                   Each challenge has two hints. The first hint will be given 12 hours after the challenge releases (at 3
@@ -81,7 +81,7 @@ export default async function Register() {
                   </AlertDescription>
                 </Alert>
                 <p>
-                  The prize pool for this event is <strong>$280 USD</strong>. Prize sponsor by{" "}
+                  The prize pool for this event is <strong>$280 USD</strong>. Prizes sponsored by{" "}
                   <a href="https://www.ics.red/" target="_blank" rel="noopener noreferrer" className="underline">
                     ICSRED
                   </a>
@@ -99,7 +99,17 @@ export default async function Register() {
                     <tr>
                       <td rowSpan={5}>High School & College</td>
                       <td>1st</td>
-                      <td>$100</td>
+                      <td>
+                        $100 + 1x{" "}
+                        <a
+                          href="https://www.antisyphontraining.com/course-catalog/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Antisyphon Course
+                        </a>{" "}
+                        of choice (worth $600+)
+                      </td>
                     </tr>
                     <tr>
                       <td className="ps-[0.5714286em]">2nd</td>

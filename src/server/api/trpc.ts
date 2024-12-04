@@ -106,3 +106,20 @@ export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
     },
   });
 });
+
+export const adminProcedure = t.procedure.use(async ({ ctx, next }) => {
+  if (!ctx.session?.user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  const { flags } = await ctx.db.user.findUniqueOrThrow({
+    where: { id: ctx.session.user.id },
+    select: { flags: true },
+  });
+
+  if (!flags.includes("admin")) {
+    throw new TRPCError({ code: "FORBIDDEN" });
+  }
+
+  return next({ ctx });
+});

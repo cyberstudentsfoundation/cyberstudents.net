@@ -2,16 +2,20 @@
 
 import { signOut } from "next-auth/react";
 import { Session } from "next-auth";
+import { api } from "~/trpc/react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
 } from "~/components/ui/dropdown-menu";
-import { HiArrowRightStartOnRectangle } from "react-icons/hi2";
+import { HiAdjustmentsHorizontal, HiArrowRightStartOnRectangle } from "react-icons/hi2";
 
 export default function AccountDropdown({ session }: { session: Session }) {
+  const userMeQuery = api.user.me.useQuery();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -31,6 +35,16 @@ export default function AccountDropdown({ session }: { session: Session }) {
           <HiArrowRightStartOnRectangle />
           <span>Sign out</span>
         </DropdownMenuItem>
+        {userMeQuery.data?.flags.includes("admin") ? (
+          <Link href="/dashboard">
+            <DropdownMenuItem>
+              <HiAdjustmentsHorizontal />
+              <span>Dashboard</span>
+            </DropdownMenuItem>
+          </Link>
+        ) : (
+          ""
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
