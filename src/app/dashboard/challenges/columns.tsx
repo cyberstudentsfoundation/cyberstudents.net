@@ -6,7 +6,8 @@ import type { AppRouter } from "~/server/api/root";
 import Image from "next/image";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { HiArrowsUpDown } from "react-icons/hi2";
+import Edit from "./edit";
+import { HiArrowsUpDown, HiPencilSquare } from "react-icons/hi2";
 import { Button } from "~/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "~/components/ui/hover-card";
 
@@ -27,6 +28,17 @@ function headerWithSorting(name: string) {
 
 export const columns: ColumnDef<Challenge>[] = [
   {
+    id: "edit",
+    header: () => (
+      <Button variant="ghost" disabled>
+        Edit
+      </Button>
+    ),
+    cell: ({ row }) => {
+      return <Edit row={row} textButton={false} />;
+    },
+  },
+  {
     id: "status",
     header: headerWithSorting("Status"),
     cell: ({ row }) => {
@@ -36,7 +48,8 @@ export const columns: ColumnDef<Challenge>[] = [
 
       if (publishDate.getTime() <= Date.now()) return <span className="text-green-400">Published</span>;
 
-      if (publishDate.getTime() > Date.now()) return <span className="text-yellow-400">Waiting</span>;
+      if (publishDate.getTime() > Date.now())
+        return <span className="text-yellow-400">Scheduled for {dayjs(publishDate).format("M/DD h:mm a")}</span>;
 
       return <span className="text-orange-400">Unpublished</span>;
     },
@@ -61,7 +74,7 @@ export const columns: ColumnDef<Challenge>[] = [
           "OSINT",
         ].includes(category)
       )
-        return <span className="text-pink-400">Incorrect category</span>;
+        return <span className="text-pink-400">Invalid category</span>;
 
       if (!points) return <span className="text-purple-400">0 points</span>;
     },
@@ -113,7 +126,7 @@ export const columns: ColumnDef<Challenge>[] = [
       return (
         <span>
           <HoverCard>
-            <HoverCardTrigger className="block max-w-64 truncate underline decoration-dotted">
+            <HoverCardTrigger tabIndex={0} className="block max-w-64 truncate underline decoration-dotted">
               {description}
             </HoverCardTrigger>
             <HoverCardContent className="border-gray-800 bg-gray-900">{description}</HoverCardContent>
@@ -245,10 +258,6 @@ export const columns: ColumnDef<Challenge>[] = [
     },
   },
   {
-    accessorKey: "id",
-    header: headerWithSorting("ID"),
-  },
-  {
     accessorKey: "createdAt",
     header: headerWithSorting("Created at"),
     cell: ({ row }) => dayjs(row.original.createdAt).format("MM/DD/YY h:mm a"),
@@ -266,5 +275,9 @@ export const columns: ColumnDef<Challenge>[] = [
   {
     accessorKey: "eventName",
     header: headerWithSorting("Event"),
+  },
+  {
+    accessorKey: "id",
+    header: headerWithSorting("ID"),
   },
 ];

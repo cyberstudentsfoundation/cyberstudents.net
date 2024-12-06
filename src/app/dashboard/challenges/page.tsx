@@ -14,10 +14,11 @@ export default async function ChallengesPage() {
   if (!user?.flags.includes("admin")) notFound();
 
   return (
-    <main className="mx-4 flex justify-center">
-      <div className="container mt-8 flex flex-col justify-center lg:max-w-screen-lg xl:max-w-screen-xl">
-        <h1 className="text-2xl font-bold">Challenges</h1>
-        <Challenges session={session} />
+    <main className="flex justify-center overflow-auto">
+      <div className="flex w-full max-w-screen-2xl flex-col justify-center">
+        <div>
+          <Challenges session={session} />
+        </div>
       </div>
     </main>
   );

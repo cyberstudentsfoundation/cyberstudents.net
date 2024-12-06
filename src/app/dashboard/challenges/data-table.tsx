@@ -13,6 +13,7 @@ import {
 } from "@tanstack/react-table";
 import type { Session } from "next-auth";
 import Link from "next/link";
+import Edit from "./edit";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
@@ -54,6 +55,7 @@ export function DataTable<TData, TValue>({
             onChange={(event) => table.getColumn("title")?.setFilterValue(event.target.value)}
             className="max-w-sm bg-gray-950"
           />
+          <Edit textButton={true} />
         </div>
       </div>
       <div className="rounded-md border border-gray-800">

@@ -37,3 +37,19 @@ export const getLeaderboardSchema = z.object({
   event: z.string(),
   onlyShowCurrentUser: z.boolean(),
 });
+
+export const editChallengeSchema = z.object({
+  id: z.string().optional(), // if optional, it's a new challenge
+  authorId: z.string(),
+  title: z.string(),
+  category: z.string(),
+  points: z.number(),
+  description: z.string(),
+  hints: z.array(z.object({ number: z.number(), title: z.string(), content: z.string(), points: z.number() })),
+  files: z.array(z.string()),
+  globalFlags: z.array(z.string()),
+  areGlobalFlagsCaseSensitive: z.boolean(),
+  globalRegexFlags: z.array(z.string()),
+  publishDate: z.date(),
+  submissionsEnabled: z.boolean(),
+});

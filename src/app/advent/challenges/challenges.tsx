@@ -16,7 +16,7 @@ import { CgBrowser } from "react-icons/cg";
 import { FaTableCellsRowLock, FaMagnifyingGlassChart, FaGear, FaCheck, FaClock } from "react-icons/fa6";
 import { LuBinary } from "react-icons/lu";
 import { BiNetworkChart } from "react-icons/bi";
-import { HiChevronLeft, HiDocument, HiFlag, HiMiniCalendar, HiOutlineCubeTransparent } from "react-icons/hi2";
+import { HiChevronLeft, HiFlag, HiLink, HiMiniCalendar, HiOutlineCubeTransparent } from "react-icons/hi2";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "~/components/ui/hover-card";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
@@ -177,7 +177,7 @@ export default function Challenges({
                     {CATEGORY_ICON_MAP[challenge.category]}
                   </div>
                   <div className="z-20 flex h-full flex-col justify-between p-8">
-                    <div>
+                    <div className="mb-8">
                       <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row lg:gap-0">
                         <div className="flex-grow-0 basis-3/5">
                           <h1
@@ -247,19 +247,26 @@ export default function Challenges({
                             <h2 className="mb-1 text-xl font-bold text-gray-400">Description</h2>
                             <p className="mb-8">{challenge.description}</p>
                             {challenge.files?.length ? (
-                              <h2 className="mb-2 text-xl font-bold text-gray-400">Files</h2>
+                              <h2 className="mb-2 text-xl font-bold text-gray-400">Attachments</h2>
                             ) : (
                               ""
                             )}
                             <div className="flex flex-col gap-2">
                               {challenge.files?.map((file) => (
-                                <a key={file} href={file} download target="_blank" rel="noopener noreferrer">
+                                <a
+                                  key={file}
+                                  href={file}
+                                  download
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="w-fit"
+                                >
                                   <Button
                                     size="sm"
                                     tabIndex={-1}
                                     className="flex w-72 items-center justify-start gap-2 bg-gray-300 text-gray-800 hover:bg-gray-300/80"
                                   >
-                                    <HiDocument className="h-5 w-5" />
+                                    <HiLink className="h-5 w-5" />
                                     <span>{file.replace(/\/$/, "").split("/").at(-1)}</span>
                                   </Button>
                                 </a>
