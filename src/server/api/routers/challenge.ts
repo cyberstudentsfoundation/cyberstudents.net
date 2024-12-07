@@ -94,7 +94,6 @@ export const challengeRouter = createTRPCRouter({
           .find((c) => c.id === challenge.id)
           ?.challengeAttempts.filter((a) => a.solvedAt)
           .sort((a, b) => a.solvedAt!.getTime() - b.solvedAt!.getTime())
-          .slice(0, 50)
           .map((a) => ({
             user: {
               id: a.user.id,
