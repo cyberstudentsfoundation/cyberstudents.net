@@ -1,11 +1,6 @@
 import { adminProcedure, createTRPCRouter } from "~/server/api/trpc";
 import { TRPCError } from "@trpc/server";
-import {
-  challengeFetchPreviewSchema,
-  challengeFetchSchema,
-  editChallengeSchema,
-  submitFlagSchema,
-} from "~/lib/schemas";
+import { editChallengeSchema } from "~/lib/schemas";
 import { sendNotification } from "~/server/send-notification";
 
 export const dashboardRouter = createTRPCRouter({
@@ -72,7 +67,7 @@ export const dashboardRouter = createTRPCRouter({
       throw new TRPCError({ message: "Challenge not found", code: "NOT_FOUND" });
     }
 
-    await ctx.db.challenge.update({
+    const { hints } = await ctx.db.challenge.update({
       where: { id: input.id },
       data: {
         authorId: input.authorId,
@@ -80,16 +75,6 @@ export const dashboardRouter = createTRPCRouter({
         category: input.category,
         points: input.points,
         description: input.description,
-        hints: {
-          createMany: {
-            data: input.hints.map((hint) => ({
-              number: hint.number,
-              title: hint.title,
-              content: hint.content,
-              points: hint.points,
-            })),
-          },
-        },
         files: { set: input.files },
         globalFlags: { set: input.globalFlags },
         areGlobalFlagsCaseSensitive: input.areGlobalFlagsCaseSensitive,
@@ -97,6 +82,21 @@ export const dashboardRouter = createTRPCRouter({
         publishDate: input.publishDate,
         submissionsEnabled: input.submissionsEnabled,
       },
+      include: { hints: true },
     });
+
+    for (const hint of input.hints) {
+      await ctx.db.challengeHint.upsert({
+        where: { id: hints.find((h) => h.number === hint.number)?.id, challengeId: input.id, number: hint.number },
+        update: { title: hint.title, content: hint.content, points: hint.points },
+        create: {
+          challengeId: input.id,
+          number: hint.number,
+          title: hint.title,
+          content: hint.content,
+          points: hint.points,
+        },
+      });
+    }
   }),
 });
