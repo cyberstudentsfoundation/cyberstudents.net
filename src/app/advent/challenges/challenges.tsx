@@ -11,6 +11,7 @@ import Link from "next/link";
 import Image from "next/image";
 import dayjs from "dayjs";
 import { toast } from "sonner";
+import { Prose } from "~/lib/renderMarkdoc";
 import Countdown from "~/components/Countdown";
 import { CgBrowser } from "react-icons/cg";
 import { FaTableCellsRowLock, FaMagnifyingGlassChart, FaGear, FaCheck, FaClock } from "react-icons/fa6";
@@ -168,7 +169,7 @@ export default function Challenges({
             ))}
           </div>
         </div>
-        <div className="z-10 w-full bg-gray-800">
+        <div className="z-10 w-full rounded-lg rounded-tl-none bg-gray-800">
           <div className="h-full">
             {focusedChallenge ? (
               challengeCallback(focusedChallenge, (challenge) => (
@@ -229,7 +230,7 @@ export default function Challenges({
                                         alt={`Profile Picture for ${attempt.user.name}`}
                                         className="h-5 w-5 rounded-full"
                                       />
-                                      <span className="max-w-52 truncate text-gray-200">{attempt.user.name}</span>
+                                      <span className="max-w-32 truncate text-gray-200">{attempt.user.name}</span>
                                     </td>
                                     <td className="pr-4 text-gray-400">
                                       {dayjs(attempt.solvedAt.getTime()).format("M/DD h:mm a")}
@@ -245,7 +246,7 @@ export default function Challenges({
                         <div className="flex flex-col justify-between gap-12 md:flex-row">
                           <div className="flex-grow-0 basis-2/3">
                             <h2 className="mb-1 text-xl font-bold text-gray-400">Description</h2>
-                            <p className="mb-8">{challenge.description}</p>
+                            <Prose>{challenge.description ?? ""}</Prose>
                             {challenge.files?.length ? (
                               <h2 className="mb-2 text-xl font-bold text-gray-400">Attachments</h2>
                             ) : (
@@ -289,7 +290,9 @@ export default function Challenges({
                                 </TabsTrigger>
                               </TabsList>
                               <TabsContent value="1">
-                                {challenge.hints.find((h) => h.number === 1)?.content ?? (
+                                {challenge.hints.find((h) => h.number === 1)?.content ? (
+                                  <Prose>{challenge.hints.find((h) => h.number === 1)?.content ?? ""}</Prose>
+                                ) : (
                                   <div>
                                     <span>This hint will be released in:</span>
                                     <Countdown
@@ -300,7 +303,9 @@ export default function Challenges({
                                 )}
                               </TabsContent>
                               <TabsContent value="2">
-                                {challenge.hints.find((h) => h.number === 2)?.content ?? (
+                                {challenge.hints.find((h) => h.number === 2)?.content ? (
+                                  <Prose>{challenge.hints.find((h) => h.number === 2)?.content ?? ""}</Prose>
+                                ) : (
                                   <div>
                                     <span>This hint will be released in:</span>
                                     <Countdown

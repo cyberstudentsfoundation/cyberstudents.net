@@ -22,9 +22,6 @@ export default function Challenges({ session }: { session: Session | null }) {
         mobile) to reveal more information.
       </p>
       <p className="text-sm text-gray-400">All times are in your local time zone.</p>
-      <p className="text-red-400">
-        MARKDOWN IS NOT SUPPORTED YET. PLEASE DON&apos;T USE MARKDOWN IN DESCRIPTIONS OR HINTS YET.
-      </p>
       {getChallengesQuery.data ? (
         <DataTable columns={columns} data={getChallengesQuery.data} session={session} />
       ) : (

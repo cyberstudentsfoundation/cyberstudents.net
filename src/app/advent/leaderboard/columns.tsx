@@ -108,7 +108,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
       return (
         <span>
           <HoverCard>
-            <HoverCardTrigger>
+            <HoverCardTrigger tabIndex={0}>
               <span>
                 <span className="underline decoration-dotted">
                   {completedChallenges.length} / {totalPublishedChallenges}

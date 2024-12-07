@@ -146,7 +146,9 @@ export const columns: ColumnDef<Challenge>[] = [
       return (
         <span>
           <HoverCard>
-            <HoverCardTrigger className="underline decoration-dotted">{files.length} files</HoverCardTrigger>
+            <HoverCardTrigger tabIndex={0} className="underline decoration-dotted">
+              {files.length} files
+            </HoverCardTrigger>
             <HoverCardContent className="break-words border-gray-800 bg-gray-900">
               <ul className="ml-4 list-disc space-y-2">
                 {files.map((file, index) => (
@@ -174,7 +176,9 @@ export const columns: ColumnDef<Challenge>[] = [
       return (
         <span>
           <HoverCard>
-            <HoverCardTrigger className="underline decoration-dotted">{hints.length} hints</HoverCardTrigger>
+            <HoverCardTrigger tabIndex={0} className="underline decoration-dotted">
+              {hints.length} hints
+            </HoverCardTrigger>
             <HoverCardContent className="flex flex-col gap-2 border-gray-800 bg-gray-900">
               {hints.map((hint) => (
                 <div key={hint.id}>
@@ -199,14 +203,14 @@ export const columns: ColumnDef<Challenge>[] = [
       return (
         <span className="text-cyan-300">
           <HoverCard>
-            <HoverCardTrigger className="max-w-64 truncate underline decoration-dotted">
-              {globalFlags.length === 1 ? <pre>{globalFlags}</pre> : `${globalFlags.length} global flags`}
+            <HoverCardTrigger tabIndex={0} className="max-w-64 truncate underline decoration-dotted">
+              {globalFlags.length === 1 ? <code>{globalFlags}</code> : `${globalFlags.length} global flags`}
             </HoverCardTrigger>
             <HoverCardContent className="break-words border-gray-800 bg-gray-900">
               <ul className="ml-4 list-disc space-y-2">
                 {globalFlags.map((flag, index) => (
                   <li key={index}>
-                    <pre>{flag}</pre>
+                    <code className="break-words">{flag}</code>
                   </li>
                 ))}
               </ul>
@@ -236,9 +240,9 @@ export const columns: ColumnDef<Challenge>[] = [
       return (
         <span className="text-orange-300">
           <HoverCard>
-            <HoverCardTrigger className="max-w-64 truncate underline decoration-dotted">
+            <HoverCardTrigger tabIndex={0} className="max-w-64 truncate underline decoration-dotted">
               {globalRegexFlags.length === 1 ? (
-                <pre>{globalRegexFlags}</pre>
+                <code>{globalRegexFlags}</code>
               ) : (
                 `${globalRegexFlags.length} global regex flags`
               )}
@@ -247,7 +251,7 @@ export const columns: ColumnDef<Challenge>[] = [
               <ul className="ml-4 list-disc space-y-2">
                 {globalRegexFlags.map((flag, index) => (
                   <li key={index}>
-                    <pre>{flag}</pre>
+                    <code>{flag}</code>
                   </li>
                 ))}
               </ul>

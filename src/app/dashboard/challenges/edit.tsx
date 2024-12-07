@@ -44,7 +44,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
-import { renderMarkdoc } from "~/lib/renderMarkdoc";
+import { Prose } from "~/lib/renderMarkdoc";
 
 export default function Edit({ row, textButton }: { row?: Row<Challenge>; textButton: boolean }) {
   const editChallengeMutation = api.dashboard.editChallenge.useMutation({
@@ -316,9 +316,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                       </TabsContent>
                       <TabsContent value="preview">
                         {description ? (
-                          <div className="prose prose-gray prose-invert prose-code:font-medium prose-code:before:hidden prose-code:after:hidden">
-                            {renderMarkdoc(description)}
-                          </div>
+                          <Prose>{description}</Prose>
                         ) : (
                           <em className="text-gray-400">No description provided.</em>
                         )}
@@ -348,7 +346,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                       <TabsContent value="preview">
                         {hint1 ? (
                           <div className="prose prose-gray prose-invert prose-code:font-medium prose-code:before:hidden prose-code:after:hidden">
-                            {renderMarkdoc(hint1 ?? "")}
+                            <Prose>{hint1}</Prose>
                           </div>
                         ) : (
                           <em className="text-gray-400">No hint provided.</em>
@@ -378,7 +376,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                       <TabsContent value="preview">
                         {hint2 ? (
                           <div className="prose prose-gray prose-invert prose-code:font-medium prose-code:before:hidden prose-code:after:hidden">
-                            {renderMarkdoc(hint2 ?? "")}
+                            <Prose>{hint2}</Prose>
                           </div>
                         ) : (
                           <em className="text-gray-400">No hint provided.</em>
