@@ -72,7 +72,6 @@ export default async function Register() {
                     <a
                       href="https://discord.com/invite/cyberstudents-916144903686336513"
                       target="_blank"
-                      rel="noopener noreferrer"
                       className="underline"
                     >
                       Discord server

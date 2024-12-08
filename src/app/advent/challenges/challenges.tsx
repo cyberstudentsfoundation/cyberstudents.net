@@ -17,7 +17,14 @@ import { CgBrowser } from "react-icons/cg";
 import { FaTableCellsRowLock, FaMagnifyingGlassChart, FaGear, FaCheck, FaClock } from "react-icons/fa6";
 import { LuBinary } from "react-icons/lu";
 import { BiNetworkChart } from "react-icons/bi";
-import { HiChevronLeft, HiFlag, HiLink, HiMiniCalendar, HiOutlineCubeTransparent } from "react-icons/hi2";
+import {
+  HiChevronLeft,
+  HiFlag,
+  HiLink,
+  HiMiniCalendar,
+  HiOutlineChatBubbleLeftRight,
+  HiOutlineCubeTransparent,
+} from "react-icons/hi2";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "~/components/ui/hover-card";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
@@ -384,6 +391,27 @@ export default function Challenges({
                             {challenge.challengeAttempt?.solvedAt ? "Check" : "Submit"}
                           </Button>
                         </form>
+                        <div className="mt-4 flex items-center gap-1.5 text-sm">
+                          <HiOutlineChatBubbleLeftRight className="h-5 w-5 text-gray-400" />
+                          <span>
+                            Discuss this challenge with others in{" "}
+                            <a
+                              href="https://discord.com/channels/916144903686336513/1313285716666748990"
+                              target="_blank"
+                              className="text-nowrap rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
+                            >
+                              #🎄丨advent-of-ctf
+                            </a>{" "}
+                            on our{" "}
+                            <a
+                              href="https://discord.com/invite/cyberstudents-916144903686336513"
+                              target="_blank"
+                              className="underline transition-colors hover:text-gray-300"
+                            >
+                              Discord server.
+                            </a>
+                          </span>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -392,7 +420,28 @@ export default function Challenges({
             ) : (
               <div className="flex h-full flex-col items-center justify-center gap-4 py-16 text-gray-400 lg:py-0">
                 <HiOutlineCubeTransparent className="h-20 w-20 stroke-1" />
-                <span>Select a challenge to get started.</span>
+                <span className="text-lg font-semibold">Select a challenge to get started.</span>
+                <div className="flex items-center gap-1.5 text-sm">
+                  <HiOutlineChatBubbleLeftRight className="h-5 w-5 text-gray-400" />
+                  <span>
+                    Discuss challenges with others in{" "}
+                    <a
+                      href="https://discord.com/channels/916144903686336513/1313285716666748990"
+                      target="_blank"
+                      className="text-nowrap rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
+                    >
+                      #🎄丨advent-of-ctf
+                    </a>{" "}
+                    on our{" "}
+                    <a
+                      href="https://discord.com/invite/cyberstudents-916144903686336513"
+                      target="_blank"
+                      className="underline transition-colors hover:text-gray-300"
+                    >
+                      Discord server.
+                    </a>
+                  </span>
+                </div>
               </div>
             )}
           </div>
