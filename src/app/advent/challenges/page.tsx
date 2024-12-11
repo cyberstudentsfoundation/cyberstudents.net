@@ -30,7 +30,7 @@ export default async function Register() {
         </div>
         <Challenges eventChallenges={eventChallenges} session={session} />
         <div className="mt-4 flex items-center justify-end gap-1.5 text-sm text-gray-400">
-          <HiOutlineQuestionMarkCircle className="h-5 w-5 text-gray-400" />
+          <HiOutlineQuestionMarkCircle className="h-5 w-5 shrink-0 text-gray-400" />
           <span>
             Need help with a challenge? Is a challenge broken? DM{" "}
             <a

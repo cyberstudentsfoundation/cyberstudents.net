@@ -392,7 +392,7 @@ export default function Challenges({
                           </Button>
                         </form>
                         <div className="mt-4 flex items-center gap-1.5 text-sm">
-                          <HiOutlineChatBubbleLeftRight className="h-5 w-5 text-gray-400" />
+                          <HiOutlineChatBubbleLeftRight className="h-5 w-5 shrink-0 text-gray-400" />
                           <span>
                             Discuss this challenge with others in{" "}
                             <a
@@ -418,11 +418,11 @@ export default function Challenges({
                 </div>
               ))
             ) : (
-              <div className="flex h-full flex-col items-center justify-center gap-4 py-16 text-gray-400 lg:py-0">
+              <div className="flex h-full flex-col items-center justify-center gap-4 px-4 py-16 text-gray-400 lg:py-0">
                 <HiOutlineCubeTransparent className="h-20 w-20 stroke-1" />
                 <span className="text-lg font-semibold">Select a challenge to get started.</span>
                 <div className="flex items-center gap-1.5 text-sm">
-                  <HiOutlineChatBubbleLeftRight className="h-5 w-5 text-gray-400" />
+                  <HiOutlineChatBubbleLeftRight className="h-5 w-5 shrink-0 text-gray-400" />
                   <span>
                     Discuss challenges with others in{" "}
                     <a
