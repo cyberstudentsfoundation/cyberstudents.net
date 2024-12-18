@@ -53,8 +53,15 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
     },
   });
 
+  const deleteChallengeMutation = api.dashboard.deleteChallenge.useMutation({
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
   const [open, setOpen] = useState(false);
   const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const titleRef = useRef<HTMLInputElement>(null);
   const pointsRef = useRef<HTMLInputElement>(null);
@@ -119,6 +126,8 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
   function processSheetClose(e?: Event) {
     if (e) e.preventDefault();
 
+    if (deleteDialogOpen) return;
+
     if (
       row &&
       titleRef.current?.value === row.original.title &&
@@ -153,6 +162,44 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={() => setOpen(false)}>Yes, discard changes</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete challenge?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to permanently delete <strong>{row?.original.title}</strong>?{" "}
+              {(row?.original.publishDate.getTime() ?? Infinity) <= Date.now() ? (
+                <span className="text-orange-500">
+                  This challenge has been published before and has {row?.original.challengeAttempts.length} attempt(s)
+                  which will all be deleted.
+                </span>
+              ) : (
+                ""
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={async () => {
+                if (!row) return toast.error("No challenge to delete");
+
+                await deleteChallengeMutation.mutateAsync({ id: row.original.id });
+
+                if (!editChallengeMutation.isError) {
+                  toast.success("Challenge deleted successfully.", { position: "top-center" });
+                  setDeleteDialogOpen(false);
+                  location.reload();
+                }
+              }}
+            >
+              Delete challenge
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -573,6 +620,19 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                       This should be ON unless you explicitly want to disable submissions (e.g., for maintenance).
                     </span>
                   </div>
+                  {row && (
+                    <>
+                      <hr className="my-3" />
+                      <Button
+                        variant="destructive"
+                        type="button"
+                        className="self-start"
+                        onClick={() => setDeleteDialogOpen(true)}
+                      >
+                        Delete challenge
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
             </form>

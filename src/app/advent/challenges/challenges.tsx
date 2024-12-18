@@ -274,7 +274,7 @@ export default function Challenges({
                                     tabIndex={-1}
                                     className="flex w-72 items-center justify-start gap-2 bg-gray-300 text-gray-800 hover:bg-gray-300/80"
                                   >
-                                    <HiLink className="h-5 w-5" />
+                                    <HiLink className="h-5 w-5 shrink-0" />
                                     <span>{file.replace(/\/$/, "").split("/").at(-1)}</span>
                                   </Button>
                                 </a>

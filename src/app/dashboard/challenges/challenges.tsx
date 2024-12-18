@@ -25,7 +25,7 @@ export default function Challenges({ session }: { session: Session | null }) {
       {getChallengesQuery.data ? (
         <DataTable columns={columns} data={getChallengesQuery.data} session={session} />
       ) : (
-        <div className="my-10 flex items-center justify-center text-gray-400">Loading...</div>
+        <div className="mt-4 text-gray-400">Loading...</div>
       )}
     </div>
   );

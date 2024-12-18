@@ -53,3 +53,7 @@ export const editChallengeSchema = z.object({
   publishDate: z.date(),
   submissionsEnabled: z.boolean(),
 });
+
+export const deleteChallengeSchema = z.object({
+  id: z.string(),
+});

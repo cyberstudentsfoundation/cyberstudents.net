@@ -1,10 +1,20 @@
 import React from "react";
 import Markdoc, { renderers } from "@markdoc/markdoc";
+import Alert from "~/components/Alert";
+
+const config = {
+  tags: {
+    alert: {
+      render: "Alert",
+      children: ["paragraph", "tag", "list"],
+    },
+  },
+};
 
 export function renderMarkdoc(markdown: string) {
   const ast = Markdoc.parse(markdown);
-  const tree = Markdoc.transform(ast);
-  const rendered = renderers.react(tree, React);
+  const tree = Markdoc.transform(ast, config);
+  const rendered = renderers.react(tree, React, { components: { Alert } });
 
   return rendered;
 }

@@ -1,6 +1,6 @@
 import { adminProcedure, createTRPCRouter } from "~/server/api/trpc";
 import { TRPCError } from "@trpc/server";
-import { editChallengeSchema } from "~/lib/schemas";
+import { deleteChallengeSchema, editChallengeSchema } from "~/lib/schemas";
 import { sendNotification } from "~/server/send-notification";
 
 export const dashboardRouter = createTRPCRouter({
@@ -98,5 +98,15 @@ export const dashboardRouter = createTRPCRouter({
         },
       });
     }
+  }),
+
+  deleteChallenge: adminProcedure.input(deleteChallengeSchema).mutation(async ({ ctx, input }) => {
+    const challenge = await ctx.db.challenge.findUnique({ where: { id: input.id } });
+
+    if (!challenge) {
+      throw new TRPCError({ message: "Challenge not found", code: "NOT_FOUND" });
+    }
+
+    await ctx.db.challenge.delete({ where: { id: input.id } });
   }),
 });
