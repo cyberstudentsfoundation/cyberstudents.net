@@ -17,7 +17,7 @@ export default function Leaderboard({ session }: { session: Session | null }) {
 
   return (
     <div className="">
-      <h1 className="text-center text-2xl font-bold tracking-wide text-gray-200">Leaderboard</h1>
+      <h1 className="text-center text-2xl font-bold text-gray-200">Leaderboard</h1>
       {getLeaderboardQuery.data ? (
         <div className="container mx-auto py-10">
           <Tabs value={division} onValueChange={(d) => setDivision(d)}>

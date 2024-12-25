@@ -206,6 +206,14 @@ export const challengeRouter = createTRPCRouter({
       throw new TRPCError({ message: "You are not registered for this challenge's event.", code: "FORBIDDEN" });
     }
 
+    if (Date.now() > (user.events.find((event) => event.name === "aoc2024a")?.eventEnd.getTime() ?? 0)) {
+      throw new TRPCError({
+        message:
+          "This event has ended and is no longer accepting flag submissions. Thank you for playing in Advent of CTF 2024!",
+        code: "FORBIDDEN",
+      });
+    }
+
     if ((challenge.challengeAttempts[0]?.lastAttemptAt?.getTime() ?? 0) + 30_000 > Date.now()) {
       throw new TRPCError({
         message: "You may only submit one flag every 30 seconds per challenge.",

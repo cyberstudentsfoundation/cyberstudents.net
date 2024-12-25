@@ -43,9 +43,9 @@ export default function Countdown({
 
   return (
     <div className={`flex items-center font-mono ${variant === "small" ? "gap-2 text-xl" : "gap-3 text-2xl"}`}>
-      {pastLastChallenge ? (
+      {pastLastChallenge && variant === "normal" ? (
         <div className="w-16 rounded-lg bg-gray-800 p-3 text-center">
-          {Math.floor(timeLeft / 8.64e7)}
+          {`${Math.floor(timeLeft / 8.64e7)}`.padStart(2, "0")}
           <div className="font-sans text-sm text-gray-400">days</div>
         </div>
       ) : null}
@@ -57,7 +57,7 @@ export default function Countdown({
         {`${Math.floor((timeLeft % 3.6e6) / 60_000)}`.padStart(2, "0")}
         <div className="font-sans text-sm text-gray-400">mins</div>
       </div>
-      {!pastLastChallenge ? (
+      {!pastLastChallenge || variant !== "normal" ? (
         <div className="w-16 rounded-lg bg-gray-800 p-3 text-center">
           {`${Math.floor((timeLeft % 60_000) / 1000)}`.padStart(2, "0")}
           <div className="font-sans text-sm text-gray-400">secs</div>
