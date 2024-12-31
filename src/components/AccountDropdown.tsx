@@ -18,7 +18,6 @@ export default function AccountDropdown({ session }: { session: Session }) {
   const userMeQuery = api.user.me.useQuery();
 
   if (typeof window !== "undefined" && session?.user && !posthog._isIdentified()) {
-    console.log("ran");
     posthog.identify(session.user.id, {
       email: session.user.email,
       name: session.user.name,

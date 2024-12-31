@@ -200,7 +200,18 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
     window.addEventListener("beforeunload", beforeUnloadHandler);
 
     return () => window.removeEventListener("beforeunload", beforeUnloadHandler);
-  }, [authorId, category, description, files.length, globalFlags.length, globalRegexFlags.length, hint1, hint2, row]);
+  }, [
+    authorId,
+    category,
+    description,
+    files.length,
+    globalFlags.length,
+    globalRegexFlags.length,
+    hint1,
+    hint2,
+    row,
+    open,
+  ]);
 
   return (
     <>

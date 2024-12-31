@@ -49,7 +49,12 @@ export default function RegisterForm({
   const [acceptTerms, setAcceptTerms] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  const adventRegisterMutation = api.event.adventRegister.useMutation();
+  const adventRegisterMutation = api.event.adventRegister.useMutation({
+    onError: (error) => {
+      setLoading(false);
+      setError(error.message);
+    },
+  });
   const checkAccessCodeMutation = api.event.checkAccessCode.useMutation();
 
   const isRegistered = user?.events.includes("aoc2024");
@@ -144,8 +149,6 @@ export default function RegisterForm({
                 setError("");
                 router.push("/advent");
                 toast.success("Registration complete; happy hacking!", { position: "top-center", duration: 20_000 });
-              } else {
-                setError(adventRegisterMutation.error.message);
               }
             }}
           >
