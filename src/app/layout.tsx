@@ -3,6 +3,7 @@ import "~/styles/globals.css";
 import type { Metadata } from "next";
 import { Nunito_Sans, DM_Mono } from "next/font/google";
 // import { GeistMono } from "geist/font/mono";
+import { CSPostHogProvider } from "./providers";
 import { TRPCReactProvider } from "~/trpc/react";
 import Navbar from "~/components/Navbar";
 import Footer from "~/components/Footer";
@@ -40,15 +41,17 @@ const dmMono = DM_Mono({
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${nunitoSans.variable} ${dmMono.variable}`}>
-      <body>
-        <TRPCReactProvider>
-          <NextTopLoader color="#138080" showSpinner={false} />
-          <Navbar />
-          {children}
-          <Footer />
-          <Toaster />
-        </TRPCReactProvider>
-      </body>
+      <CSPostHogProvider>
+        <body>
+          <TRPCReactProvider>
+            <NextTopLoader color="#138080" showSpinner={false} />
+            <Navbar />
+            {children}
+            <Footer />
+            <Toaster />
+          </TRPCReactProvider>
+        </body>
+      </CSPostHogProvider>
     </html>
   );
 }

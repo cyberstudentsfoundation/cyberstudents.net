@@ -57,3 +57,24 @@ export const editChallengeSchema = z.object({
 export const deleteChallengeSchema = z.object({
   id: z.string(),
 });
+
+export const verificationSubmitSchema = z.object({
+  isStudent: z.boolean(),
+  schoolName: z.string().optional(),
+  schoolYear: z.enum(
+    ["none", "hs1", "hs2", "hs3", "hs4", "college1", "college2", "college3", "college4", "college5", "other"],
+    { message: "Schooling status is invalid" },
+  ),
+  fullName: z.string(),
+  birthdate: z.date(),
+  country: z.string().refine((country) => getCodes().includes(country.toUpperCase())),
+  verificationMethod: z.enum(["verify-email", "verify-id", "verify-other"]),
+  schoolEmail: z.string().optional(),
+  idFile: z.string().optional(),
+  idFileType: z.enum(["image/jpeg", "image/png"]).optional(),
+  comments: z.string().optional(),
+});
+
+export const getVerificationSchema = z.object({
+  id: z.string(),
+});

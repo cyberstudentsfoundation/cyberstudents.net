@@ -23,6 +23,7 @@ export const env = createEnv({
     GOOGLE_CLIENT_SECRET: z.string(),
     ACCESS_CODES: z.string().optional(),
     DISCORD_WEBHOOK_URL: z.string().optional(),
+    UPLOADS_PATH: z.string(),
   },
 
   /**
@@ -31,7 +32,8 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   client: {
-    // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
+    NEXT_PUBLIC_POSTHOG_HOST: z.string().optional(),
   },
 
   /**
@@ -49,6 +51,9 @@ export const env = createEnv({
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     ACCESS_CODES: process.env.ACCESS_CODES,
     DISCORD_WEBHOOK_URL: process.env.DISCORD_WEBHOOK_URL,
+    UPLOADS_PATH: process.env.UPLOADS_PATH,
+    NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
+    NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

@@ -54,6 +54,7 @@ model User {
   events             Event[]
   challengeAttempts  ChallengeAttempt[]
   authoredChallenges Challenge[]
+  verifications      Verification[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -131,4 +132,23 @@ model ChallengeAttempt {
   pointsAdjustment Int?            @map("points_adjustment") // manual adjustments for this specific challenge & player; can be + or -
 
   @@unique([userId, challengeId])
+}
+
+model Verification {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  isStudent          Boolean  @map("is_student")
+  schoolName         String?  @map("school_name")
+  schoolYear         String?  @map("school_year")
+  fullName           String   @map("full_name")
+  birthdate          DateTime @map("birthdate")
+  country            String
+  verificationMethod String   @map("verification_method")
+  schoolEmail        String?  @map("school_email")
+  idFileName         String?  @map("id_file_name")
+  idFileType         String?  @map("id_file_type")
+  comments           String?
 }

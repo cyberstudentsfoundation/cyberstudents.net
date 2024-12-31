@@ -5,16 +5,25 @@ import { Session } from "next-auth";
 import { api } from "~/trpc/react";
 import Image from "next/image";
 import Link from "next/link";
+import posthog from "posthog-js";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
 } from "~/components/ui/dropdown-menu";
-import { HiAdjustmentsHorizontal, HiArrowRightStartOnRectangle } from "react-icons/hi2";
+import { HiAdjustmentsHorizontal, HiArrowRightStartOnRectangle, HiOutlineIdentification } from "react-icons/hi2";
 
 export default function AccountDropdown({ session }: { session: Session }) {
   const userMeQuery = api.user.me.useQuery();
+
+  if (typeof window !== "undefined" && session?.user && !posthog._isIdentified()) {
+    console.log("ran");
+    posthog.identify(session.user.id, {
+      email: session.user.email,
+      name: session.user.name,
+    });
+  }
 
   return (
     <DropdownMenu>
@@ -35,6 +44,12 @@ export default function AccountDropdown({ session }: { session: Session }) {
           <HiArrowRightStartOnRectangle />
           <span>Sign out</span>
         </DropdownMenuItem>
+        <Link href="/verification">
+          <DropdownMenuItem>
+            <HiOutlineIdentification />
+            <span>Verification</span>
+          </DropdownMenuItem>
+        </Link>
         {userMeQuery.data?.flags.includes("admin") ? (
           <Link href="/dashboard">
             <DropdownMenuItem>

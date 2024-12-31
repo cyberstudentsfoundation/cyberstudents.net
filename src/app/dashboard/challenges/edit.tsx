@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect, useId } from "react";
 import { Row } from "@tanstack/react-table";
 import dayjs from "dayjs";
 import { api } from "~/trpc/react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { toast } from "sonner";
 import { Challenge } from "./columns";
@@ -47,6 +48,10 @@ import {
 import { Prose } from "~/lib/renderMarkdoc";
 
 export default function Edit({ row, textButton }: { row?: Row<Challenge>; textButton: boolean }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const editChallengeMutation = api.dashboard.editChallenge.useMutation({
     onError: (error) => {
       toast.error(error.message);
@@ -86,6 +91,20 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
   function getDateTimeLocalValue(date: Date) {
     return new Date(date.getTime() - date.getTimezoneOffset() * 60_000).toISOString().slice(0, -1);
   }
+
+  useEffect(() => {
+    if (searchParams.get("id") === row?.original.id) {
+      setOpen(true);
+    }
+  }, [searchParams, row?.original.id]);
+
+  useEffect(() => {
+    if (open && row?.original.id) {
+      router.push(`${pathname}?id=${row.original.id}`, { scroll: false });
+    } else {
+      router.push(pathname, { scroll: false });
+    }
+  }, [router, pathname, open, row?.original.id]);
 
   useEffect(() => {
     setAuthorId(row?.original.author.id);
@@ -150,6 +169,38 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
 
     setConfirmationDialogOpen(true);
   }
+
+  useEffect(() => {
+    function beforeUnloadHandler(e: BeforeUnloadEvent) {
+      if (
+        !open ||
+        (row &&
+          titleRef.current?.value === row.original.title &&
+          pointsRef.current?.value === row.original.points.toString() &&
+          areGlobalFlagsCaseSensitiveRef.current?.dataset.state ===
+            (row.original.areGlobalFlagsCaseSensitive ? "checked" : "unchecked") &&
+          new Date(publishDateRef.current?.value ?? 0).getTime() === row.original.publishDate.getTime() &&
+          submissionsEnabledRef.current?.dataset.state ===
+            (row.original.submissionsEnabled ? "checked" : "unchecked") &&
+          authorId === row.original.author.id &&
+          category === row.original.category &&
+          description === row.original.description &&
+          hint1 === row.original.hints[0]?.content &&
+          hint2 === row.original.hints[1]?.content &&
+          files.length === row.original.files.length &&
+          globalFlags.length === row.original.globalFlags.length &&
+          globalRegexFlags.length === row.original.globalRegexFlags.length)
+      ) {
+        return;
+      }
+
+      e.preventDefault();
+    }
+
+    window.addEventListener("beforeunload", beforeUnloadHandler);
+
+    return () => window.removeEventListener("beforeunload", beforeUnloadHandler);
+  }, [authorId, category, description, files.length, globalFlags.length, globalRegexFlags.length, hint1, hint2, row]);
 
   return (
     <>

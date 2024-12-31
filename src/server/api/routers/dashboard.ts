@@ -1,6 +1,6 @@
 import { adminProcedure, createTRPCRouter } from "~/server/api/trpc";
 import { TRPCError } from "@trpc/server";
-import { deleteChallengeSchema, editChallengeSchema } from "~/lib/schemas";
+import { deleteChallengeSchema, editChallengeSchema, getVerificationSchema } from "~/lib/schemas";
 import { sendNotification } from "~/server/send-notification";
 
 export const dashboardRouter = createTRPCRouter({
@@ -108,5 +108,20 @@ export const dashboardRouter = createTRPCRouter({
     }
 
     await ctx.db.challenge.delete({ where: { id: input.id } });
+  }),
+
+  getVerifications: adminProcedure.query(async ({ ctx, input }) => {
+    const verifications = await ctx.db.verification.findMany({
+      orderBy: { createdAt: "desc" },
+      select: { id: true, user: true, userId: true, createdAt: true },
+    });
+
+    return verifications;
+  }),
+
+  getVerification: adminProcedure.input(getVerificationSchema).query(async ({ ctx, input }) => {
+    const verification = await ctx.db.verification.findUnique({ where: { id: input.id }, include: { user: true } });
+
+    return verification;
   }),
 });

@@ -193,11 +193,13 @@ export default function RegisterForm({
                     <SelectLabel className="-ml-2">
                       <hr />
                     </SelectLabel>
-                    {Object.entries(getCodeList()).map(([code, name]) => (
-                      <SelectItem key={code} value={code}>
-                        {name}
-                      </SelectItem>
-                    ))}
+                    {Object.entries(getCodeList())
+                      .sort(([, a], [, b]) => a.localeCompare(b))
+                      .map(([code, name]) => (
+                        <SelectItem key={code} value={code}>
+                          {name}
+                        </SelectItem>
+                      ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>

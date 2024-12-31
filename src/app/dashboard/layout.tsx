@@ -14,6 +14,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <Link href="/dashboard/challenges" className="text-gray-300 hover:text-cyan-300">
               Challenges
             </Link>
+            <Link href="/dashboard/verifications" className="text-gray-300 hover:text-cyan-300">
+              Verifications
+            </Link>
           </div>
           <p className="mt-4 text-sm text-gray-400">it&apos;d be a miracle if i got this done before christmas</p>
         </nav>
