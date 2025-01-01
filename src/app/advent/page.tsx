@@ -135,12 +135,16 @@ export default async function Advent() {
                 ))}
                 <div className="col-span-3 hidden flex-col items-center justify-center sm:flex sm:items-start">
                   <div className="mb-2 flex w-full flex-col items-center">
-                    <div className="mb-2 text-lg">
-                      {Date.now() < new Date("2024-12-25T20:00:00Z").getTime()
-                        ? "Next challenge in:"
-                        : "Event ends in:"}
-                    </div>
-                    <Countdown date="next-challenge" />
+                    {Date.now() < new Date("2025-01-01T04:59:00Z").getTime() ? (
+                      <>
+                        <div className="mb-2 text-lg">
+                          {Date.now() < new Date("2024-12-25T20:00:00Z").getTime()
+                            ? "Next challenge in:"
+                            : "Event ends in:"}
+                        </div>
+                        <Countdown date="next-challenge" />
+                      </>
+                    ) : null}
                   </div>
                 </div>
               </div>
