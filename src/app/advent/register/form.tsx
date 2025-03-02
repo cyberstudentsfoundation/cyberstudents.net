@@ -84,7 +84,7 @@ export default function RegisterForm({
       </h1>
       {isRegistered && (
         <>
-          <Alert className="mb-4 bg-green-600 bg-opacity-50">
+          <Alert className="mb-4 !bg-green-600 !bg-opacity-50">
             <HiCheckCircle className="h-5 w-5" />
             <AlertTitle>You are registered for CyberStudents&rsquo; Advent of CTF 2024.</AlertTitle>
             <AlertDescription>
@@ -105,6 +105,7 @@ export default function RegisterForm({
         You must register with your Discord account. Only your username and profile picture will be visible to other
         players. You&apos;ll be able to customize your preferred method of communication.
       </p>
+      <p className="mb-3.5">This event has ended.</p>
       {session?.user ? (
         <>
           <div className="mb-8 mt-4 flex items-center gap-2">
@@ -181,7 +182,7 @@ export default function RegisterForm({
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="country">Country of residence</Label>
               <Select value={country} onValueChange={(country) => setCountry(country)} disabled={isRegistered}>
-                <SelectTrigger className="bg-gray-200 text-gray-900">
+                <SelectTrigger className="!bg-gray-200 text-gray-900">
                   <SelectValue placeholder="Select a country" />
                 </SelectTrigger>
                 <SelectContent>
@@ -214,7 +215,7 @@ export default function RegisterForm({
                 onValueChange={(status) => setSchoolingStatus(status)}
                 disabled={isRegistered}
               >
-                <SelectTrigger className="bg-gray-200 text-gray-900">
+                <SelectTrigger className="!bg-gray-200 text-gray-900">
                   <SelectValue placeholder="Select your status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -276,12 +277,12 @@ export default function RegisterForm({
       ) : (
         <div>
           <Button
-            className="flex items-center bg-[#5865f2] font-bold text-gray-200 hover:bg-[#5865f2]/70"
+            className="!hover:bg-[#5865f2]/70 flex items-center !bg-[#5865f2] font-bold !text-gray-200"
             onClick={() => {
               signIn("discord", { callbackUrl: "/advent/register#registration" });
             }}
           >
-            <FaDiscord className="mr-2 h-6 w-6" />
+            <FaDiscord className="!h-6 !w-6" />
             <span>Login with Discord</span>
           </Button>
           <p className="mb-3 mt-10 text-gray-200">Or if you have an access code:</p>
@@ -314,12 +315,12 @@ export default function RegisterForm({
             </div>
           ) : (
             <Button
-              className="mt-2 flex items-center bg-gray-200 font-bold text-gray-900"
+              className="mt-2 flex items-center font-bold text-gray-900"
               onClick={() => {
                 signIn("google", { callbackUrl: "/advent/register#registration" });
               }}
             >
-              <FaGoogle className="mr-3 h-5 w-5" />
+              <FaGoogle className="!h-5 !w-5" />
               <span>Login with Google</span>
             </Button>
           )}

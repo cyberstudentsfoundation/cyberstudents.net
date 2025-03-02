@@ -82,7 +82,7 @@ export default function VerificationForm({ session }: { session: Session | null 
   return (
     <div>
       {lastVerificationDateQuery.data?.createdAt && (
-        <Alert className="mb-8 max-w-2xl bg-green-600 bg-opacity-50">
+        <Alert className="mb-8 max-w-2xl !bg-green-600 !bg-opacity-50">
           <HiCheckCircle className="h-5 w-5" />
           <AlertTitle>
             You submitted an identity verification application on{" "}
@@ -162,6 +162,7 @@ export default function VerificationForm({ session }: { session: Session | null 
             "Identity verification application submitted successfully. We will review your responses soon.",
             { position: "top-center" },
           );
+
           location.reload();
         }}
       >
@@ -205,7 +206,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                       School or university year
                     </Label>
                     <Select value={schoolYear} onValueChange={(status) => setSchoolYear(status)} required>
-                      <SelectTrigger className="bg-gray-200 text-gray-900">
+                      <SelectTrigger className="!bg-gray-200 text-gray-900">
                         <SelectValue placeholder="Select your year" />
                       </SelectTrigger>
                       <SelectContent>
@@ -253,7 +254,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                   Country of residence
                 </Label>
                 <Select value={country} onValueChange={(country) => setCountry(country)} required>
-                  <SelectTrigger className="bg-gray-200 text-gray-900">
+                  <SelectTrigger className="!bg-gray-200 text-gray-900">
                     <SelectValue placeholder="Select a country" />
                   </SelectTrigger>
                   <SelectContent>

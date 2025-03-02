@@ -20,7 +20,13 @@ export const dashboardRouter = createTRPCRouter({
 
   getChallenges: adminProcedure.query(async ({ ctx, input }) => {
     const challenges = await ctx.db.challenge.findMany({
-      include: { author: true, challengeAttempts: true, event: true, hints: true },
+      include: {
+        author: true,
+        challengeAttempts: true,
+        event: true,
+        hints: true,
+        // writeUps: { include: { author: true } },
+      },
       orderBy: { createdAt: "asc" },
     });
 

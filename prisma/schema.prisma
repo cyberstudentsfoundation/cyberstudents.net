@@ -54,6 +54,7 @@ model User {
   events             Event[]
   challengeAttempts  ChallengeAttempt[]
   authoredChallenges Challenge[]
+  authoredWriteUps   WriteUp[]
   verifications      Verification[]
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -61,10 +62,11 @@ model User {
 }
 
 model Event {
-  name         String   @id // e.g., round1, aoc2024, csdctf2025
-  eventStart   DateTime @map("event_start")
-  eventEnd     DateTime @map("event_end")
-  announcement String   @default("")
+  name                          String   @id // e.g., round1, aoc2024, csdctf2025
+  eventStart                    DateTime @map("event_start")
+  eventEnd                      DateTime @map("event_end")
+  announcement                  String   @default("")
+  challengesPublicAfterEventEnd Boolean  @default(true) @map("challenges_public_after_event_end")
 
   users      User[]
   challenges Challenge[]
@@ -98,6 +100,7 @@ model Challenge {
   flagSecret                  String?         @map("flag_secret") // a secret that is used to generate the flag
 
   challengeAttempts ChallengeAttempt[]
+  writeUps          WriteUp[]
 }
 
 model ChallengeHint {
@@ -132,6 +135,26 @@ model ChallengeAttempt {
   pointsAdjustment Int?            @map("points_adjustment") // manual adjustments for this specific challenge & player; can be + or -
 
   @@unique([userId, challengeId])
+}
+
+model WriteUp {
+  id          String     @id @default(cuid())
+  author      User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId    String     @map("user_id")
+  challenge   Challenge? @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  challengeId String?    @map("challenge_id")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  published   Boolean
+
+  authorPreferredName String? @map("author_preferred_name")
+  authorMetadata      Json    @default("{}") @map("author_metadata") // { github?: string, linkedin?: string  }
+  title               String
+  content             String
+  originalURL         String? @map("original_url")
+
+  contentCreatedAt DateTime @default(now()) @map("content_created_at")
+  contentUpdatedAt DateTime @map("content_updated_at")
 }
 
 model Verification {

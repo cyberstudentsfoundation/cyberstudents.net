@@ -52,7 +52,7 @@ export function DataTable<TData, TValue>({
             placeholder="Filter by name"
             value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
             onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
-            className="max-w-sm bg-gray-950"
+            className="max-w-sm border-gray-800 bg-gray-950"
           />
         </div>
         {session?.user && (

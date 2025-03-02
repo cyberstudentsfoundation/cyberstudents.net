@@ -7,12 +7,14 @@ import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
 export default async function Register() {
   const session = await getServerAuthSession();
 
-  if (!session?.user) redirect("/advent/register?showError=true");
+  // Uncomment for next event
 
-  const { events } = await api.user.me();
-  if (!events.includes("aoc2024")) redirect("/advent/register?showError=true");
+  // if (!session?.user) redirect("/advent/register?showError=true");
 
-  const eventChallenges = await api.challenge.fetch({ event: "aoc2024", fetchExtended: !!session?.user });
+  // const { events } = await api.user.me();
+  // if (!events.includes("aoc2024")) redirect("/advent/register?showError=true");
+
+  const eventChallenges = await api.challenge.fetch({ event: "aoc2024", fetchExtended: true }); // change back to !!session?.user for next event
 
   let user = null;
   if (session?.user) {

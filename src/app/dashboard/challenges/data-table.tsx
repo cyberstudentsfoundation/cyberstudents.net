@@ -53,7 +53,7 @@ export function DataTable<TData, TValue>({
             placeholder="Filter by title"
             value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
             onChange={(event) => table.getColumn("title")?.setFilterValue(event.target.value)}
-            className="max-w-sm bg-gray-950"
+            className="max-w-sm border-gray-800 bg-gray-950"
           />
           <Edit textButton={true} />
         </div>

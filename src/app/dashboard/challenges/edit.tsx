@@ -283,7 +283,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
           </Button>
         </SheetTrigger>
         <SheetContent
-          className="flex flex-col gap-0 bg-gray-900 !px-0 text-gray-200 sm:max-w-screen-md"
+          className="flex flex-col gap-0 !bg-gray-900 !px-0 text-gray-200 sm:max-w-screen-md"
           onInteractOutside={processSheetClose}
           onEscapeKeyDown={processSheetClose}
           onPointerDownOutside={processSheetClose}
@@ -347,7 +347,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                   <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label>Author</Label>
                     <Select value={authorId} onValueChange={(id) => setAuthorId(id)} required>
-                      <SelectTrigger className="bg-gray-200 text-gray-900">
+                      <SelectTrigger className="!bg-gray-200 text-gray-900">
                         <SelectValue placeholder="Select an author" />
                       </SelectTrigger>
                       <SelectContent>
@@ -381,7 +381,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                   <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label>Category</Label>
                     <Select value={category} onValueChange={(c) => setCategory(c)} required>
-                      <SelectTrigger className="bg-gray-200 text-gray-900">
+                      <SelectTrigger className="!bg-gray-200 text-gray-900">
                         <SelectValue placeholder="Select a category" />
                       </SelectTrigger>
                       <SelectContent>

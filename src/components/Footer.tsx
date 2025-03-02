@@ -1,29 +1,23 @@
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
+import { HiExternalLink } from "react-icons/hi";
 import { FaDiscord } from "react-icons/fa6";
 import { Button } from "~/components/ui/button";
 import logo from "../../public/logo.gif";
 
-import pfp_alcyone from "../../public/staff-pfps/alcyone.png";
 import pfp_alex from "../../public/staff-pfps/alex.png";
 import pfp_ambush from "../../public/staff-pfps/ambush.png";
 import pfp_godder from "../../public/staff-pfps/godder.png";
-import pfp_goose from "../../public/staff-pfps/goose.png";
-import pfp_ibm from "../../public/staff-pfps/ibm.png";
 import pfp_kolmus from "../../public/staff-pfps/kolmus.png";
 import pfp_kshau from "../../public/staff-pfps/kshau.png";
 import pfp_kushi from "../../public/staff-pfps/kushi.png";
-import pfp_lacklust3r from "../../public/staff-pfps/lacklust3r.png";
 import pfp_logix from "../../public/staff-pfps/logix.png";
 import pfp_lordskeletonman from "../../public/staff-pfps/lordskeletonman.png";
-import pfp_nodachi from "../../public/staff-pfps/nodachi.png";
-import pfp_null from "../../public/staff-pfps/null.png";
 import pfp_vipin from "../../public/staff-pfps/vipin.png";
 
 const STAFF: { name: string; position: string; pfp: StaticImageData; link?: string }[] = [
   { name: "Vipin", position: "Owner", pfp: pfp_vipin, link: "https://www.vipin.xyz/" },
   { name: "GodderE2D", position: "Head Administrator", pfp: pfp_godder, link: "https://godder.xyz/" },
-  { name: "Alcyone", position: "Administrator", pfp: pfp_alcyone },
   { name: "Logix", position: "Administrator", pfp: pfp_logix },
   { name: "Kolmus", position: "Challenge Developer", pfp: pfp_kolmus },
   { name: "Shau", position: "Challenge Developer", pfp: pfp_kshau },
@@ -33,9 +27,18 @@ const STAFF: { name: string; position: string; pfp: StaticImageData; link?: stri
   { name: "Kushi", position: "Community Manager", pfp: pfp_kushi },
 ] as const;
 
+const LINKS: { name: string; href: string; external: boolean }[] = [
+  { name: "Advent of CTF", href: "/advent", external: false },
+  { name: "CTF Archive", href: "https://github.com/cyberstudentsacademy/csd-ctf", external: true },
+  { name: "GitHub", href: "https://github.com/cyberstudentsacademy/cyberstudents-ctf", external: true },
+  { name: "Server Rules", href: "/server-rules", external: false },
+  { name: "Terms of Service", href: "/terms", external: false },
+  { name: "Privacy Policy", href: "/privacy", external: false },
+] as const;
+
 export default function Footer() {
   return (
-    <footer className="mx-4 mt-24 flex justify-center py-12">
+    <footer className="mx-4 mb-12 mt-24 flex justify-center py-12 sm:mx-8">
       <div className="flex w-full max-w-screen-2xl flex-col justify-between gap-10 sm:flex-row sm:gap-5">
         <div className="w-full max-w-prose text-sm text-gray-200">
           <Image src={logo} alt="CyberStudents Logo" className="mb-4 h-20 w-20 rounded-2xl" />
@@ -46,23 +49,59 @@ export default function Footer() {
           </p>
           <p className="mb-1">Contact:</p>
           <ul className="mb-4 ml-4 list-disc">
-            <li>vipin [at] vipin [dot] xyz</li>
-            <li>goddere2d [at] bsr [dot] gg</li>
+            <li>
+              <a href="mailto:admin@cyberstudents.net" className="underline transition-colors hover:text-cyan-300">
+                admin@cyberstudents.net
+              </a>
+            </li>
+            <li>
+              <a href="mailto:vipin@vipin.xyz" className="underline transition-colors hover:text-cyan-300">
+                vipin@vipin.xyz
+              </a>
+            </li>
+            <li>
+              <a href="mailto:goddere2d@bsr.gg" className="underline transition-colors hover:text-cyan-300">
+                goddere2d@bsr.gg
+              </a>
+            </li>
           </ul>
+          {/* should've used https://getfullyear.com/ */}
+          <p className="mb-2">
+            &copy; 2021&ndash;{new Date().getFullYear()} CyberStudents. CyberStudents is not endorsed nor affiliated
+            with Discord Inc., CyberStart Ltd., or Helical Levity Ltd.
+          </p>
+          <p className="mb-3.5 text-gray-400">Site design by GodderE2D</p>
           <div className="w-fit">
             <a href="https://discord.com/invite/cyberstudents-916144903686336513" target="_blank">
               <Button
                 tabIndex={-1}
-                className="flex items-center bg-[#5865f2] font-bold text-gray-200 hover:bg-[#5865f2]/70"
+                className="flex items-center !bg-[#5865f2] font-bold !text-gray-200 hover:!bg-[#5865f2]/70"
               >
-                <FaDiscord className="mr-2 h-6 w-6" />
+                <FaDiscord className="!h-6 !w-6" />
                 <span>Discord</span>
               </Button>
             </a>
           </div>
         </div>
-        <div className="w-full max-w-2xl">
-          <h2 className="mb-4 font-bold">Thank you to our wonderful staff 🩵</h2>
+        <div>
+          <h2 className="mb-4 font-semibold">Links</h2>
+          <ul className="space-y-1.5">
+            {LINKS.map(({ name, href, external }) => (
+              <li key={name}>
+                <Link
+                  href={href}
+                  target={external ? "_blank" : undefined}
+                  className="flex items-center gap-1 transition-colors hover:text-cyan-300"
+                >
+                  {name}
+                  {external && <HiExternalLink className="h-4 w-4" />}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="w-full max-w-md">
+          <h2 className="mb-4 font-semibold">Thank you to our wonderful staff 🩵</h2>
           <ul className="grid grid-flow-col grid-rows-5 gap-3">
             {STAFF.map(({ name, pfp, position, link }) => (
               <li key={name}>
@@ -70,7 +109,7 @@ export default function Footer() {
                   href={link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`flex w-fit items-center gap-2 ${link ? "hover:underline" : ""}`}
+                  className="group flex w-fit items-center gap-2"
                 >
                   <Image
                     src={pfp}
@@ -80,7 +119,9 @@ export default function Footer() {
                   />
                   <div>
                     <div>
-                      <strong className="font-semibold text-gray-200">{name}</strong>
+                      <strong className={`font-semibold text-gray-200 ${link ? "group-hover:underline" : ""}`}>
+                        {name}
+                      </strong>
                     </div>
                     <div className="text-xs text-gray-300">{position}</div>
                   </div>

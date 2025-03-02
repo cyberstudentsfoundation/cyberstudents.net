@@ -4,15 +4,7 @@ import { challengeFetchPreviewSchema, challengeFetchSchema, submitFlagSchema } f
 import { sendNotification } from "~/server/send-notification";
 
 export const challengeRouter = createTRPCRouter({
-  fetch: protectedProcedure.input(challengeFetchSchema).query(async ({ ctx, input }) => {
-    // fetchExtended will return user-dependent data like files, leaderboard, etc.
-    if (!ctx.session?.user && input.fetchExtended) {
-      throw new TRPCError({
-        message: "The fetchExtended option is only available to registered users of the event.",
-        code: "FORBIDDEN",
-      });
-    }
-
+  fetch: publicProcedure.input(challengeFetchSchema).query(async ({ ctx, input }) => {
     // hardcode check for now
     if (input.event !== "aoc2024") {
       throw new TRPCError({ message: "Event not found.", code: "NOT_FOUND" });
@@ -22,10 +14,12 @@ export const challengeRouter = createTRPCRouter({
       ? await ctx.db.user.findUnique({ where: { id: ctx.session.user.id }, include: { events: true } })
       : null;
 
-    if (!user?.events.some((event) => event.name === "aoc2024")) {
-      user = null;
-      input.fetchExtended = false;
-    }
+    // Add back during next event
+
+    // if (!user?.events.some((event) => event.name === "aoc2024")) {
+    //   user = null;
+    //   input.fetchExtended = false;
+    // }
 
     const event = await ctx.db.event.findUnique({
       where: { name: input.event },
@@ -43,6 +37,18 @@ export const challengeRouter = createTRPCRouter({
     });
 
     if (!event) throw new TRPCError({ message: "Event not found.", code: "NOT_FOUND" });
+
+    // fetchExtended will return user-dependent data like files, leaderboard, etc.
+    if (
+      !ctx.session?.user &&
+      input.fetchExtended &&
+      !(event.challengesPublicAfterEventEnd && event.eventEnd.getTime() < Date.now())
+    ) {
+      throw new TRPCError({
+        message: "The fetchExtended option is only available to registered users of the event.",
+        code: "FORBIDDEN",
+      });
+    }
 
     const allChallengeAttempts = await ctx.db.challenge.findMany({
       where: { eventName: input.event },
@@ -73,7 +79,7 @@ export const challengeRouter = createTRPCRouter({
         },
 
         challengeAttempt:
-          input.fetchExtended && challenge.challengeAttempts[0]
+          input.fetchExtended && challenge.challengeAttempts?.[0]
             ? {
                 id: challenge.challengeAttempts[0].id,
                 createdAt: challenge.challengeAttempts[0].createdAt,

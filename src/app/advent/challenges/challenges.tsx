@@ -104,7 +104,7 @@ export default function Challenges({
           <HiChevronLeft className="mb-0.5 h-4 w-4" />
           <span>Back to calendar</span>
         </Link>
-        {getLeaderboardQuery.data && (
+        {session?.user && getLeaderboardQuery.data && (
           <div className="">
             <span>{getLeaderboardQuery.data.userPoints ?? 0} points</span>{" "}
             {getLeaderboardQuery.data.userMsHsCollegePlace ? (
@@ -193,7 +193,7 @@ export default function Challenges({
                           >
                             <span>{challenge.title ?? "???"}</span>
                             {challenge.challengeAttempt?.solvedAt && (
-                              <Badge className="bg-green-400 text-sm hover:bg-green-500">Solved</Badge>
+                              <Badge className="!bg-green-400 text-sm hover:!bg-green-500">Solved</Badge>
                             )}
                           </h1>
                           <div className="grid w-fit grid-flow-col grid-rows-3 items-center gap-x-20">
@@ -280,6 +280,13 @@ export default function Challenges({
                                 </a>
                               ))}
                             </div>
+                            <h2 className="mb-2 mt-4 text-xl font-bold text-gray-400">Write-ups</h2>
+                            <p className="text-gray-300">
+                              {/* <strong>zarnex__</strong>&apos;s write-up was selected as the best write-up submitted for
+                              this challenge. */}
+                              No write-ups were submitted for this challenge. An official answer by the challenge author
+                              has been provided.
+                            </p>
                           </div>
                           <div className="flex-grow-0 basis-1/3">
                             <h2 className="mb-1 text-xl font-bold text-gray-400">Hint</h2>
@@ -288,7 +295,7 @@ export default function Challenges({
                               the challenge releases.
                             </p>
                             <Tabs key={challenge.id}>
-                              <TabsList className="bg-gray-900">
+                              <TabsList className="!bg-gray-900">
                                 <TabsTrigger value="1" className="hover:bg-gray-800">
                                   1
                                 </TabsTrigger>
@@ -387,7 +394,11 @@ export default function Challenges({
                             }
                             className="border-0 bg-gray-700 font-mono text-gray-200"
                           />
-                          <Button type="submit" className="min-w-20 bg-gray-200 text-gray-800 hover:bg-gray-200/80">
+                          <Button
+                            type="submit"
+                            disabled={!challenge.submissionsEnabled || !session?.user}
+                            className="min-w-20 bg-gray-200 text-gray-800 hover:bg-gray-200/80"
+                          >
                             {challenge.challengeAttempt?.solvedAt ? "Check" : "Submit"}
                           </Button>
                         </form>

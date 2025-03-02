@@ -1,7 +1,7 @@
 import "~/styles/globals.css";
 
 import type { Metadata } from "next";
-import { Nunito_Sans, DM_Mono } from "next/font/google";
+import { Figtree, DM_Serif_Text, DM_Mono } from "next/font/google";
 // import { GeistMono } from "geist/font/mono";
 import { CSPostHogProvider } from "./providers";
 import { TRPCReactProvider } from "~/trpc/react";
@@ -25,10 +25,25 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
 };
 
-const nunitoSans = Nunito_Sans({
+// const nunitoSans = Libre_Franklin({
+//   subsets: ["latin"],
+//   // weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+//   display: "swap",
+//   variable: "--font-nunito-sans",
+// });
+
+const figtree = Figtree({
   subsets: ["latin"],
+  // weight: ["100", "300", "400", "700", "900"],
   display: "swap",
-  variable: "--font-nunito-sans",
+  variable: "--font-figtree",
+});
+
+const dmSerifText = DM_Serif_Text({
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+  variable: "--font-dm-serif-text",
 });
 
 const dmMono = DM_Mono({
@@ -40,7 +55,10 @@ const dmMono = DM_Mono({
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${nunitoSans.variable} ${dmMono.variable}`}>
+    <html
+      lang="en"
+      className={`${figtree.className} ${figtree.variable} ${dmSerifText.variable} ${dmMono.variable} scroll-smooth`}
+    >
       <CSPostHogProvider>
         <body>
           <TRPCReactProvider>

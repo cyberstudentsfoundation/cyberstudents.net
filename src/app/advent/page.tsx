@@ -46,7 +46,7 @@ export default async function Advent() {
                 </li>
                 <li className="mb-1.5 flex items-center gap-1.5">
                   <HiOutlineLifebuoy className="h-6 w-6 shrink-0" />
-                  <span>Hints release for each challenge after 12 and 24 hours; help allowed*</span>
+                  <span>Hints release for each challenge after 12 and 24 hours; help allowed</span>
                 </li>
               </ul>
               {/* <p className="mb-8 text-sm text-gray-400">
@@ -80,12 +80,10 @@ export default async function Advent() {
               </div>
               <div className="flex flex-col items-center justify-between gap-4 sm:flex-row sm:gap-0 xl:justify-normal xl:gap-24">
                 <div className="flex flex-col items-center sm:items-start">
-                  <Link href="/advent/register">
-                    <Button size="lg" className="text-lg" tabIndex={-1}>
-                      {user?.events.includes("aoc2024") ? "View my registration" : "Register"}
-                    </Button>
-                  </Link>
-                  <div className="mt-2 text-sm text-gray-400">Register anytime from now until Dec 31st.</div>
+                  <Button size="lg" className="text-lg" asChild>
+                    <Link href="/advent/2024">See results &amp; stats</Link>
+                  </Button>
+                  <div className="mt-2 text-sm text-gray-400">This event ended on December 31, 2024.</div>
                 </div>
                 <div className="flex items-center gap-4">
                   <p className="text-gray-400">Sponsored by</p>
@@ -154,10 +152,16 @@ export default async function Advent() {
             </div>
             <div className="col-span-3 flex flex-col items-center justify-center sm:hidden sm:items-start">
               <div className="mb-2 flex w-full flex-col items-center">
-                <div className="mb-2 text-lg">
-                  {Date.now() < new Date("2024-12-25T20:00:00Z").getTime() ? "Next challenge in:" : "Event ends in:"}
-                </div>
-                <Countdown date="next-challenge" />
+                {Date.now() < new Date("2025-01-01T04:59:00Z").getTime() ? (
+                  <>
+                    <div className="mb-2 text-lg">
+                      {Date.now() < new Date("2024-12-25T20:00:00Z").getTime()
+                        ? "Next challenge in:"
+                        : "Event ends in:"}
+                    </div>
+                    <Countdown date="next-challenge" />
+                  </>
+                ) : null}
               </div>
             </div>
           </div>

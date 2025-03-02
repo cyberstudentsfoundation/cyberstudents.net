@@ -59,7 +59,7 @@ export default async function Register() {
                 </p>
                 <p></p>
                 <h2>Prizes</h2>
-                <Alert className="my-2 bg-yellow-600 bg-opacity-50 text-gray-100">
+                <Alert className="my-2 !bg-yellow-600 !bg-opacity-50 !text-gray-100">
                   <HiExclamationCircle className="h-5 w-5" />
                   <AlertTitle>Middle school was removed from the MS/HS/College division</AlertTitle>
                   <AlertDescription className="mt-2 text-gray-300">

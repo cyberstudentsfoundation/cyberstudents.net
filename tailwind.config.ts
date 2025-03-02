@@ -64,7 +64,8 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["var(--font-nunito-sans)", ...fontFamily.sans],
+        sans: ["var(--font-figtree)", ...fontFamily.sans],
+        serif: ["var(--font-dm-serif-text)", ...fontFamily.serif],
         mono: ["var(--font-dm-mono)", ...fontFamily.mono],
       },
       keyframes: {
@@ -76,14 +77,29 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        float1: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-8px)" },
+        },
+        float2: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(8px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        float1: "float1 4s ease-in-out infinite",
+        float2: "float2 4s ease-in-out infinite",
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("tailwindcss-motion"),
+    require("tailwindcss-intersect"),
+    require("@tailwindcss/typography"),
+  ],
 } satisfies Config;
 
 export default config;

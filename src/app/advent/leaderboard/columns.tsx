@@ -74,8 +74,9 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
 
       return (
         <span>
-          <span>{dayjs(lastSolve.getTime()).format("M/DD h:mm a")}</span>{" "}
-          <span className="text-gray-400">({dayjs().to(lastSolve.getTime())})</span>
+          <span>{dayjs(lastSolve.getTime()).format("M/DD h:mm a")}</span>
+          {/* Add back for next event */}
+          {/* <span className="text-gray-400">({dayjs().to(lastSolve.getTime())})</span> */}
         </span>
       );
     },

@@ -90,7 +90,7 @@ export default function Edit({ row }: { row: Row<VerificationPreview> }) {
             <HiDocumentArrowDown className="h-5 w-5" />
           </Button>
         </SheetTrigger>
-        <SheetContent className="flex flex-col gap-0 bg-gray-900 !px-0 text-gray-200 sm:max-w-screen-md">
+        <SheetContent className="flex flex-col gap-0 !bg-gray-900 !px-0 text-gray-200 sm:max-w-screen-md">
           <ScrollArea className="pr-6">
             <SheetHeader className="pl-6">
               <SheetTitle className="text-gray-200">View identity verification application</SheetTitle>
