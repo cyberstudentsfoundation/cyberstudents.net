@@ -11,8 +11,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <Link href="/dashboard" className="text-gray-300 hover:text-cyan-300">
               Dashboard
             </Link>
+            <Link href="/dashboard/users" className="text-gray-300 hover:text-cyan-300">
+              Users
+            </Link>
             <Link href="/dashboard/challenges" className="text-gray-300 hover:text-cyan-300">
               Challenges
+            </Link>
+            <Link href="/dashboard/write-ups" className="text-gray-300 hover:text-cyan-300">
+              Write-ups
             </Link>
             <Link href="/dashboard/verifications" className="text-gray-300 hover:text-cyan-300">
               Verifications

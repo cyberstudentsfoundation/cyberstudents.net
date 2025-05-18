@@ -59,7 +59,7 @@ export default async function Register() {
                 </p>
                 <p></p>
                 <h2>Prizes</h2>
-                <Alert className="my-2 !bg-yellow-600 !bg-opacity-50 !text-gray-100">
+                <Alert className="my-2 !bg-yellow-600 !bg-opacity-50 !text-gray-100 dark:bg-yellow-600">
                   <HiExclamationCircle className="h-5 w-5" />
                   <AlertTitle>Middle school was removed from the MS/HS/College division</AlertTitle>
                   <AlertDescription className="mt-2 text-gray-300">
@@ -179,7 +179,7 @@ export default async function Register() {
                   <li>Do not perform attacks on or sabotage other players.</li>
                   <li>Do not attempt to circumvent sandboxes for each challenge.</li>
                   <li>
-                    Each person can only have register with one account. Challenge developers and administrators cannot
+                    Each person can only register with one account. Challenge developers and administrators cannot
                     participate in the event.
                   </li>
                   <li>

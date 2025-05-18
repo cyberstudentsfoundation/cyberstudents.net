@@ -7,7 +7,7 @@ import { Button } from "~/components/ui/button";
 import { HiPause, HiPlay } from "react-icons/hi2";
 import cyberstartArchive from "~/../public/cyberstart-archive.png";
 
-function useOnScreen(ref: RefObject<HTMLElement>) {
+function useOnScreen(ref: RefObject<HTMLElement | null>) {
   const [isIntersecting, setIntersecting] = useState(false);
 
   const observer = useMemo(() => {

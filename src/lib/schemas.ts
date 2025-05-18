@@ -58,6 +58,23 @@ export const deleteChallengeSchema = z.object({
   id: z.string(),
 });
 
+export const deleteWriteUpSchema = z.object({
+  id: z.string(),
+});
+
+export const editWriteUpSchema = z.object({
+  id: z.string().optional(), // if optional, it's a new write-up
+  challengeId: z.string(),
+  publishDate: z.date(),
+  authorPreferredName: z.string(),
+  authorMetadata: z.object({ github: z.string().optional(), linkedin: z.string().optional() }),
+  title: z.string(),
+  content: z.string(),
+  originalURL: z.string().optional(),
+  contentCreatedAt: z.date(),
+  contentUpdatedAt: z.date(),
+});
+
 export const verificationSubmitSchema = z.object({
   isStudent: z.boolean(),
   schoolName: z.string().optional(),
@@ -76,5 +93,23 @@ export const verificationSubmitSchema = z.object({
 });
 
 export const getVerificationSchema = z.object({
+  id: z.string(),
+});
+
+export const editUserSchema = z.object({
+  id: z.string().optional(), // if optional, it's a new unlinked user
+  name: z.string(),
+  email: z.string(), // intentionally does not verify email format
+  emailVerified: z.date().optional(),
+  image: z.string().optional(),
+  preferredEmail: z.string().optional(), // ditto
+  flags: z.array(z.string()),
+  note: z.string(),
+  events: z.array(z.string()),
+  sessions: z.array(z.string()),
+  accounts: z.array(z.object({ provider: z.string(), providerAccountId: z.string() })),
+});
+
+export const deleteUserSchema = z.object({
   id: z.string(),
 });

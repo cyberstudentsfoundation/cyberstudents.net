@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { notFound, redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
 import VerificationForm from "./form";

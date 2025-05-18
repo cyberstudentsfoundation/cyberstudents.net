@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
   if (!session?.user) return new Response("Unauthorized", { status: 401 });
 
   const user = await db.user.findUnique({ where: { id: session.user.id }, select: { id: true, flags: true } });
-  if (!user) return new Response("User not found.", { status: 500 });
+  if (!user) return new Response("User not found", { status: 500 });
 
   if (!user.flags.includes("admin")) return new Response("Unauthorized", { status: 401 });
 

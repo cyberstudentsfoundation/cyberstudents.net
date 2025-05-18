@@ -1,6 +1,14 @@
 import { adminProcedure, createTRPCRouter } from "~/server/api/trpc";
 import { TRPCError } from "@trpc/server";
-import { deleteChallengeSchema, editChallengeSchema, getVerificationSchema } from "~/lib/schemas";
+import {
+  deleteChallengeSchema,
+  deleteUserSchema,
+  deleteWriteUpSchema,
+  editChallengeSchema,
+  editUserSchema,
+  editWriteUpSchema,
+  getVerificationSchema,
+} from "~/lib/schemas";
 import { sendNotification } from "~/server/send-notification";
 
 export const dashboardRouter = createTRPCRouter({
@@ -116,6 +124,64 @@ export const dashboardRouter = createTRPCRouter({
     await ctx.db.challenge.delete({ where: { id: input.id } });
   }),
 
+  getWriteUps: adminProcedure.query(async ({ ctx, input }) => {
+    const writeUps = await ctx.db.writeUp.findMany({
+      include: { challenge: { include: { author: true } } },
+      orderBy: { challenge: { publishDate: "desc" } },
+    });
+
+    return writeUps;
+  }),
+
+  // export const editWriteUpSchema = z.object({
+  //   id: z.string().optional(), // if optional, it's a new write-up
+  //   authorId: z.string(),
+  //   challengeId: z.string(),
+  //   publishDate: z.date(),
+  //   authorPreferredName: z.string().optional(),
+  //   authorMetadata: z.object({ github: z.string().optional(), linkedin: z.string().optional() }),
+  //   title: z.string(),
+  //   content: z.string(),
+  //   originalURL: z.string().optional(),
+  // });
+
+  editWriteUp: adminProcedure.input(editWriteUpSchema).mutation(async ({ ctx, input }) => {
+    const data = {
+      challengeId: input.challengeId,
+      publishDate: input.publishDate,
+      authorPreferredName: input.authorPreferredName,
+      authorMetadata: input.authorMetadata,
+      title: input.title,
+      content: input.content,
+      originalURL: input.originalURL,
+      contentCreatedAt: input.contentCreatedAt,
+      contentUpdatedAt: input.contentUpdatedAt,
+    };
+
+    // Prevent custom ids from being used
+    if (input.id) {
+      const writeUp = await ctx.db.writeUp.findUnique({ where: { id: input.id } });
+
+      if (!writeUp) {
+        throw new TRPCError({ message: "Write-up not found", code: "NOT_FOUND" });
+      }
+
+      await ctx.db.writeUp.update({ where: { id: input.id }, data });
+    } else {
+      await ctx.db.writeUp.create({ data });
+    }
+  }),
+
+  deleteWriteUp: adminProcedure.input(deleteWriteUpSchema).mutation(async ({ ctx, input }) => {
+    const writeUp = await ctx.db.writeUp.findUnique({ where: { id: input.id } });
+
+    if (!writeUp) {
+      throw new TRPCError({ message: "Write-up not found", code: "NOT_FOUND" });
+    }
+
+    await ctx.db.writeUp.delete({ where: { id: input.id } });
+  }),
+
   getVerifications: adminProcedure.query(async ({ ctx, input }) => {
     const verifications = await ctx.db.verification.findMany({
       orderBy: { createdAt: "desc" },
@@ -129,5 +195,75 @@ export const dashboardRouter = createTRPCRouter({
     const verification = await ctx.db.verification.findUnique({ where: { id: input.id }, include: { user: true } });
 
     return verification;
+  }),
+
+  getUsers: adminProcedure.query(async ({ ctx, input }) => {
+    const users = await ctx.db.user.findMany({
+      include: {
+        accounts: true,
+        events: true,
+        sessions: true,
+      },
+    });
+
+    return users;
+  }),
+
+  editUser: adminProcedure.input(editUserSchema).mutation(async ({ ctx, input }) => {
+    const data = {
+      name: input.name,
+      email: input.email,
+      emailVerified: input.emailVerified,
+      image: input.image,
+      preferredEmail: input.preferredEmail,
+      flags: { set: input.flags },
+      note: input.note,
+      events: { set: input.events.map((eventName) => ({ name: eventName })) },
+      accounts: {
+        set: input.accounts.map((account) => ({
+          provider_providerAccountId: {
+            provider: account.provider,
+            providerAccountId: account.providerAccountId,
+          },
+        })),
+      },
+      sessions: { set: input.sessions.map((token) => ({ sessionToken: token })) },
+    };
+
+    // Prevent custom ids from being used
+    if (input.id) {
+      const user = await ctx.db.user.findUnique({ where: { id: input.id } });
+
+      if (!user) {
+        throw new TRPCError({ message: "User not found", code: "NOT_FOUND" });
+      }
+
+      await ctx.db.user.update({ where: { id: input.id }, data });
+
+      sendNotification(`User **${user.name}** (\`${user.email}\`; \`${user.id}\`) updated by admin through dashboard.`);
+    } else {
+      const user = await ctx.db.user.create({
+        data: {
+          ...data,
+          events: {
+            connect: input.events.map((eventName) => ({ name: eventName })),
+          },
+          accounts: {},
+          sessions: {},
+        },
+      });
+
+      sendNotification(`User **${user.name}** (\`${user.email}\`; \`${user.id}\`) created by admin through dashboard.`);
+    }
+  }),
+
+  deleteUser: adminProcedure.input(deleteUserSchema).mutation(async ({ ctx, input }) => {
+    const user = await ctx.db.user.findUnique({ where: { id: input.id } });
+
+    if (!user) {
+      throw new TRPCError({ message: "User not found", code: "NOT_FOUND" });
+    }
+
+    await ctx.db.user.delete({ where: { id: input.id } });
   }),
 });

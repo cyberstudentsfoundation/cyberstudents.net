@@ -1,13 +1,7 @@
 import React from "react";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "nextjs-toploader/app";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
-import { inferRouterOutputs } from "@trpc/server";
-import type { AppRouter } from "~/server/api/root";
-import type { Session } from "next-auth";
 import Link from "next/link";
-import Image from "next/image";
 import { HiChevronLeft } from "react-icons/hi2";
 import Leaderboard from "./leaderboard";
 

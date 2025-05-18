@@ -6,6 +6,7 @@ import { Button } from "~/components/ui/button";
 import logo from "../../public/logo.gif";
 
 import pfp_alex from "../../public/staff-pfps/alex.png";
+import pfp_amir from "../../public/staff-pfps/amir.png";
 import pfp_ambush from "../../public/staff-pfps/ambush.png";
 import pfp_godder from "../../public/staff-pfps/godder.png";
 import pfp_kolmus from "../../public/staff-pfps/kolmus.png";
@@ -16,21 +17,20 @@ import pfp_lordskeletonman from "../../public/staff-pfps/lordskeletonman.png";
 import pfp_vipin from "../../public/staff-pfps/vipin.png";
 
 const STAFF: { name: string; position: string; pfp: StaticImageData; link?: string }[] = [
-  { name: "Vipin", position: "Owner", pfp: pfp_vipin, link: "https://www.vipin.xyz/" },
-  { name: "GodderE2D", position: "Head Administrator", pfp: pfp_godder, link: "https://godder.xyz/" },
-  { name: "Logix", position: "Administrator", pfp: pfp_logix },
+  { name: "Vipin", position: "CyberStudents Foundation Co-Founder", pfp: pfp_vipin, link: "https://www.vipin.xyz/" },
+  { name: "GodderE2D", position: "CyberStudents Foundation Co-Founder", pfp: pfp_godder, link: "https://godder.xyz/" },
   { name: "Kolmus", position: "Challenge Developer", pfp: pfp_kolmus },
-  { name: "Shau", position: "Challenge Developer", pfp: pfp_kshau },
   { name: "Alex Volkov", position: "Server Moderator", pfp: pfp_alex },
   { name: "AmbushDeKewl", position: "Server Moderator", pfp: pfp_ambush },
   { name: "Lord SkeletonMan", position: "Server Moderator", pfp: pfp_lordskeletonman },
-  { name: "Kushi", position: "Community Manager", pfp: pfp_kushi },
+  // { name: "Kushi", position: "Community Manager", pfp: pfp_kushi },
+  // { name: "Amir", position: "Community Manager", pfp: pfp_amir },
 ] as const;
 
 const LINKS: { name: string; href: string; external: boolean }[] = [
   { name: "Advent of CTF", href: "/advent", external: false },
   { name: "CTF Archive", href: "https://github.com/cyberstudentsacademy/csd-ctf", external: true },
-  { name: "GitHub", href: "https://github.com/cyberstudentsacademy/cyberstudents-ctf", external: true },
+  { name: "GitHub", href: "https://github.com/cyberstudentsacademy", external: true },
   { name: "Server Rules", href: "/server-rules", external: false },
   { name: "Terms of Service", href: "/terms", external: false },
   { name: "Privacy Policy", href: "/privacy", external: false },
@@ -47,24 +47,16 @@ export default function Footer() {
             more. Play in our beginner-focused daily cyber CTF challenges and events throughout the year. Join thousands
             of other students in our community today.
           </p>
-          <p className="mb-1">Contact:</p>
-          <ul className="mb-4 ml-4 list-disc">
-            <li>
-              <a href="mailto:admin@cyberstudents.net" className="underline transition-colors hover:text-cyan-300">
-                admin@cyberstudents.net
-              </a>
-            </li>
-            <li>
-              <a href="mailto:vipin@vipin.xyz" className="underline transition-colors hover:text-cyan-300">
-                vipin@vipin.xyz
-              </a>
-            </li>
-            <li>
-              <a href="mailto:goddere2d@bsr.gg" className="underline transition-colors hover:text-cyan-300">
-                goddere2d@bsr.gg
-              </a>
-            </li>
-          </ul>
+          <p className="mb-3">
+            Email{" "}
+            <a
+              href="mailto:admin@cyberstudents.net"
+              className="font-semibold underline transition-colors hover:text-cyan-300"
+            >
+              admin@cyberstudents.net
+            </a>{" "}
+            for sponsorship inquiries, press, and other business-related questions.
+          </p>
           {/* should've used https://getfullyear.com/ */}
           <p className="mb-2">
             &copy; 2021&ndash;{new Date().getFullYear()} CyberStudents. CyberStudents is not endorsed nor affiliated
@@ -102,7 +94,7 @@ export default function Footer() {
         </div>
         <div className="w-full max-w-md">
           <h2 className="mb-4 font-semibold">Thank you to our wonderful staff 🩵</h2>
-          <ul className="grid grid-flow-col grid-rows-5 gap-3">
+          <ul className="grid grid-flow-col grid-rows-3 gap-3">
             {STAFF.map(({ name, pfp, position, link }) => (
               <li key={name}>
                 <a

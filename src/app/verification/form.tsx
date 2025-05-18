@@ -57,12 +57,12 @@ export default function VerificationForm({ session }: { session: Session | null 
       <div>
         <p className="mb-2">To get started, please login:</p>
         <Button
-          className="flex items-center bg-[#5865f2] font-bold text-gray-200 hover:bg-[#5865f2]/70"
+          className="!hover:bg-[#5865f2]/70 flex items-center !bg-[#5865f2] font-bold !text-gray-200"
           onClick={() => {
             signIn("discord");
           }}
         >
-          <FaDiscord className="mr-2 h-6 w-6" />
+          <FaDiscord className="!h-6 !w-6" />
           <span>Login with Discord</span>
         </Button>
       </div>
@@ -82,7 +82,7 @@ export default function VerificationForm({ session }: { session: Session | null 
   return (
     <div>
       {lastVerificationDateQuery.data?.createdAt && (
-        <Alert className="mb-8 max-w-2xl !bg-green-600 !bg-opacity-50">
+        <Alert className="mb-8 max-w-2xl !bg-green-600 !bg-opacity-50 dark:bg-green-500">
           <HiCheckCircle className="h-5 w-5" />
           <AlertTitle>
             You submitted an identity verification application on{" "}
@@ -199,7 +199,12 @@ export default function VerificationForm({ session }: { session: Session | null 
                     <Label htmlFor="school-name" className="text-base">
                       School or university name
                     </Label>
-                    <Input id="school-name" className="bg-gray-200 text-gray-900" ref={schoolName} required />
+                    <Input
+                      id="school-name"
+                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      ref={schoolName}
+                      required
+                    />
                   </div>
                   <div className="grid w-full items-center gap-1.5">
                     <Label htmlFor="country" className="text-base">
@@ -241,13 +246,24 @@ export default function VerificationForm({ session }: { session: Session | null 
                 <Label htmlFor="full-name" className="text-base">
                   Full name
                 </Label>
-                <Input id="full-name" className="bg-gray-200 text-gray-900" ref={fullName} required />
+                <Input
+                  id="full-name"
+                  className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                  ref={fullName}
+                  required
+                />
               </div>
               <div className="grid w-full items-center gap-1.5">
                 <Label htmlFor="birthdate" className="text-base">
                   Date of birth
                 </Label>
-                <Input id="birthdate" type="date" className="bg-gray-200 text-gray-900" ref={birthdate} required />
+                <Input
+                  id="birthdate"
+                  type="date"
+                  className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                  ref={birthdate}
+                  required
+                />
               </div>
               <div className="grid w-full items-center gap-1.5">
                 <Label htmlFor="country" className="text-base">
@@ -327,7 +343,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                         <Input
                           type="email"
                           id="school-email"
-                          className="bg-gray-200 text-gray-900"
+                          className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
                           ref={schoolEmail}
                           required
                         />
@@ -409,7 +425,11 @@ export default function VerificationForm({ session }: { session: Session | null 
                     <Label htmlFor="comments" className="text-base">
                       Comments regarding verification (optional)
                     </Label>
-                    <Textarea id="comments" className="h-24 bg-gray-200 text-gray-900" ref={comments} />
+                    <Textarea
+                      id="comments"
+                      className="h-24 !border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      ref={comments}
+                    />
                   </div>
                   <div className="flex items-center space-x-2">
                     <Checkbox id="terms1" required />

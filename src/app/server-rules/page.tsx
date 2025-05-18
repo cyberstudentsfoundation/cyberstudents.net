@@ -1,3 +1,9 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Server Rules · CyberStudents",
+};
+
 export default function ServerRules() {
   return (
     <main className="mx-4 mt-10 flex justify-center sm:mx-8 sm:mt-16 md:mx-10">
@@ -16,8 +22,9 @@ export default function ServerRules() {
             </a>{" "}
             in the Discord server for the most up-to-date rules. These rules only apply to the{" "}
             <a href="https://discord.com/invite/cyberstudents-916144903686336513" target="_blank">
-              Discord server.
+              Discord server
             </a>
+            .
           </p>
           <ol>
             <li>
@@ -95,14 +102,18 @@ export default function ServerRules() {
               <strong>Follow the Discord Terms of Service and Community Guidelines.</strong>
               <br />
               These will be listed below:
-              <br />
-              <a href="https://discord.com/terms" target="_blank" rel="noopener noreferrer">
-                Discord Terms
-              </a>
-              <br />
-              <a href="https://discord.com/guidelines" target="_blank" rel="noopener noreferrer">
-                Discord Guidelines
-              </a>
+              <ul>
+                <li>
+                  <a href="https://discord.com/terms" target="_blank" rel="noopener noreferrer">
+                    Discord Terms
+                  </a>
+                </li>
+                <li>
+                  <a href="https://discord.com/guidelines" target="_blank" rel="noopener noreferrer">
+                    Discord Guidelines
+                  </a>
+                </li>
+              </ul>
             </li>
           </ol>
           <h2>Remarks</h2>

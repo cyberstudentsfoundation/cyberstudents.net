@@ -87,9 +87,9 @@ export default async function Advent() {
                 </div>
                 <div className="flex items-center gap-4">
                   <p className="text-gray-400">Sponsored by</p>
-                  <a href="https://www.ics.red/" target="_blank" rel="noopener noreferrer">
+                  <Link href="/advent/2024#a-note-on-the-delay-of-prizes">
                     <Image src={icsred} alt="ICSRED Logo" className="h-32 w-32 rounded-lg opacity-70" />
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

@@ -84,7 +84,7 @@ export default function RegisterForm({
       </h1>
       {isRegistered && (
         <>
-          <Alert className="mb-4 !bg-green-600 !bg-opacity-50">
+          <Alert className="mb-4 !bg-green-500 !bg-opacity-50 dark:bg-green-500">
             <HiCheckCircle className="h-5 w-5" />
             <AlertTitle>You are registered for CyberStudents&rsquo; Advent of CTF 2024.</AlertTitle>
             <AlertDescription>

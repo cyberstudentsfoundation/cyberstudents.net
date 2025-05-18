@@ -54,7 +54,7 @@ export default async function Home() {
                   </h1>
                   <p className="my-8 text-lg sm:mb-16 sm:mt-8">
                     Talk, connect, and grow with others interested in learning and advancing in cybersecurity. Whether
-                    you&rsquo;re in high school, college, or beyond, you&rsquo;ll fit right in to our community with
+                    you&rsquo;re in high school, college, or beyond, you&rsquo;ll fit right into our community with
                     thousands of other like-minded students and professionals.
                   </p>
                   <div className="flex flex-col gap-6 sm:flex-row sm:justify-between">
@@ -93,8 +93,8 @@ export default async function Home() {
                     </div>
                     <h2 className="mb-2 text-2xl font-bold">Advent of CTF</h2>
                     <p className="mb-4 text-lg">
-                      Last December, we hosted a month-long CTF event with challenges released daily and US$280 up for
-                      grabs. We plan to host this event and another weekend-long CTF this year.
+                      Last December, we hosted a month-long beginner-friendly CTF competition with challenges released
+                      daily and US$280 up for grabs. We plan to host this event and another weekend-long CTF this year.
                     </p>
                     <Button className="bg-gray-100 text-base hover:bg-gray-300" asChild>
                       <Link href="/advent/2024">
@@ -189,9 +189,9 @@ export default async function Home() {
                       </div>
                       <div className="flex w-full items-center justify-center gap-4">
                         <p className="font-medium text-gray-400">Prizes sponsored by</p>
-                        <a href="https://www.ics.red/" target="_blank" rel="noopener noreferrer">
+                        <Link href="/advent/2024#a-note-on-the-delay-of-prizes">
                           <Image src={icsred} alt="ICSRED Logo" className="h-32 w-32 rounded-lg opacity-70" />
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -202,7 +202,7 @@ export default async function Home() {
                       <MdFlag className="h-8 w-8 text-gray-100" />
                     </div>
                     <h2 className="mb-2 text-2xl font-bold">Daily CTFs</h2>
-                    <p className="mb-6 text-lg">
+                    <p className="mb-4 text-lg">
                       Play in our beginner-friendly daily capture-the-flag challenges throughout the year. Learn new
                       skills, discuss with others, and compete for prizes.
                     </p>
@@ -220,6 +220,12 @@ export default async function Home() {
                         </TooltipProvider>
                       ))}
                     </div>
+                    <Button className="mt-6 bg-gray-100 text-base hover:bg-gray-300" asChild>
+                      <a href="https://discord.com/invite/cyberstudents-916144903686336513" target="_blank">
+                        Play in our Discord
+                        <HiArrowUpRight className="mb-0.5 ml-1 h-3 w-3 stroke-1" />
+                      </a>
+                    </Button>
                   </div>
                   <DailyCTFImages />
                 </div>

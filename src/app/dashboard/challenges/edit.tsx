@@ -256,6 +256,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                 if (!editChallengeMutation.isError) {
                   toast.success("Challenge deleted successfully.", { position: "top-center" });
                   setDeleteDialogOpen(false);
+                  setOpen(false);
                   location.reload();
                 }
               }}
@@ -320,7 +321,11 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
 
                 if (!editChallengeMutation.isError) {
                   toast.success("Challenge updated successfully.", { position: "top-center" });
-                  location.reload();
+                  setOpen(false);
+
+                  setTimeout(() => {
+                    location.href = "/dashboard/challenges";
+                  }, 100);
                 }
               }}
             >
@@ -330,7 +335,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                     <Label htmlFor="id">Challenge ID</Label>
                     <Input
                       id="id"
-                      className="bg-gray-200 text-gray-900"
+                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
                       defaultValue={row?.original.id ?? "Generated after creation"}
                       disabled
                     />
@@ -339,7 +344,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                     <Label htmlFor="event">Event</Label>
                     <Input
                       id="event"
-                      className="bg-gray-200 text-gray-900"
+                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
                       defaultValue={row?.original.eventName ?? "aoc2024"}
                       disabled
                     />
@@ -347,7 +352,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                   <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label>Author</Label>
                     <Select value={authorId} onValueChange={(id) => setAuthorId(id)} required>
-                      <SelectTrigger className="!bg-gray-200 text-gray-900">
+                      <SelectTrigger className="!border-gray-900 !bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900">
                         <SelectValue placeholder="Select an author" />
                       </SelectTrigger>
                       <SelectContent>
@@ -372,7 +377,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                     <Label htmlFor="title">Title</Label>
                     <Input
                       id="title"
-                      className="bg-gray-200 text-gray-900"
+                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
                       defaultValue={row?.original.title}
                       ref={titleRef}
                       required
@@ -381,7 +386,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                   <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label>Category</Label>
                     <Select value={category} onValueChange={(c) => setCategory(c)} required>
-                      <SelectTrigger className="!bg-gray-200 text-gray-900">
+                      <SelectTrigger className="!border-gray-900 !bg-gray-200 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900">
                         <SelectValue placeholder="Select a category" />
                       </SelectTrigger>
                       <SelectContent>
@@ -401,7 +406,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                     <Input
                       id="points"
                       type="number"
-                      className="bg-gray-200 text-gray-900"
+                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
                       defaultValue={row?.original.points}
                       ref={pointsRef}
                       required
@@ -417,7 +422,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                       <TabsContent value="edit">
                         <Textarea
                           id="description"
-                          className="h-48 bg-gray-200 text-gray-900"
+                          className="h-48 !border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
                           value={description}
                           onChange={(e) => setDescription(e.target.value)}
                           required
@@ -446,7 +451,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                       <TabsContent value="edit">
                         <Textarea
                           id="hint1"
-                          className="h-24 bg-gray-200 text-gray-900"
+                          className="h-24 !border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
                           value={hint1 ?? ""}
                           onChange={(e) => setHint1(e.target.value)}
                           required
@@ -476,7 +481,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                       <TabsContent value="edit">
                         <Textarea
                           id="hint2"
-                          className="h-24 bg-gray-200 text-gray-900"
+                          className="h-24 !border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
                           value={hint2 ?? ""}
                           onChange={(e) => setHint2(e.target.value)}
                           required
@@ -504,7 +509,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                         <li key={index}>
                           <div className="flex items-center gap-2">
                             <Input
-                              className="ml-2 bg-gray-200 text-gray-900"
+                              className="ml-2 !border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
                               value={file}
                               onChange={(e) =>
                                 setFiles((files) => {
@@ -549,7 +554,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                         <li key={index}>
                           <div className="flex items-center gap-2">
                             <Input
-                              className="ml-2 bg-gray-200 font-mono text-gray-900"
+                              className="ml-2 !border-gray-900 bg-gray-200 font-mono text-gray-900 !ring-gray-200 ring-offset-gray-900"
                               value={flag}
                               onChange={(e) =>
                                 setGlobalFlags((flags) => {
@@ -654,7 +659,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                     <Input
                       id="publishDate"
                       type="datetime-local"
-                      className="bg-gray-200 text-gray-900 [color-scheme:_light]"
+                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900 [color-scheme:_light]"
                       defaultValue={row?.original.publishDate && getDateTimeLocalValue(row.original.publishDate)}
                       ref={publishDateRef}
                       required

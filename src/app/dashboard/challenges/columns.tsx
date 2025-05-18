@@ -129,7 +129,9 @@ export const columns: ColumnDef<Challenge>[] = [
             <HoverCardTrigger tabIndex={0} className="block max-w-64 truncate underline decoration-dotted">
               {description}
             </HoverCardTrigger>
-            <HoverCardContent className="border-gray-800 bg-gray-900">{description}</HoverCardContent>
+            <HoverCardContent className="max-h-96 overflow-auto break-words border-gray-800 bg-gray-900">
+              {description}
+            </HoverCardContent>
           </HoverCard>
         </span>
       );
@@ -179,11 +181,11 @@ export const columns: ColumnDef<Challenge>[] = [
             <HoverCardTrigger tabIndex={0} className="underline decoration-dotted">
               {hints.length} hints
             </HoverCardTrigger>
-            <HoverCardContent className="flex flex-col gap-2 border-gray-800 bg-gray-900">
+            <HoverCardContent className="flex max-h-96 flex-col gap-2 overflow-auto border-gray-800 bg-gray-900">
               {hints.map((hint) => (
                 <div key={hint.id}>
                   <h3 className="mb-0.5 font-bold text-gray-400">{hint.title}</h3>
-                  <p>{hint.content}</p>
+                  <p className="break-words">{hint.content}</p>
                 </div>
               ))}
             </HoverCardContent>

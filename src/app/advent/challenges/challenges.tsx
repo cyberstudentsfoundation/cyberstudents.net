@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, type JSX } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { api } from "~/trpc/react";
@@ -284,8 +284,8 @@ export default function Challenges({
                             <p className="text-gray-300">
                               {/* <strong>zarnex__</strong>&apos;s write-up was selected as the best write-up submitted for
                               this challenge. */}
-                              No write-ups were submitted for this challenge. An official answer by the challenge author
-                              has been provided.
+                              Write-ups will be available soon. You can search for write-ups online in the meantime.
+                              (Sorry.)
                             </p>
                           </div>
                           <div className="flex-grow-0 basis-1/3">
