@@ -1,6 +1,7 @@
 import { getServerAuthSession } from "~/server/auth";
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
 import DailyCTFImages from "./daily-ctf-images";
 import CyberstartArchiveScroll from "./cyberstart-archive-scroll";
 import PhraseTransitions from "~/components/PhraseTransitions";
@@ -24,6 +25,12 @@ import indiaFlag from "~/../public/flags/india.svg";
 import romaniaFlag from "~/../public/flags/romania.svg";
 import swedenFlag from "~/../public/flags/sweden.svg";
 import unitedStatesFlag from "~/../public/flags/united-states.svg";
+
+export const metadata: Metadata = {
+  other: {
+    "og:image": "/logo-rounded.png",
+  },
+};
 
 export default async function Home() {
   const session = await getServerAuthSession();

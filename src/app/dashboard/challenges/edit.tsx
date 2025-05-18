@@ -386,7 +386,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                   <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label>Category</Label>
                     <Select value={category} onValueChange={(c) => setCategory(c)} required>
-                      <SelectTrigger className="!border-gray-900 !bg-gray-200 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900">
+                      <SelectTrigger className="!border-gray-900 !bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900">
                         <SelectValue placeholder="Select a category" />
                       </SelectTrigger>
                       <SelectContent>
