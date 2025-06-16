@@ -56,10 +56,10 @@ export default async function Navbar() {
 
   return (
     <div className="sticky top-0 z-30 flex h-14 items-center justify-center border-b border-gray-800 bg-gray-900/75 px-4 py-2 backdrop-blur-lg">
-      <div className="flex w-full max-w-screen-2xl items-center justify-between">
+      <div className="flex w-full max-w-(--breakpoint-2xl) items-center justify-between">
         <div className="flex items-center">
           <Link href="/">
-            <Image src={wordmark} alt="CyberStudents Wordmark" priority className="h-6 w-auto sm:h-[1.625rem]" />
+            <Image src={wordmark} alt="CyberStudents Wordmark" priority className="h-6 w-auto sm:h-6.5" />
           </Link>
           <div className="ml-4 hidden items-center xl:flex">
             {LINKS.map(({ name, href, disabled }) =>
@@ -71,7 +71,7 @@ export default async function Navbar() {
                         key={name}
                         variant="link"
                         asChild
-                        className={`text-base hover:no-underline ${!disabled ? "hover:text-cyan-300" : "!text-gray-500"}`}
+                        className={`text-base hover:no-underline ${!disabled ? "hover:text-cyan-300" : "text-gray-500!"}`}
                       >
                         {disabled ? <span>{name}</span> : <Link href={href}>{name}</Link>}
                       </Button>
@@ -86,7 +86,7 @@ export default async function Navbar() {
                   key={name}
                   variant="link"
                   asChild
-                  className={`text-base hover:no-underline ${!disabled ? "hover:text-cyan-300" : "!text-gray-500"}`}
+                  className={`text-base hover:no-underline ${!disabled ? "hover:text-cyan-300" : "text-gray-500!"}`}
                 >
                   {disabled ? <span>{name}</span> : <Link href={href}>{name}</Link>}
                 </Button>
@@ -97,7 +97,7 @@ export default async function Navbar() {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger
                     triggerMode="click"
-                    className="!bg-transparent text-base ring-offset-white hover:!bg-gray-800 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-gray-300 focus-visible:ring-offset-2"
+                    className="bg-transparent! text-base ring-offset-white hover:bg-gray-800! focus-visible:outline-hidden focus-visible:ring-0 focus-visible:ring-gray-300 focus-visible:ring-offset-2"
                   >
                     Competitions
                   </NavigationMenuTrigger>

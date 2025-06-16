@@ -13,7 +13,7 @@ export default function AdventLayout({ children }: { children: React.ReactNode }
   return (
     <>
       <nav className="mx-4 mt-10 flex justify-center sm:mt-16">
-        <div className="w-full max-w-screen-2xl justify-between">
+        <div className="w-full max-w-(--breakpoint-2xl) justify-between">
           <div className="flex w-full items-center justify-center gap-4 text-center text-gray-200 sm:justify-end sm:gap-8">
             <Link
               href="/advent"
@@ -41,7 +41,7 @@ export default function AdventLayout({ children }: { children: React.ReactNode }
             </Link>
           </div>
           <div className="mt-6">
-            <Alert className="my-2 !border-gray-700 !bg-gray-800 !bg-opacity-50">
+            <Alert className="my-2 border-gray-700! bg-gray-800/50!">
               <HiOutlineMegaphone className="h-5 w-5 stroke-2" />
               <AlertTitle>Advent of CTF 2024 has ended; thank you for playing!</AlertTitle>
               <AlertDescription className="mt-2 text-gray-300">

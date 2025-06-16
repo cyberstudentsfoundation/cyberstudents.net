@@ -52,7 +52,7 @@ const CATEGORY_ICON_MAP: Record<string, JSX.Element> = {
 
 // Ensure all colors are defined by Tailwind's compiler
 const _allColors = (
-  <div className="bg-blue-900 bg-blue-950 bg-fuchsia-900 bg-fuchsia-950 bg-lime-900 bg-lime-950 bg-pink-900 bg-pink-950 bg-red-900 bg-red-950 bg-yellow-900 bg-yellow-950" />
+  <div className="bg-blue-900/50 bg-blue-950/50 bg-fuchsia-900/50 bg-fuchsia-950/50 bg-lime-900/50 bg-lime-950/50 bg-pink-900/50 bg-pink-950/50 bg-red-900/50 bg-red-950/50 bg-yellow-900/50 bg-yellow-950/50 hover:bg-blue-900/80 hover:bg-blue-950/80 hover:bg-fuchsia-900/80 hover:bg-fuchsia-950/80 hover:bg-lime-900/80 hover:bg-lime-950/80 hover:bg-pink-900/80 hover:bg-pink-950/80 hover:bg-red-900/80 hover:bg-red-950/80 hover:bg-yellow-900/80 hover:bg-yellow-950/80" />
 );
 
 export default function Challenges({
@@ -120,7 +120,7 @@ export default function Challenges({
       </div>
       <div className="flex flex-col lg:flex-row">
         <div className="flex w-full max-w-full lg:max-w-sm xl:max-w-md">
-          <div className="flex h-[75vh] w-full max-w-full flex-col overflow-y-scroll shadow lg:max-w-sm xl:max-w-md">
+          <div className="flex h-[75vh] w-full max-w-full flex-col overflow-y-scroll shadow-sm lg:max-w-sm xl:max-w-md">
             {eventChallenges.challenges.map((challenge, index) => (
               <button
                 key={challenge.id}
@@ -132,7 +132,7 @@ export default function Challenges({
                 }}
               >
                 <div
-                  className={`flex-0 flex h-full w-9 items-center bg-${CATEGORY_COLOR_MAP[challenge.category] ?? "zinc"}-950 bg-opacity-50 px-2`}
+                  className={`flex h-full w-9 items-center bg-${CATEGORY_COLOR_MAP[challenge.category] ?? "zinc"}-950/50 px-2`}
                 >
                   {challenge.published ? (
                     challenge.challengeAttempt?.solvedAt && <FaCheck className="h-4 w-4 text-gray-200 lg:h-5 lg:w-5" />
@@ -141,7 +141,7 @@ export default function Challenges({
                   )}
                 </div>
                 <div
-                  className={`flex-1 cursor-pointer bg-${CATEGORY_COLOR_MAP[challenge.category] ?? "zinc"}-900 bg-opacity-50 p-5 ${!challenge.published ? "opacity-60" : ""} transition-all hover:bg-opacity-80`}
+                  className={`flex-1 cursor-pointer bg-${CATEGORY_COLOR_MAP[challenge.category] ?? "zinc"}-900/50 hover:bg-${CATEGORY_COLOR_MAP[challenge.category] ?? "zinc"}-900/80 p-5 ${!challenge.published ? "opacity-60" : ""} transition-all`}
                 >
                   <div className="float-right">
                     <p className="mb-2 text-right text-gray-400">#{index + 1}</p>
@@ -181,19 +181,19 @@ export default function Challenges({
             {focusedChallenge ? (
               challengeCallback(focusedChallenge, (challenge) => (
                 <div className="h-full">
-                  <div className="absolute -z-10 ml-4 mt-4 flex h-32 w-32 text-gray-400 opacity-10">
+                  <div className="absolute -z-10 mt-4 ml-4 flex h-32 w-32 text-gray-400 opacity-10">
                     {CATEGORY_ICON_MAP[challenge.category]}
                   </div>
                   <div className="z-20 flex h-full flex-col justify-between p-8">
                     <div className="mb-8">
                       <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row lg:gap-0">
-                        <div className="flex-grow-0 basis-3/5">
+                        <div className="grow-0 basis-3/5">
                           <h1
                             className={`mb-4 flex items-center gap-3 text-2xl ${!challenge.title ? "font-mono font-medium" : "font-bold"}`}
                           >
                             <span>{challenge.title ?? "???"}</span>
                             {challenge.challengeAttempt?.solvedAt && (
-                              <Badge className="!bg-green-400 text-sm hover:!bg-green-500">Solved</Badge>
+                              <Badge className="bg-green-400! text-sm hover:bg-green-500!">Solved</Badge>
                             )}
                           </h1>
                           <div className="grid w-fit grid-flow-col grid-rows-3 items-center gap-x-20">
@@ -213,7 +213,7 @@ export default function Challenges({
                             </div>
                           </div>
                         </div>
-                        <div className="flex-grow-0 basis-2/5">
+                        <div className="grow-0 basis-2/5">
                           <h2 className="mb-1 text-xl font-bold text-gray-400">
                             Solves ({challenge.solvedPlayers?.length ?? 0})
                           </h2>
@@ -251,7 +251,7 @@ export default function Challenges({
                       </div>
                       {challenge.published ? (
                         <div className="flex flex-col justify-between gap-12 md:flex-row">
-                          <div className="flex-grow-0 basis-2/3">
+                          <div className="grow-0 basis-2/3">
                             <h2 className="mb-1 text-xl font-bold text-gray-400">Description</h2>
                             <Prose>{challenge.description ?? ""}</Prose>
                             {challenge.files?.length ? (
@@ -280,7 +280,7 @@ export default function Challenges({
                                 </a>
                               ))}
                             </div>
-                            <h2 className="mb-2 mt-4 text-xl font-bold text-gray-400">Write-ups</h2>
+                            <h2 className="mt-4 mb-2 text-xl font-bold text-gray-400">Write-ups</h2>
                             <p className="text-gray-300">
                               {/* <strong>zarnex__</strong>&apos;s write-up was selected as the best write-up submitted for
                               this challenge. */}
@@ -288,14 +288,14 @@ export default function Challenges({
                               (Sorry.)
                             </p>
                           </div>
-                          <div className="flex-grow-0 basis-1/3">
+                          <div className="grow-0 basis-1/3">
                             <h2 className="mb-1 text-xl font-bold text-gray-400">Hint</h2>
                             <p className="mb-2 text-sm text-gray-400">
                               There are no penalties for viewing hints. Hints are released 12 hours and 24 hours after
                               the challenge releases.
                             </p>
                             <Tabs key={challenge.id}>
-                              <TabsList className="!bg-gray-900">
+                              <TabsList className="bg-gray-900!">
                                 <TabsTrigger value="1" className="hover:bg-gray-800">
                                   1
                                 </TabsTrigger>
@@ -409,7 +409,7 @@ export default function Challenges({
                             <a
                               href="https://discord.com/channels/916144903686336513/1313285716666748990"
                               target="_blank"
-                              className="text-nowrap rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
+                              className="rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-nowrap text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
                             >
                               #🎄丨advent-of-ctf
                             </a>{" "}
@@ -439,7 +439,7 @@ export default function Challenges({
                     <a
                       href="https://discord.com/channels/916144903686336513/1313285716666748990"
                       target="_blank"
-                      className="text-nowrap rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
+                      className="rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-nowrap text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
                     >
                       #🎄丨advent-of-ctf
                     </a>{" "}

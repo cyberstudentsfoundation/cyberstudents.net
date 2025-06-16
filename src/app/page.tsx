@@ -47,14 +47,14 @@ export default async function Home() {
   return (
     <div className="-z-20">
       <div className="relative z-0 inline-block w-full bg-gray-950">
-        <div className="pointer-events-none absolute -z-10 h-full max-h-[36.5rem] w-full opacity-30 sm:max-h-[34.5rem] md:max-h-[30rem]">
+        <div className="pointer-events-none absolute -z-10 h-full max-h-146 w-full opacity-30 sm:max-h-138 md:max-h-120">
           <Image src={background} alt="" className="object-cover" fill={true} priority={true} />
         </div>
         <main className="mx-4 sm:mx-8 md:mx-10">
           <div className="my-24 flex justify-center sm:my-36">
-            <div className="w-full max-w-screen-lg xl:max-w-screen-xl">
+            <div className="w-full max-w-(--breakpoint-lg) xl:max-w-(--breakpoint-xl)">
               <div className="mb-36 flex items-center justify-center">
-                <div className="w-full max-w-screen-lg">
+                <div className="w-full max-w-(--breakpoint-lg)">
                   <h1 className="group font-serif text-4xl transition-all sm:text-5xl">
                     Learn and grow <br className="lg:hidden" />
                     <PhraseTransitions />
@@ -95,7 +95,7 @@ export default async function Home() {
               <div className="grid grid-flow-row grid-cols-1 gap-x-9 gap-y-16 sm:grid-cols-2 xl:grid-cols-3 xl:gap-y-24">
                 <div className="col-span-1 flex flex-col gap-8 sm:col-span-2 xl:col-span-3 xl:flex-row xl:justify-between">
                   <div className="max-w-md">
-                    <div className="mb-3 w-fit rounded-full border border-white/20 bg-white/10 p-4 shadow-sm shadow-white/25 backdrop-blur-sm">
+                    <div className="mb-3 w-fit rounded-full border border-white/20 bg-white/10 p-4 shadow-xs shadow-white/25 backdrop-blur-xs">
                       <TbChristmasTree className="h-8 w-8 text-gray-100" />
                     </div>
                     <h2 className="mb-2 text-2xl font-bold">Advent of CTF</h2>
@@ -110,14 +110,14 @@ export default async function Home() {
                       </Link>
                     </Button>
                   </div>
-                  <div className="flex flex-col gap-8 md:flex-row xl:min-w-[49rem] xl:justify-between xl:gap-4">
+                  <div className="flex flex-col gap-8 md:flex-row xl:min-w-196 xl:justify-between xl:gap-4">
                     <div>
                       <h3 className="mb-1 font-bold text-gray-400">
                         <span className="text-cyan-300/75">2024</span> High School & College Division
                       </h3>
                       <Table className="table-fixed overflow-hidden rounded-lg text-gray-200 md:w-80">
                         <TableBody className="rounded-md">
-                          <TableRow className="bg-yellow-300/25 hover:!bg-yellow-300/35">
+                          <TableRow className="bg-yellow-300/25 hover:bg-yellow-300/35!">
                             <TableCell className="w-14">1st</TableCell>
                             <TableCell className="flex items-center gap-1.5">
                               <span>zarnex__</span>
@@ -129,28 +129,28 @@ export default async function Home() {
                               />
                             </TableCell>
                           </TableRow>
-                          <TableRow className="bg-gray-300/25 hover:!bg-gray-300/35">
+                          <TableRow className="bg-gray-300/25 hover:bg-gray-300/35!">
                             <TableCell className="w-14">2nd</TableCell>
                             <TableCell className="flex items-center gap-1.5">
                               <span>minipif</span>
                               <Image src={romaniaFlag} alt="Flag for Romania" title="Romania" className="h-5 w-5" />
                             </TableCell>
                           </TableRow>
-                          <TableRow className="bg-yellow-800/25 hover:!bg-yellow-800/35">
+                          <TableRow className="bg-yellow-800/25 hover:bg-yellow-800/35!">
                             <TableCell className="w-14">3rd</TableCell>
                             <TableCell className="flex items-center gap-1.5">
                               <span>pligonstein</span>
                               <Image src={romaniaFlag} alt="Flag for Romania" title="Romania" className="h-5 w-5" />
                             </TableCell>
                           </TableRow>
-                          <TableRow className="bg-gray-700/25 hover:!bg-gray-700/35">
+                          <TableRow className="bg-gray-700/25 hover:bg-gray-700/35!">
                             <TableCell className="w-14">4th</TableCell>
                             <TableCell className="flex items-center gap-1.5">
                               <span>silence_</span>
                               <Image src={indiaFlag} alt="Flag for India" title="India" className="h-5 w-5" />
                             </TableCell>
                           </TableRow>
-                          <TableRow className="bg-gray-700/25 hover:!bg-gray-700/35">
+                          <TableRow className="bg-gray-700/25 hover:bg-gray-700/35!">
                             <TableCell className="w-14">5th</TableCell>
                             <TableCell className="flex items-center gap-1.5">
                               <span>trixai</span>
@@ -167,7 +167,7 @@ export default async function Home() {
                         </h3>
                         <Table className="table-fixed overflow-hidden rounded-lg text-gray-200 md:w-80">
                           <TableBody className="rounded-md">
-                            <TableRow className="bg-yellow-300/25 hover:!bg-yellow-300/35">
+                            <TableRow className="bg-yellow-300/25 hover:bg-yellow-300/35!">
                               <TableCell className="w-14">1st</TableCell>
                               <TableCell className="flex items-center gap-1.5">
                                 <span>zarnex__</span>
@@ -179,7 +179,7 @@ export default async function Home() {
                                 />
                               </TableCell>
                             </TableRow>
-                            <TableRow className="bg-gray-300/25 hover:!bg-gray-300/35">
+                            <TableRow className="bg-gray-300/25 hover:bg-gray-300/35!">
                               <TableCell className="w-14">2nd</TableCell>
                               <TableCell className="flex items-center gap-1.5">
                                 <span>
@@ -205,7 +205,7 @@ export default async function Home() {
                 </div>
                 <div className="col-span-1 flex flex-col gap-8 sm:col-span-2 xl:col-span-3 xl:flex-row xl:justify-between">
                   <div className="max-w-md">
-                    <div className="mb-3 w-fit rounded-full border border-white/20 bg-white/10 p-4 shadow-sm shadow-white/25 backdrop-blur-sm">
+                    <div className="mb-3 w-fit rounded-full border border-white/20 bg-white/10 p-4 shadow-xs shadow-white/25 backdrop-blur-xs">
                       <MdFlag className="h-8 w-8 text-gray-100" />
                     </div>
                     <h2 className="mb-2 text-2xl font-bold">Daily CTFs</h2>
@@ -238,7 +238,7 @@ export default async function Home() {
                 </div>
                 <div>
                   <div>
-                    <div className="mb-3 w-fit rounded-full border border-white/20 bg-white/10 p-4 shadow-sm shadow-white/25 backdrop-blur-sm">
+                    <div className="mb-3 w-fit rounded-full border border-white/20 bg-white/10 p-4 shadow-xs shadow-white/25 backdrop-blur-xs">
                       <MdCollectionsBookmark className="h-8 w-8 text-gray-100" />
                     </div>
                     <h2 className="mb-2 text-2xl font-bold">Get resources & help</h2>
@@ -250,7 +250,7 @@ export default async function Home() {
                 </div>
                 <div>
                   <div>
-                    <div className="mb-3 w-fit rounded-full border border-white/20 bg-white/10 p-4 shadow-sm shadow-white/25 backdrop-blur-sm">
+                    <div className="mb-3 w-fit rounded-full border border-white/20 bg-white/10 p-4 shadow-xs shadow-white/25 backdrop-blur-xs">
                       <MdGroups className="h-8 w-8 text-gray-100" />
                     </div>
                     <h2 className="mb-2 text-2xl font-bold">Live talks from professionals & peers</h2>
@@ -262,7 +262,7 @@ export default async function Home() {
                 </div>
                 <div>
                   <div>
-                    <div className="mb-3 w-fit rounded-full border border-white/20 bg-white/10 p-4 shadow-sm shadow-white/25 backdrop-blur-sm">
+                    <div className="mb-3 w-fit rounded-full border border-white/20 bg-white/10 p-4 shadow-xs shadow-white/25 backdrop-blur-xs">
                       <MdCelebration className="h-8 w-8 text-gray-100" />
                     </div>
                     <h2 className="mb-2 text-2xl font-bold">Fun events & games</h2>

@@ -38,8 +38,8 @@ const LINKS: { name: string; href: string; external: boolean }[] = [
 
 export default function Footer() {
   return (
-    <footer className="mx-4 mb-12 mt-24 flex justify-center py-12 sm:mx-8">
-      <div className="flex w-full max-w-screen-2xl flex-col justify-between gap-10 sm:flex-row sm:gap-5">
+    <footer className="mx-4 mt-24 mb-12 flex justify-center py-12 sm:mx-8">
+      <div className="flex w-full max-w-(--breakpoint-2xl) flex-col justify-between gap-10 lg:flex-row lg:gap-16">
         <div className="w-full max-w-prose text-sm text-gray-200">
           <Image src={logo} alt="CyberStudents Logo" className="mb-4 h-20 w-20 rounded-2xl" />
           <p className="mb-3">
@@ -67,60 +67,62 @@ export default function Footer() {
             <a href="https://discord.com/invite/cyberstudents-916144903686336513" target="_blank">
               <Button
                 tabIndex={-1}
-                className="flex items-center !bg-[#5865f2] font-bold !text-gray-200 hover:!bg-[#5865f2]/70"
+                className="flex items-center bg-[#5865f2]! font-bold text-gray-200! hover:bg-[#5865f2]/70!"
               >
-                <FaDiscord className="!h-6 !w-6" />
+                <FaDiscord className="h-6! w-6!" />
                 <span>Discord</span>
               </Button>
             </a>
           </div>
         </div>
-        <div>
-          <h2 className="mb-4 font-semibold">Links</h2>
-          <ul className="space-y-1.5">
-            {LINKS.map(({ name, href, external }) => (
-              <li key={name}>
-                <Link
-                  href={href}
-                  target={external ? "_blank" : undefined}
-                  className="flex items-center gap-1 transition-colors hover:text-cyan-300"
-                >
-                  {name}
-                  {external && <HiExternalLink className="h-4 w-4" />}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="w-full max-w-md">
-          <h2 className="mb-4 font-semibold">Thank you to our wonderful staff 🩵</h2>
-          <ul className="grid grid-flow-col grid-rows-3 gap-3">
-            {STAFF.map(({ name, pfp, position, link }) => (
-              <li key={name}>
-                <a
-                  href={link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex w-fit items-center gap-2"
-                >
-                  <Image
-                    src={pfp}
-                    alt={`Profile Picture for ${name}`}
-                    placeholder="blur"
-                    className="h-6 w-6 rounded-full"
-                  />
-                  <div>
+        <div className="flex w-full max-w-fit flex-col gap-10 sm:flex-row lg:gap-16">
+          <div className="w-full max-w-fit">
+            <h2 className="mb-4 font-semibold">Links</h2>
+            <ul className="space-y-1.5">
+              {LINKS.map(({ name, href, external }) => (
+                <li key={name}>
+                  <Link
+                    href={href}
+                    target={external ? "_blank" : undefined}
+                    className="flex items-center gap-1 transition-colors hover:text-cyan-300"
+                  >
+                    {name}
+                    {external && <HiExternalLink className="h-4 w-4" />}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="w-full max-w-fit">
+            <h2 className="mb-4 font-semibold">Thank you to our wonderful staff 🩵</h2>
+            <ul className="grid grid-flow-col grid-rows-3 gap-3 lg:grid-rows-6 xl:grid-rows-3">
+              {STAFF.map(({ name, pfp, position, link }) => (
+                <li key={name}>
+                  <a
+                    href={link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex w-fit items-center gap-2"
+                  >
+                    <Image
+                      src={pfp}
+                      alt={`Profile Picture for ${name}`}
+                      placeholder="blur"
+                      className="h-6 w-6 rounded-full"
+                    />
                     <div>
-                      <strong className={`font-semibold text-gray-200 ${link ? "group-hover:underline" : ""}`}>
-                        {name}
-                      </strong>
+                      <div>
+                        <strong className={`font-semibold text-gray-200 ${link ? "group-hover:underline" : ""}`}>
+                          {name}
+                        </strong>
+                      </div>
+                      <div className="text-xs text-gray-300">{position}</div>
                     </div>
-                    <div className="text-xs text-gray-300">{position}</div>
-                  </div>
-                </a>
-              </li>
-            ))}
-          </ul>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </footer>

@@ -90,7 +90,7 @@ export default function Edit({ row }: { row: Row<VerificationPreview> }) {
             <HiDocumentArrowDown className="h-5 w-5" />
           </Button>
         </SheetTrigger>
-        <SheetContent className="flex flex-col gap-0 !bg-gray-900 !px-0 text-gray-200 sm:max-w-screen-md">
+        <SheetContent className="flex flex-col gap-0 bg-gray-900! px-0! text-gray-200 sm:max-w-(--breakpoint-md)">
           <ScrollArea className="pr-6">
             <SheetHeader className="pl-6">
               <SheetTitle className="text-gray-200">View identity verification application</SheetTitle>
@@ -126,7 +126,7 @@ export default function Edit({ row }: { row: Row<VerificationPreview> }) {
                     </Label>
                     <Input
                       id="full-name"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       value={getVerificationQuery.data.fullName}
                       readOnly
                     />
@@ -137,7 +137,7 @@ export default function Edit({ row }: { row: Row<VerificationPreview> }) {
                     </Label>
                     <Input
                       id="full-name"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       value={getVerificationQuery.data.birthdate.toLocaleDateString()}
                       readOnly
                     />
@@ -148,7 +148,7 @@ export default function Edit({ row }: { row: Row<VerificationPreview> }) {
                     </Label>
                     <Input
                       id="full-name"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       value={getName(getVerificationQuery.data.country.toLowerCase())}
                       readOnly
                     />
@@ -165,7 +165,7 @@ export default function Edit({ row }: { row: Row<VerificationPreview> }) {
                         </Label>
                         <Input
                           id="full-name"
-                          className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                          className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                           value={getVerificationQuery.data.schoolName ?? ""}
                           readOnly
                         />
@@ -176,7 +176,7 @@ export default function Edit({ row }: { row: Row<VerificationPreview> }) {
                         </Label>
                         <Input
                           id="full-name"
-                          className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                          className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                           value={schoolYearMap[getVerificationQuery.data.schoolYear ?? "none"]}
                           readOnly
                         />
@@ -192,7 +192,7 @@ export default function Edit({ row }: { row: Row<VerificationPreview> }) {
                     </Label>
                     <Input
                       id="full-name"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       value={verificationMethodMap[getVerificationQuery.data.verificationMethod]}
                       readOnly
                     />
@@ -204,7 +204,7 @@ export default function Edit({ row }: { row: Row<VerificationPreview> }) {
                       </Label>
                       <Input
                         id="full-name"
-                        className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                        className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                         value={getVerificationQuery.data.schoolEmail ?? ""}
                         readOnly
                       />
@@ -237,7 +237,7 @@ export default function Edit({ row }: { row: Row<VerificationPreview> }) {
                     </Label>
                     <Textarea
                       id="comments"
-                      className="h-24 !border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      className="h-24 border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       value={getVerificationQuery.data.comments ?? ""}
                       readOnly
                     />
@@ -248,7 +248,7 @@ export default function Edit({ row }: { row: Row<VerificationPreview> }) {
                     </Label>
                     <Input
                       id="full-name"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       value={getVerificationQuery.data.id}
                       readOnly
                     />

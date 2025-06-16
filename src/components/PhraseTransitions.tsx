@@ -46,7 +46,7 @@ export default function PhraseTransitions() {
       <Button
         size="icon"
         variant="ghost"
-        className={`ml-2 h-8 w-8 rounded-full text-gray-300 opacity-0 transition-opacity duration-300 hover:!bg-white/10 focus-visible:opacity-100 group-hover:opacity-100 ${currentPhrase !== 3 ? "!opacity-0" : ""}`}
+        className={`ml-2 h-8 w-8 rounded-full text-gray-300 opacity-0 transition-opacity duration-300 hover:bg-white/10! focus-visible:opacity-100 group-hover:opacity-100 ${currentPhrase !== 3 ? "opacity-0!" : ""}`}
         disabled={currentPhrase !== 3}
         title="Restart animation"
         onClick={() => setCurrentPhrase(0)}

@@ -24,7 +24,7 @@ export default async function Advent() {
   return (
     <main className="mx-4">
       <div className="mt-8 flex justify-center">
-        <div className="w-full max-w-screen-2xl">
+        <div className="w-full max-w-(--breakpoint-2xl)">
           <div className="flex flex-col items-center justify-between gap-16 xl:flex-row xl:gap-8">
             <div className="max-w-prose">
               <p className="mb-1 text-2xl font-bold text-gray-200">CyberStudents&rsquo;</p>
@@ -103,7 +103,7 @@ export default async function Advent() {
                 <div className="flex items-center justify-center">F</div>
                 <div className="flex items-center justify-center">S</div>
               </div>
-              <div className="grid w-full max-w-3xl grid-cols-7 grid-rows-4 rounded-lg outline outline-1 outline-gray-500">
+              <div className="grid w-full max-w-3xl grid-cols-7 grid-rows-4 rounded-lg outline-solid outline-1 outline-gray-500">
                 {eventChallenges.challenges.map(({ id, title, category, points }, index) => (
                   <Link
                     key={index}

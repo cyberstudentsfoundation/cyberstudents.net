@@ -60,7 +60,7 @@ export default function CyberstartArchiveScroll() {
     <ScrollArea
       ref={ref}
       zincThumb
-      className="group relative mx-auto flex max-h-48 flex-col gap-8 rounded-lg sm:max-h-72 md:max-h-96 md:flex-row xl:min-w-[49rem] xl:justify-between xl:gap-4"
+      className="group relative mx-auto flex max-h-48 flex-col gap-8 rounded-lg sm:max-h-72 md:max-h-96 md:flex-row xl:min-w-196 xl:justify-between xl:gap-4"
     >
       <div className="h-full">
         <Image src={cyberstartArchive} alt="CyberStart challenges archive forum channel" placeholder="blur" />
@@ -69,7 +69,7 @@ export default function CyberstartArchiveScroll() {
         size="icon"
         variant="ghost"
         title={`${paused ? "Resume" : "Pause"} scrolling`}
-        className="absolute bottom-3 right-3 h-8 w-8 rounded-lg opacity-0 transition-opacity hover:!bg-zinc-800/75 focus-visible:opacity-100 group-hover:opacity-100"
+        className="absolute bottom-3 right-3 h-8 w-8 rounded-lg opacity-0 transition-opacity hover:bg-zinc-800/75! focus-visible:opacity-100 group-hover:opacity-100"
         onClick={() => setPaused((prev) => !prev)}
       >
         {paused ? <HiPlay className="h-5 w-5" /> : <HiPause className="h-6 w-6" />}

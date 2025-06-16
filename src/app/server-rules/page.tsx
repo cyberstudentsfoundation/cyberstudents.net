@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 export default function ServerRules() {
   return (
     <main className="mx-4 mt-10 flex justify-center sm:mx-8 sm:mt-16 md:mx-10">
-      <div className="w-full max-w-screen-lg">
+      <div className="w-full max-w-(--breakpoint-lg)">
         <div className="prose prose-gray prose-invert">
           <h1>Server Rules</h1>
           <p>Last updated: July 23, 2024</p>

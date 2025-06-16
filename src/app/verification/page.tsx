@@ -13,7 +13,7 @@ export default async function VerificationPage() {
   return (
     <main className="mx-4 md:mx-8 lg:mx-16">
       <div className="mt-24 flex justify-center">
-        <div className="w-full max-w-screen-2xl">
+        <div className="w-full max-w-(--breakpoint-2xl)">
           <div className="mb-8 max-w-3xl space-y-4">
             <h1 className="text-3xl font-bold">Identity verification</h1>
             <p>

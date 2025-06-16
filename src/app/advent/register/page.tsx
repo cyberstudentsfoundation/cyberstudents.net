@@ -15,7 +15,7 @@ export default async function Register() {
   return (
     <main className="mx-4">
       <div className="mt-8 flex justify-center">
-        <div className="w-full max-w-screen-2xl">
+        <div className="w-full max-w-(--breakpoint-2xl)">
           <div className="flex flex-col items-center justify-between gap-16 xl:flex-row xl:items-start xl:gap-8">
             <div className="max-w-prose">
               {/* <Link href="/advent" className="mb-4 flex items-center gap-2 text-sm text-gray-300 hover:underline">
@@ -59,7 +59,7 @@ export default async function Register() {
                 </p>
                 <p></p>
                 <h2>Prizes</h2>
-                <Alert className="my-2 !bg-yellow-600 !bg-opacity-50 !text-gray-100 dark:bg-yellow-600">
+                <Alert className="my-2 bg-yellow-600/50! text-gray-100! dark:bg-yellow-600">
                   <HiExclamationCircle className="h-5 w-5" />
                   <AlertTitle>Middle school was removed from the MS/HS/College division</AlertTitle>
                   <AlertDescription className="mt-2 text-gray-300">

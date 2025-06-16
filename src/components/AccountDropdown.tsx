@@ -45,20 +45,20 @@ export default function AccountDropdown({ session }: { session?: Session | null 
       <DropdownMenuContent align="end">
         <DropdownMenuItem className="px-3 py-2 text-base" asChild>
           <Link href="/verification">
-            <HiOutlineIdentification className="!h-5 !w-5" />
+            <HiOutlineIdentification className="h-5! w-5!" />
             <span>Verification</span>
           </Link>
         </DropdownMenuItem>
         {userMeQuery?.data?.flags.includes("admin") && (
           <DropdownMenuItem className="px-3 py-2 text-base" asChild>
             <Link href="/dashboard">
-              <HiAdjustmentsHorizontal className="!h-5 !w-5" />
+              <HiAdjustmentsHorizontal className="h-5! w-5!" />
               <span>Dashboard</span>
             </Link>
           </DropdownMenuItem>
         )}
         <DropdownMenuItem className="px-3 py-2 text-base" onClick={() => signOut()}>
-          <HiArrowRightStartOnRectangle className="!h-5 !w-5" />
+          <HiArrowRightStartOnRectangle className="h-5! w-5!" />
           <span>Sign out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -248,7 +248,7 @@ const challengesData = [
 export default function Advent2024Results() {
   return (
     <main className="mx-4 mt-8 flex justify-center gap-12 sm:mx-8 md:mx-10">
-      <div className="w-full max-w-screen-sm xl:max-w-screen-lg">
+      <div className="w-full max-w-(--breakpoint-sm) xl:max-w-(--breakpoint-lg)">
         <article
           itemScope
           itemType="http://schema.org/Article"
@@ -323,7 +323,7 @@ export default function Advent2024Results() {
             Final leaderboard: High School/College Division
           </AnchoredHeading>
           <div className="overflow-x-auto">
-            <table className="min-w-[51.25rem]">
+            <table className="min-w-205">
               <thead>
                 <tr>
                   <th>Place</th>
@@ -407,7 +407,7 @@ export default function Advent2024Results() {
             Final leaderboard: Open - Write-Up Division
           </AnchoredHeading>
           <div className="overflow-x-auto">
-            <table className="min-w-[36.125rem]">
+            <table className="min-w-144.5">
               <thead>
                 <tr>
                   <th>Place</th>
@@ -538,7 +538,7 @@ export default function Advent2024Results() {
             the highest attempts per solve rate, with an average of 6.83 attempts for every solve.
           </p>
           <div className="overflow-x-auto">
-            <table className="min-w-[39.25rem]">
+            <table className="min-w-157">
               <thead>
                 <tr>
                   <th>Day</th>

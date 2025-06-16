@@ -58,10 +58,10 @@ export default function MobileNavbar({ session }: { session?: Session | null }) 
     <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
       <SheetTrigger asChild>
         <Button size="icon" variant="ghost" className={`flex xl:hidden ${menuOpen ? "bg-gray-800" : ""}`}>
-          <HiBars3 className="!h-6 !w-6" />
+          <HiBars3 className="h-6! w-6!" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="flex flex-col gap-0 !bg-gray-900 !px-0 text-gray-200 sm:max-w-screen-md">
+      <SheetContent className="flex flex-col gap-0 bg-gray-900! px-0! text-gray-200 sm:max-w-md">
         <ScrollArea className="pr-6">
           <SheetHeader className="sr-only">
             <SheetTitle>Navigation menu</SheetTitle>
@@ -85,7 +85,7 @@ export default function MobileNavbar({ session }: { session?: Session | null }) 
             <div className="py-2">
               <Accordion type="single" collapsible>
                 <AccordionItem value="competitions" className="border-gray-700">
-                  <AccordionTrigger className="pb-4 pt-0 text-xl font-medium !no-underline">
+                  <AccordionTrigger className="pt-0 pb-4 text-xl font-medium no-underline!">
                     Competitions
                   </AccordionTrigger>
                   <AccordionContent>
@@ -116,14 +116,14 @@ export default function MobileNavbar({ session }: { session?: Session | null }) 
                 target="_blank"
                 className="flex items-center"
               >
-                <FaDiscord className="mr-2 !h-6 !w-6" />
+                <FaDiscord className="mr-2 h-6! w-6!" />
                 <span>Discord</span>
-                <HiArrowUpRight className="ml-1 !h-3.5 !w-3.5 stroke-1" />
+                <HiArrowUpRight className="ml-1 h-3.5! w-3.5! stroke-1" />
               </a>
             </div>
             {!session && (
               <div className="flex items-center py-2 text-xl" role="button" onClick={() => signIn("discord")}>
-                <HiUserCircle className="mr-2 !h-6 !w-6" />
+                <HiUserCircle className="mr-2 h-6! w-6!" />
                 <span>Sign in</span>
               </div>
             )}
@@ -135,8 +135,8 @@ export default function MobileNavbar({ session }: { session?: Session | null }) 
     //   <DropdownMenuTrigger asChild>
     //     <Button size="icon" variant="ghost" className={`flex xl:hidden ${menuOpen ? "bg-gray-800" : ""}`}>
     //       <div className={`swap swap-rotate ${menuOpen ? "swap-active" : ""}`}>
-    //         <HiXMark className="swap-on !h-6 !w-6" />
-    //         <HiBars3 className="swap-off !h-6 !w-6" />
+    //         <HiXMark className="swap-on h-6! w-6!" />
+    //         <HiBars3 className="swap-off h-6! w-6!" />
     //       </div>
     //     </Button>
     //   </DropdownMenuTrigger>
@@ -150,7 +150,7 @@ export default function MobileNavbar({ session }: { session?: Session | null }) 
     //     ))}
     //     <DropdownMenuItem className="px-4 py-3 text-base" asChild>
     //       <a href="https://discord.com/invite/cyberstudents-916144903686336513" target="_blank">
-    //         <FaDiscord className="!h-6 !w-6" />
+    //         <FaDiscord className="h-6! w-6!" />
     //         <span>Join our Discord community</span>
     //       </a>
     //     </DropdownMenuItem>
@@ -160,7 +160,7 @@ export default function MobileNavbar({ session }: { session?: Session | null }) 
     //         role="button"
     //         onClick={() => signIn("discord")}
     //       >
-    //         <HiUserCircle className="!h-6 !w-6" />
+    //         <HiUserCircle className="h-6! w-6!" />
     //         <span>Sign in</span>
     //       </DropdownMenuItem>
     //     )}

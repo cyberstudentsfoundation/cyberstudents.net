@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-import { fontFamily } from "tailwindcss/defaultTheme";
+import defaultTheme from "tailwindcss/defaultTheme";
 
 const config = {
   darkMode: ["selector", "*"],
@@ -64,9 +64,9 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["var(--font-figtree)", ...fontFamily.sans],
-        serif: ["var(--font-dm-serif-text)", ...fontFamily.serif],
-        mono: ["var(--font-dm-mono)", ...fontFamily.mono],
+        sans: ["var(--font-figtree)", ...defaultTheme.fontFamily.sans],
+        serif: ["var(--font-dm-serif-text)", ...defaultTheme.fontFamily.serif],
+        mono: ["var(--font-dm-mono)", ...defaultTheme.fontFamily.mono],
       },
       keyframes: {
         "accordion-down": {

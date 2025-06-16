@@ -258,7 +258,7 @@ export default function Edit({ row, textButton }: { row?: Row<User>; textButton:
           </Button>
         </SheetTrigger>
         <SheetContent
-          className="flex flex-col gap-0 !bg-gray-900 !px-0 text-gray-200 sm:max-w-screen-md"
+          className="flex flex-col gap-0 bg-gray-900! px-0! text-gray-200 sm:max-w-(--breakpoint-md)"
           onInteractOutside={processSheetClose}
           onEscapeKeyDown={processSheetClose}
           onPointerDownOutside={processSheetClose}
@@ -312,7 +312,7 @@ export default function Edit({ row, textButton }: { row?: Row<User>; textButton:
                     <Label htmlFor="id">User ID</Label>
                     <Input
                       id="id"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       defaultValue={row?.original.id ?? "Generated after creation"}
                       disabled
                     />
@@ -321,7 +321,7 @@ export default function Edit({ row, textButton }: { row?: Row<User>; textButton:
                     <Label>Linked challenge</Label>
                     <Popover open={challengeMenuOpen} onOpenChange={setChallengeMenuOpen} modal={true}>
                       <PopoverTrigger
-                        className="!border-gray-900 !bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                        className="border-gray-900! bg-gray-200! text-gray-900 ring-gray-200! ring-offset-gray-900"
                         asChild
                       >
                         <Button
@@ -385,7 +385,7 @@ export default function Edit({ row, textButton }: { row?: Row<User>; textButton:
                     <Label htmlFor="name">Username</Label>
                     <Input
                       id="name"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       defaultValue={row?.original.name ?? ""}
                       ref={nameRef}
                       required
@@ -396,7 +396,7 @@ export default function Edit({ row, textButton }: { row?: Row<User>; textButton:
                     <Input
                       id="email"
                       type="email"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       defaultValue={row?.original.email}
                       ref={emailRef}
                       required
@@ -407,7 +407,7 @@ export default function Edit({ row, textButton }: { row?: Row<User>; textButton:
                     <Input
                       id="preferredEmail"
                       type="email"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       defaultValue={row?.original.preferredEmail ?? ""}
                       ref={preferredEmailRef}
                     />
@@ -417,7 +417,7 @@ export default function Edit({ row, textButton }: { row?: Row<User>; textButton:
                     <Input
                       id="image"
                       type="url"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       defaultValue={row?.original.image ?? ""}
                       ref={imageRef}
                     />
@@ -514,7 +514,7 @@ export default function Edit({ row, textButton }: { row?: Row<User>; textButton:
                       <TabsContent value="edit">
                         <Textarea
                           id="note"
-                          className="h-48 !border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                          className="h-48 border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                           value={note}
                           onChange={(e) => setNote(e.target.value)}
                         />
@@ -545,7 +545,7 @@ export default function Edit({ row, textButton }: { row?: Row<User>; textButton:
                     <Input
                       id="emailVerified"
                       type="datetime-local"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900 [color-scheme:_light]"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900 scheme-light"
                       defaultValue={
                         row?.original.emailVerified ? getDateTimeLocalValue(row.original.emailVerified) : ""
                       }

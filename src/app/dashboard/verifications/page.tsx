@@ -15,7 +15,7 @@ export default async function DashboardVerificationsPage() {
 
   return (
     <main className="flex justify-center overflow-auto">
-      <div className="flex w-full max-w-screen-2xl flex-col justify-center">
+      <div className="flex w-full max-w-(--breakpoint-2xl) flex-col justify-center">
         <div>
           <Verifications session={session} />
         </div>

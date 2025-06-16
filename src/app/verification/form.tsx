@@ -57,12 +57,13 @@ export default function VerificationForm({ session }: { session: Session | null 
       <div>
         <p className="mb-2">To get started, please login:</p>
         <Button
-          className="!hover:bg-[#5865f2]/70 flex items-center !bg-[#5865f2] font-bold !text-gray-200"
+          type="button"
+          className="!hover:bg-[#5865f2]/70 flex items-center bg-[#5865f2]! font-bold text-gray-200!"
           onClick={() => {
             signIn("discord");
           }}
         >
-          <FaDiscord className="!h-6 !w-6" />
+          <FaDiscord className="h-6! w-6!" />
           <span>Login with Discord</span>
         </Button>
       </div>
@@ -82,7 +83,7 @@ export default function VerificationForm({ session }: { session: Session | null 
   return (
     <div>
       {lastVerificationDateQuery.data?.createdAt && (
-        <Alert className="mb-8 max-w-2xl !bg-green-600 !bg-opacity-50 dark:bg-green-500">
+        <Alert className="mb-8 max-w-2xl bg-green-600/50! dark:bg-green-500">
           <HiCheckCircle className="h-5 w-5" />
           <AlertTitle>
             You submitted an identity verification application on{" "}
@@ -105,13 +106,14 @@ export default function VerificationForm({ session }: { session: Session | null 
         />
         <span className="text-lg">
           Logged in as <strong>{session?.user?.name}</strong>.&emsp;&emsp;Not you?{" "}
-          <button className="underline" onClick={() => signOut()}>
+          <button type="button" className="underline" onClick={() => signOut()}>
             Sign out.
           </button>
         </span>
       </div>
       <form
         onSubmit={async (e) => {
+          console.log("Submitting identity verification application...");
           e.preventDefault();
 
           setIsLoading(true);
@@ -201,7 +203,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                     </Label>
                     <Input
                       id="school-name"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       ref={schoolName}
                       required
                     />
@@ -211,7 +213,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                       School or university year
                     </Label>
                     <Select value={schoolYear} onValueChange={(status) => setSchoolYear(status)} required>
-                      <SelectTrigger className="!bg-gray-200 text-gray-900">
+                      <SelectTrigger className="bg-gray-200! text-gray-900">
                         <SelectValue placeholder="Select your year" />
                       </SelectTrigger>
                       <SelectContent>
@@ -248,7 +250,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                 </Label>
                 <Input
                   id="full-name"
-                  className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                  className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                   ref={fullName}
                   required
                 />
@@ -260,7 +262,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                 <Input
                   id="birthdate"
                   type="date"
-                  className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                  className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                   ref={birthdate}
                   required
                 />
@@ -270,7 +272,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                   Country of residence
                 </Label>
                 <Select value={country} onValueChange={(country) => setCountry(country)} required>
-                  <SelectTrigger className="!bg-gray-200 text-gray-900">
+                  <SelectTrigger className="bg-gray-200! text-gray-900">
                     <SelectValue placeholder="Select a country" />
                   </SelectTrigger>
                   <SelectContent>
@@ -343,7 +345,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                         <Input
                           type="email"
                           id="school-email"
-                          className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                          className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                           ref={schoolEmail}
                           required
                         />
@@ -351,7 +353,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                           This must be an email address managed by your school or university.
                         </span>
                       </div>
-                      <div className="w-full rounded-lg bg-yellow-500 bg-opacity-30 px-6 py-4">
+                      <div className="w-full rounded-lg bg-yellow-500/30 px-6 py-4">
                         Please send an email using your school email address to{" "}
                         <a href="mailto:admin@cyberstudents.net" className="font-bold underline">
                           admin@cyberstudents.net
@@ -372,7 +374,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                     </>
                   ) : verificationMethod === "verify-id" ? (
                     <>
-                      <div className="w-full space-y-2 rounded-lg bg-yellow-500 bg-opacity-30 px-6 py-4">
+                      <div className="w-full space-y-2 rounded-lg bg-yellow-500/30 px-6 py-4">
                         <p className="font-bold">Please take a clear photo with both of these items:</p>
                         <ul className="ml-4 list-disc space-y-2">
                           {isStudent === "yes" ? (
@@ -380,7 +382,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                               One of the following: a school-issued student ID card, official/unofficial transcript,
                               enrollment letter on school letterhead, class schedule for the semester, receipt from
                               bursar, or scholarship/financial aid letter
-                              <ul className="ml-10 mt-2 list-disc space-y-2">
+                              <ul className="mt-2 ml-10 list-disc space-y-2">
                                 <li>All documents, except for ID cards, must be dated</li>
                                 <li>All documents must contain the same name as you specified above</li>
                                 <li>
@@ -393,7 +395,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                               A government-issued ID, such as a driver&apos;s license, state-issued ID, military ID,
                               passport, birth certificate <strong>OR</strong> a document from a bank, insurance company,
                               or other credible business/organization such as a bank statement or utility bill.
-                              <ul className="ml-10 mt-2 list-disc space-y-2">
+                              <ul className="mt-2 ml-10 list-disc space-y-2">
                                 <li>This ID or document must include your full name and be dated</li>
                               </ul>
                             </li>
@@ -416,7 +418,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                       </div>
                     </>
                   ) : (
-                    <div className="w-full rounded-lg bg-yellow-500 bg-opacity-30 px-6 py-4">
+                    <div className="w-full rounded-lg bg-yellow-500/30 px-6 py-4">
                       Please explain in the field below how you would like to verify your identity. An administrator
                       will reach out to you shortly.
                     </div>
@@ -427,7 +429,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                     </Label>
                     <Textarea
                       id="comments"
-                      className="h-24 !border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      className="h-24 border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       ref={comments}
                     />
                   </div>

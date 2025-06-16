@@ -263,7 +263,7 @@ export default function Edit({ row, textButton }: { row?: Row<WriteUp>; textButt
           </Button>
         </SheetTrigger>
         <SheetContent
-          className="flex flex-col gap-0 !bg-gray-900 !px-0 text-gray-200 sm:max-w-screen-md"
+          className="flex flex-col gap-0 bg-gray-900! px-0! text-gray-200 sm:max-w-(--breakpoint-md)"
           onInteractOutside={processSheetClose}
           onEscapeKeyDown={processSheetClose}
           onPointerDownOutside={processSheetClose}
@@ -312,7 +312,7 @@ export default function Edit({ row, textButton }: { row?: Row<WriteUp>; textButt
                     <Label htmlFor="id">Write-up ID</Label>
                     <Input
                       id="id"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       defaultValue={row?.original.id ?? "Generated after creation"}
                       disabled
                     />
@@ -321,7 +321,7 @@ export default function Edit({ row, textButton }: { row?: Row<WriteUp>; textButt
                     <Label>Linked challenge</Label>
                     <Popover open={challengeMenuOpen} onOpenChange={setChallengeMenuOpen} modal={true}>
                       <PopoverTrigger
-                        className="!border-gray-900 !bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                        className="border-gray-900! bg-gray-200! text-gray-900 ring-gray-200! ring-offset-gray-900"
                         asChild
                       >
                         <Button
@@ -385,7 +385,7 @@ export default function Edit({ row, textButton }: { row?: Row<WriteUp>; textButt
                     <Label htmlFor="authorPreferredName">Author preferred name</Label>
                     <Input
                       id="authorPreferredName"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       defaultValue={row?.original.authorPreferredName}
                       ref={authorPreferredNameRef}
                       required
@@ -395,7 +395,7 @@ export default function Edit({ row, textButton }: { row?: Row<WriteUp>; textButt
                     <Label htmlFor="title">Title</Label>
                     <Input
                       id="title"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       defaultValue={row?.original.title}
                       ref={titleRef}
                       required
@@ -411,7 +411,7 @@ export default function Edit({ row, textButton }: { row?: Row<WriteUp>; textButt
                       <TabsContent value="edit">
                         <Textarea
                           id="content"
-                          className="h-48 !border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                          className="h-48 border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                           value={content}
                           onChange={(e) => setContent(e.target.value)}
                           required
@@ -427,7 +427,7 @@ export default function Edit({ row, textButton }: { row?: Row<WriteUp>; textButt
                     <Label htmlFor="originalURL">Original URL</Label>
                     <Input
                       id="originalURL"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       defaultValue={row?.original.originalURL ?? ""}
                       ref={originalURLRef}
                       required
@@ -437,7 +437,7 @@ export default function Edit({ row, textButton }: { row?: Row<WriteUp>; textButt
                     <Label htmlFor="authorMetadataGitHubURL">Author GitHub URL (optional)</Label>
                     <Input
                       id="authorMetadataGitHubURL"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       defaultValue={getAuthorMetadata().github}
                       ref={authorMetadataGitHubURL}
                       required
@@ -447,7 +447,7 @@ export default function Edit({ row, textButton }: { row?: Row<WriteUp>; textButt
                     <Label htmlFor="authorMetadataLinkedInURL">Author LinkedIn URL (optional)</Label>
                     <Input
                       id="authorMetadataLinkedInURL"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       defaultValue={getAuthorMetadata().linkedin}
                       ref={authorMetadataLinkedInURL}
                       required
@@ -458,7 +458,7 @@ export default function Edit({ row, textButton }: { row?: Row<WriteUp>; textButt
                     <Input
                       id="contentCreatedAt"
                       type="datetime-local"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900 [color-scheme:_light]"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900 scheme-light"
                       defaultValue={
                         row?.original.contentCreatedAt && getDateTimeLocalValue(row.original.contentCreatedAt)
                       }
@@ -471,7 +471,7 @@ export default function Edit({ row, textButton }: { row?: Row<WriteUp>; textButt
                     <Input
                       id="contentUpdatedAt"
                       type="datetime-local"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900 [color-scheme:_light]"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900 scheme-light"
                       defaultValue={
                         row?.original.contentUpdatedAt && getDateTimeLocalValue(row.original.contentUpdatedAt)
                       }
@@ -501,7 +501,7 @@ export default function Edit({ row, textButton }: { row?: Row<WriteUp>; textButt
                     <Input
                       id="publishDate"
                       type="datetime-local"
-                      className="!border-gray-900 bg-gray-200 text-gray-900 !ring-gray-200 ring-offset-gray-900 [color-scheme:_light]"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900 scheme-light"
                       defaultValue={row?.original.publishDate && getDateTimeLocalValue(row.original.publishDate)}
                       ref={publishDateRef}
                       required
