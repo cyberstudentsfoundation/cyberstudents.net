@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import type { Session } from "next-auth";
 import { api } from "~/trpc/react";
 import { DataTable } from "./data-table";
@@ -8,11 +7,11 @@ import { columns } from "./columns";
 
 export default function Challenges({ session }: { session: Session | null }) {
   const getChallengesQuery = api.dashboard.getChallenges.useQuery();
-  const getEventsQuery = api.dashboard.getEvents.useQuery();
+  // const getEventsQuery = api.dashboard.getEvents.useQuery();
 
-  async function refetchChallenges() {
-    await getChallengesQuery.refetch();
-  }
+  // async function refetchChallenges() {
+  //   await getChallengesQuery.refetch();
+  // }
 
   return (
     <div className="mx-4 pt-8 lg:mr-12 xl:mr-20">

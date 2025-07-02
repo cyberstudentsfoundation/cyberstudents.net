@@ -2,13 +2,11 @@
 
 import React, { useState, useRef, useEffect, useId } from "react";
 import { Row } from "@tanstack/react-table";
-import dayjs from "dayjs";
 import { api } from "~/trpc/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
 import { toast } from "sonner";
 import { User } from "./columns";
-import { HiArrowPath, HiMiniArrowPath, HiPencilSquare, HiPlus, HiPlusSmall, HiXMark } from "react-icons/hi2";
+import { HiPencilSquare, HiPlus } from "react-icons/hi2";
 import {
   Sheet,
   SheetContent,
@@ -21,15 +19,6 @@ import {
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/ui/select";
 import { Checkbox } from "~/components/ui/checkbox";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { Textarea } from "~/components/ui/textarea";
@@ -43,15 +32,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 import { Prose } from "~/lib/renderMarkdoc";
-import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from "~/components/ui/command";
 import { MultiSelect } from "~/components/ui/multi-select";
-import { cn } from "~/lib/utils";
-import { z } from "zod";
 
 export default function Edit({ row, textButton }: { row?: Row<User>; textButton: boolean }) {
   const router = useRouter();
@@ -132,7 +115,7 @@ export default function Edit({ row, textButton }: { row?: Row<User>; textButton:
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [flags]);
 
   function processSheetClose(e?: Event) {
     if (e) e.preventDefault();
@@ -192,7 +175,7 @@ export default function Edit({ row, textButton }: { row?: Row<User>; textButton:
     window.addEventListener("beforeunload", beforeUnloadHandler);
 
     return () => window.removeEventListener("beforeunload", beforeUnloadHandler);
-  }, [note, row, open]);
+  }, [note, row, open, isEmailVerified, flags, events, sessions, accounts]);
 
   return (
     <>
@@ -317,70 +300,6 @@ export default function Edit({ row, textButton }: { row?: Row<User>; textButton:
                       disabled
                     />
                   </div>
-                  {/* <div className="grid w-full max-w-sm items-center gap-1.5">
-                    <Label>Linked challenge</Label>
-                    <Popover open={challengeMenuOpen} onOpenChange={setChallengeMenuOpen} modal={true}>
-                      <PopoverTrigger
-                        className="border-gray-900! bg-gray-200! text-gray-900 ring-gray-200! ring-offset-gray-900"
-                        asChild
-                      >
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          aria-expanded={challengeMenuOpen}
-                          className="justify-between hover:text-gray-900 dark:hover:text-gray-900"
-                        >
-                          {challengeId
-                            ? (getChallengesQuery.data?.find((c) => c.id === challengeId)?.title ?? "")
-                            : "Select a challenge..."}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-96 p-0">
-                        <Command
-                          filter={(value, search) => {
-                            if (
-                              getChallengesQuery.data
-                                ?.find((c) => c.id === value)
-                                ?.title.toLowerCase()
-                                .includes(search.toLowerCase())
-                            )
-                              return 1;
-                            return 0;
-                          }}
-                        >
-                          <CommandInput placeholder="Search by title…" />
-                          <CommandList>
-                            <CommandEmpty>No challenge found.</CommandEmpty>
-                            <CommandGroup>
-                              {getChallengesQuery.data
-                                ?.sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime())
-                                .map(({ id, title, author, publishDate }) => (
-                                  <CommandItem
-                                    key={id}
-                                    value={id}
-                                    onSelect={() => {
-                                      setChallengeId(id);
-                                      setChallengeMenuOpen(false);
-                                    }}
-                                  >
-                                    <Check
-                                      className={cn("mr-2 h-4 w-4", challengeId === id ? "opacity-100" : "opacity-0")}
-                                    />
-                                    <div className="flex flex-col gap-0.5">
-                                      <span>{title}</span>
-                                      <span className="text-xs text-gray-400">
-                                        {dayjs(publishDate).format("MM/DD/YY")} · {author.name}
-                                      </span>
-                                    </div>
-                                  </CommandItem>
-                                ))}
-                            </CommandGroup>
-                          </CommandList>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
-                  </div> */}
                   <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label htmlFor="name">Username</Label>
                     <Input
@@ -545,7 +464,7 @@ export default function Edit({ row, textButton }: { row?: Row<User>; textButton:
                     <Input
                       id="emailVerified"
                       type="datetime-local"
-                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900 scheme-light"
+                      className="border-gray-900! bg-gray-200 text-gray-900 scheme-light ring-gray-200! ring-offset-gray-900"
                       defaultValue={
                         row?.original.emailVerified ? getDateTimeLocalValue(row.original.emailVerified) : ""
                       }

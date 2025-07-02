@@ -1,17 +1,11 @@
 import { getServerAuthSession } from "~/server/auth";
-import { api } from "~/trpc/server";
 import VerificationForm from "./form";
 
 export default async function VerificationPage() {
   const session = await getServerAuthSession();
 
-  let user = null;
-  if (session?.user) {
-    user = await api.user.me();
-  }
-
   return (
-    <main className="mx-4 md:mx-8 lg:mx-16">
+    <main className="mx-4 mb-12 sm:mb-24 md:mx-8 lg:mx-16">
       <div className="mt-24 flex justify-center">
         <div className="w-full max-w-(--breakpoint-2xl)">
           <div className="mb-8 max-w-3xl space-y-4">

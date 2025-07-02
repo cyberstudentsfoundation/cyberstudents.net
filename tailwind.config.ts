@@ -67,6 +67,7 @@ const config = {
         sans: ["var(--font-figtree)", ...defaultTheme.fontFamily.sans],
         serif: ["var(--font-dm-serif-text)", ...defaultTheme.fontFamily.serif],
         mono: ["var(--font-dm-mono)", ...defaultTheme.fontFamily.mono],
+        mokoto: ["var(--font-mokoto)", ...defaultTheme.fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {
@@ -101,12 +102,41 @@ const config = {
             transform: "translateY(8px)",
           },
         },
+        blob: {
+          "0%": {
+            transform: "translate(0px, 0px) scale(1)",
+          },
+          "33%": {
+            transform: "translate(30px, -50px) scale(1.1)",
+          },
+          "66%": {
+            transform: "translate(-20px, 20px) scale(0.9)",
+          },
+          "100%": {
+            transform: "translate(0px, 0px) scale(1)",
+          },
+        },
+        travelX: {
+          "0%": { transform: "translateX(-30%)" },
+          "100%": { transform: "translateX(130vw)" },
+        },
+        flicker: {
+          "0%, 19%, 21%, 23%, 25%, 54%, 56%, 100%": {
+            opacity: "1",
+          },
+          "20%, 24%, 55%": {
+            opacity: "0.4",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         float1: "float1 4s ease-in-out infinite",
         float2: "float2 4s ease-in-out infinite",
+        blob: "blob 7s infinite",
+        "travel-x": "travelX linear infinite",
+        flicker: "flicker 1.5s 2",
       },
     },
   },

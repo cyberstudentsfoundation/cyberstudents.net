@@ -7,11 +7,11 @@ import { cn } from "~/lib/utils";
 
 const ScrollArea = React.forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> & { zincThumb?: boolean }
->(({ className, children, zincThumb, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> & { thumbClassName?: string }
+>(({ className, children, thumbClassName, ...props }, ref) => (
   <ScrollAreaPrimitive.Root ref={ref} className={cn("relative overflow-hidden", className)} {...props}>
     <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">{children}</ScrollAreaPrimitive.Viewport>
-    <ScrollBar zincThumb={zincThumb} />
+    <ScrollBar thumbClassName={thumbClassName} />
     <ScrollAreaPrimitive.Corner />
   </ScrollAreaPrimitive.Root>
 ));
@@ -19,13 +19,13 @@ ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName;
 
 const ScrollBar = React.forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>,
-  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar> & { zincThumb?: boolean }
->(({ className, orientation = "vertical", zincThumb, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar> & { thumbClassName?: string }
+>(({ className, orientation = "vertical", thumbClassName, ...props }, ref) => (
   <ScrollAreaPrimitive.ScrollAreaScrollbar
     ref={ref}
     orientation={orientation}
     className={cn(
-      "flex touch-none select-none transition-colors",
+      "flex touch-none transition-colors select-none",
       orientation === "vertical" && "h-full w-2.5 border-l border-l-transparent p-px",
       orientation === "horizontal" && "h-2.5 flex-col border-t border-t-transparent p-px",
       className,
@@ -33,7 +33,7 @@ const ScrollBar = React.forwardRef<
     {...props}
   >
     <ScrollAreaPrimitive.ScrollAreaThumb
-      className={cn("relative flex-1 rounded-full bg-gray-200", zincThumb ? "dark:bg-zinc-800" : "dark:bg-gray-800")}
+      className={cn("relative flex-1 rounded-full bg-gray-200 dark:bg-gray-800", thumbClassName)}
     />
   </ScrollAreaPrimitive.ScrollAreaScrollbar>
 ));

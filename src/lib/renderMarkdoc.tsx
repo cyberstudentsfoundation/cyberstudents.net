@@ -1,6 +1,7 @@
 import React from "react";
 import Markdoc, { renderers } from "@markdoc/markdoc";
 import Alert from "~/components/Alert";
+import { cn } from "~/lib/utils";
 
 const config = {
   tags: {
@@ -19,9 +20,14 @@ export function renderMarkdoc(markdown: string) {
   return rendered;
 }
 
-export function Prose({ children }: { children: string }) {
+export function Prose({ children, className }: { children: string; className?: string }) {
   return (
-    <div className="prose prose-gray prose-invert prose-code:rounded prose-code:bg-gray-900 prose-code:px-1 prose-code:py-0.5 prose-code:font-medium prose-code:before:hidden prose-code:after:hidden prose-hr:my-[1.25em]">
+    <div
+      className={cn(
+        "prose prose-gray prose-invert prose-code:rounded prose-code:bg-gray-900 prose-code:px-1 prose-code:py-0.5 prose-code:font-medium prose-code:before:hidden prose-code:after:hidden prose-hr:my-[1.25em] wrap-break-word",
+        className,
+      )}
+    >
       {renderMarkdoc(children)}
     </div>
   );

@@ -10,10 +10,10 @@ export default async function NotFound() {
   const session = await getServerAuthSession();
 
   return (
-    <main>
+    <main className="mb-12 sm:mb-24">
       <div className="mx-4 flex h-[calc(100vh-3.5rem)] items-center justify-center">
         <div className="text-center">
-          <div className="group mb-4 flex w-full justify-center opacity-50 transition-all motion-duration-2000 motion-safe:motion-preset-wobble-sm hover:opacity-100">
+          <div className="group motion-duration-2000 motion-safe:motion-preset-wobble-sm mb-4 flex w-full justify-center opacity-50 transition-all hover:opacity-100">
             <Image
               src={NounCat}
               alt="Cat"
@@ -69,7 +69,7 @@ export default async function NotFound() {
           If you believe something is wrong, please contact{" "}
           <a
             href="https://discord.com/users/972742287291449365"
-            className="not-prose text-nowrap rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
+            className="not-prose rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-nowrap text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
           >
             @GodderE2D
           </a>{" "}

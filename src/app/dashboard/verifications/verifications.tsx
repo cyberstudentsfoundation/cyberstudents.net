@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import type { Session } from "next-auth";
 import { api } from "~/trpc/react";
 import { DataTable } from "./data-table";

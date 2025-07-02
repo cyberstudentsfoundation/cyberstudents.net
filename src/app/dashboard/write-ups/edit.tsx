@@ -5,10 +5,9 @@ import { Row } from "@tanstack/react-table";
 import dayjs from "dayjs";
 import { api } from "~/trpc/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
 import { toast } from "sonner";
 import { WriteUp } from "./columns";
-import { HiArrowPath, HiMiniArrowPath, HiPencilSquare, HiPlus, HiPlusSmall, HiXMark } from "react-icons/hi2";
+import { HiMiniArrowPath, HiPencilSquare, HiPlus } from "react-icons/hi2";
 import {
   Sheet,
   SheetContent,
@@ -21,16 +20,6 @@ import {
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/ui/select";
-import { Checkbox } from "~/components/ui/checkbox";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { Textarea } from "~/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
@@ -43,7 +32,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 import { Prose } from "~/lib/renderMarkdoc";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
@@ -440,7 +428,6 @@ export default function Edit({ row, textButton }: { row?: Row<WriteUp>; textButt
                       className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       defaultValue={getAuthorMetadata().github}
                       ref={authorMetadataGitHubURL}
-                      required
                     />
                   </div>
                   <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -450,7 +437,6 @@ export default function Edit({ row, textButton }: { row?: Row<WriteUp>; textButt
                       className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       defaultValue={getAuthorMetadata().linkedin}
                       ref={authorMetadataLinkedInURL}
-                      required
                     />
                   </div>
                   <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -458,7 +444,8 @@ export default function Edit({ row, textButton }: { row?: Row<WriteUp>; textButt
                     <Input
                       id="contentCreatedAt"
                       type="datetime-local"
-                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900 scheme-light"
+                      step={1}
+                      className="border-gray-900! bg-gray-200 text-gray-900 scheme-light ring-gray-200! ring-offset-gray-900"
                       defaultValue={
                         row?.original.contentCreatedAt && getDateTimeLocalValue(row.original.contentCreatedAt)
                       }
@@ -471,7 +458,8 @@ export default function Edit({ row, textButton }: { row?: Row<WriteUp>; textButt
                     <Input
                       id="contentUpdatedAt"
                       type="datetime-local"
-                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900 scheme-light"
+                      step={1}
+                      className="border-gray-900! bg-gray-200 text-gray-900 scheme-light ring-gray-200! ring-offset-gray-900"
                       defaultValue={
                         row?.original.contentUpdatedAt && getDateTimeLocalValue(row.original.contentUpdatedAt)
                       }
@@ -501,7 +489,8 @@ export default function Edit({ row, textButton }: { row?: Row<WriteUp>; textButt
                     <Input
                       id="publishDate"
                       type="datetime-local"
-                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900 scheme-light"
+                      step={1}
+                      className="border-gray-900! bg-gray-200 text-gray-900 scheme-light ring-gray-200! ring-offset-gray-900"
                       defaultValue={row?.original.publishDate && getDateTimeLocalValue(row.original.publishDate)}
                       ref={publishDateRef}
                       required

@@ -4,8 +4,8 @@ import { useState } from "react";
 import type { Session } from "next-auth";
 import { api } from "~/trpc/react";
 import { DataTable } from "./data-table";
-import { type LeaderboardEntry, columns } from "./columns";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
+import { columns } from "./columns";
+import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
 
 export default function Leaderboard({ session }: { session: Session | null }) {
   const [division, setDivision] = useState("open");

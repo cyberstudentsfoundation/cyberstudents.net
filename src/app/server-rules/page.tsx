@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 
 export default function ServerRules() {
   return (
-    <main className="mx-4 mt-10 flex justify-center sm:mx-8 sm:mt-16 md:mx-10">
+    <main className="mx-4 mt-10 mb-12 flex justify-center sm:mx-8 sm:mt-16 sm:mb-24 md:mx-10">
       <div className="w-full max-w-(--breakpoint-lg)">
         <div className="prose prose-gray prose-invert">
           <h1>Server Rules</h1>
@@ -16,7 +16,7 @@ export default function ServerRules() {
             <a
               href="https://discord.com/channels/916144903686336513/1158407393856720926"
               target="_blank"
-              className="not-prose text-nowrap rounded-sm bg-[rgba(88,101,242,0.3)] px-1 py-0.5 font-medium text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
+              className="not-prose rounded-sm bg-[rgba(88,101,242,0.3)] px-1 py-0.5 font-medium text-nowrap text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
             >
               #📒丨briefing
             </a>{" "}
@@ -50,7 +50,7 @@ export default function ServerRules() {
               <a
                 href="https://discord.com/users/575252669443211264"
                 target="_blank"
-                className="not-prose text-nowrap rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
+                className="not-prose rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-nowrap text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
               >
                 @ModMail
               </a>{" "}
@@ -87,7 +87,7 @@ export default function ServerRules() {
               <a
                 href="https://discord.com/users/575252669443211264"
                 target="_blank"
-                className="not-prose text-nowrap rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
+                className="not-prose rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-nowrap text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
               >
                 @ModMail
               </a>
@@ -124,7 +124,7 @@ export default function ServerRules() {
               <a
                 href="https://discord.com/users/693224764587770038"
                 target="_blank"
-                className="not-prose text-nowrap rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
+                className="not-prose rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-nowrap text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
               >
                 @vip3r
               </a>{" "}

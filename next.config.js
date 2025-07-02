@@ -23,15 +23,15 @@ const config = {
       // https://posthog.com/docs/advanced/proxy/nextjs
       // Change URLs to eu if using the EU PostHog cloud
       {
-        source: "/ingest/static/:path*",
+        source: "/anti-cheat/static/:path*",
         destination: "https://us-assets.i.posthog.com/static/:path*",
       },
       {
-        source: "/ingest/:path*",
+        source: "/anti-cheat/:path*",
         destination: "https://us.i.posthog.com/:path*",
       },
       {
-        source: "/ingest/decide",
+        source: "/anti-cheat/decide",
         destination: "https://us.i.posthog.com/decide",
       },
     ];

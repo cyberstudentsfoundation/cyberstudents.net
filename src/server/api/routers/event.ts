@@ -66,7 +66,7 @@ export const eventRouter = createTRPCRouter({
     return;
   }),
 
-  checkAccessCode: publicProcedure.input(checkAccessCodeSchema).mutation(async ({ ctx, input }) => {
+  checkAccessCode: publicProcedure.input(checkAccessCodeSchema).mutation(async ({ input }) => {
     const codes = env.ACCESS_CODES?.trim().split(",") ?? [];
     return codes.includes(input.code);
   }),

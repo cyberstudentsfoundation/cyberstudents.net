@@ -18,6 +18,7 @@ import { FaTableCellsRowLock, FaMagnifyingGlassChart, FaGear, FaCheck, FaClock }
 import { LuBinary } from "react-icons/lu";
 import { BiNetworkChart } from "react-icons/bi";
 import {
+  HiArrowUpRight,
   HiChevronLeft,
   HiFlag,
   HiLink,
@@ -25,7 +26,6 @@ import {
   HiOutlineChatBubbleLeftRight,
   HiOutlineCubeTransparent,
 } from "react-icons/hi2";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "~/components/ui/hover-card";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { Button } from "~/components/ui/button";
@@ -51,6 +51,7 @@ const CATEGORY_ICON_MAP: Record<string, JSX.Element> = {
 };
 
 // Ensure all colors are defined by Tailwind's compiler
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const _allColors = (
   <div className="bg-blue-900/50 bg-blue-950/50 bg-fuchsia-900/50 bg-fuchsia-950/50 bg-lime-900/50 bg-lime-950/50 bg-pink-900/50 bg-pink-950/50 bg-red-900/50 bg-red-950/50 bg-yellow-900/50 bg-yellow-950/50 hover:bg-blue-900/80 hover:bg-blue-950/80 hover:bg-fuchsia-900/80 hover:bg-fuchsia-950/80 hover:bg-lime-900/80 hover:bg-lime-950/80 hover:bg-pink-900/80 hover:bg-pink-950/80 hover:bg-red-900/80 hover:bg-red-950/80 hover:bg-yellow-900/80 hover:bg-yellow-950/80" />
 );
@@ -79,6 +80,8 @@ export default function Challenges({
     { event: "aoc2024", onlyShowCurrentUser: true },
     { refetchInterval: 10_000 },
   );
+
+  const [writeUpsShown, setWriteUpsShown] = useState<string[]>([]);
 
   if (!eventChallenges) {
     return <p className="text-red-500">No challenges found.</p>;
@@ -280,13 +283,6 @@ export default function Challenges({
                                 </a>
                               ))}
                             </div>
-                            <h2 className="mt-4 mb-2 text-xl font-bold text-gray-400">Write-ups</h2>
-                            <p className="text-gray-300">
-                              {/* <strong>zarnex__</strong>&apos;s write-up was selected as the best write-up submitted for
-                              this challenge. */}
-                              Write-ups will be available soon. You can search for write-ups online in the meantime.
-                              (Sorry.)
-                            </p>
                           </div>
                           <div className="grow-0 basis-1/3">
                             <h2 className="mb-1 text-xl font-bold text-gray-400">Hint</h2>
@@ -422,6 +418,50 @@ export default function Challenges({
                               Discord server.
                             </a>
                           </span>
+                        </div>
+                        <div className="max-w-prose">
+                          <h2 className="mt-8 mb-2 text-xl font-bold text-gray-400">Write-up</h2>
+                          {challenge.writeUps?.length ? (
+                            <>
+                              <p className="text-gray-300">
+                                <strong>{challenge.writeUps[0]!.authorPreferredName}</strong>&apos;s write-up was
+                                selected as the best write-up submitted for this challenge.
+                              </p>
+                              {challenge.writeUps[0]!.originalURL ? (
+                                <a
+                                  href={challenge.writeUps![0]!.originalURL}
+                                  target="_blank"
+                                  className="mt-2 flex items-center gap-1 text-gray-300 underline decoration-gray-500 underline-offset-2 transition-colors hover:text-gray-200 hover:decoration-gray-400"
+                                >
+                                  <span>View this write-up on GitHub</span>
+                                  <HiArrowUpRight className="h-3 w-3 stroke-1" />
+                                </a>
+                              ) : null}
+                              <div className="relative">
+                                <div
+                                  className={`overflow-y-hidden text-gray-300 ${!writeUpsShown.includes(challenge.id) ? "h-32 select-none" : ""}`}
+                                >
+                                  <Prose>{challenge.writeUps![0]!.content}</Prose>
+                                </div>
+                                <div
+                                  className={`absolute bottom-0 flex w-full justify-center bg-gradient-to-t from-gray-800 to-gray-800/60 pt-12 ${writeUpsShown.includes(challenge.id) ? "pointer-events-none h-full opacity-0" : "h-32 opacity-100"} transition-opacity duration-300`}
+                                >
+                                  <Button
+                                    className="bg-white/80 text-gray-950 backdrop-blur-[1px] hover:bg-white/70! hover:text-gray-950!"
+                                    variant="ghost"
+                                    onClick={() => setWriteUpsShown((prev) => [...prev, challenge.id])}
+                                  >
+                                    Reveal write-up
+                                  </Button>
+                                </div>
+                              </div>
+                            </>
+                          ) : (
+                            <p className="text-gray-300">
+                              No write-up has been submitted for this challenge, nor did the challenge author provide an
+                              official solution.
+                            </p>
+                          )}
                         </div>
                       </div>
                     )}

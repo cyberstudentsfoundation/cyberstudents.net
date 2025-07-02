@@ -1,14 +1,12 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useId } from "react";
+import React, { useState, useEffect } from "react";
 import { Row } from "@tanstack/react-table";
-import dayjs from "dayjs";
 import { api } from "~/trpc/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { toast } from "sonner";
 import { VerificationPreview } from "./columns";
-import { HiArrowUpRight, HiDocumentArrowDown, HiPencilSquare, HiPlus, HiPlusSmall, HiXMark } from "react-icons/hi2";
+import { HiArrowUpRight, HiDocumentArrowDown } from "react-icons/hi2";
 import {
   Sheet,
   SheetContent,
@@ -21,20 +19,8 @@ import {
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/ui/select";
-import { Checkbox } from "~/components/ui/checkbox";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { Textarea } from "~/components/ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { Prose } from "~/lib/renderMarkdoc";
 import { getName } from "country-list";
 
 export default function Edit({ row }: { row: Row<VerificationPreview> }) {

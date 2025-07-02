@@ -59,21 +59,34 @@ export default function CyberstartArchiveScroll() {
   return (
     <ScrollArea
       ref={ref}
-      zincThumb
-      className="group relative mx-auto flex max-h-48 flex-col gap-8 rounded-lg sm:max-h-72 md:max-h-96 md:flex-row xl:min-w-196 xl:justify-between xl:gap-4"
+      thumbClassName="dark:bg-zinc-800"
+      className="group relative mx-auto flex max-h-48 flex-col gap-8 overflow-visible rounded-lg sm:max-h-72 md:max-h-96 md:flex-row xl:min-w-196 xl:justify-between xl:gap-4"
     >
-      <div className="h-full">
-        <Image src={cyberstartArchive} alt="CyberStart challenges archive forum channel" placeholder="blur" />
+      <div className="overflow-auto">
+        <div className="h-full">
+          <Image src={cyberstartArchive} alt="CyberStart challenges archive forum channel" placeholder="blur" />
+        </div>
+        <Button
+          size="icon"
+          variant="ghost"
+          title={`${paused ? "Resume" : "Pause"} scrolling`}
+          className="absolute right-3 bottom-3 h-8 w-8 rounded-lg opacity-0 transition-opacity group-hover:opacity-100 hover:bg-zinc-800/75! focus-visible:opacity-100"
+          onClick={() => setPaused((prev) => !prev)}
+        >
+          {paused ? <HiPlay className="h-5 w-5" /> : <HiPause className="h-6 w-6" />}
+        </Button>
+        <p className="flex-inline absolute -bottom-12 w-full justify-center text-center text-sm text-gray-300 sm:-bottom-7">
+          The{" "}
+          <a
+            href="https://discord.gg/ERwjhnAKw8"
+            target="_blank"
+            className="not-prose rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-nowrap text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
+          >
+            #cyberstart-challenge-help
+          </a>{" "}
+          archive – the CyberStart help forum that featured 174 challenges
+        </p>
       </div>
-      <Button
-        size="icon"
-        variant="ghost"
-        title={`${paused ? "Resume" : "Pause"} scrolling`}
-        className="absolute bottom-3 right-3 h-8 w-8 rounded-lg opacity-0 transition-opacity hover:bg-zinc-800/75! focus-visible:opacity-100 group-hover:opacity-100"
-        onClick={() => setPaused((prev) => !prev)}
-      >
-        {paused ? <HiPlay className="h-5 w-5" /> : <HiPause className="h-6 w-6" />}
-      </Button>
     </ScrollArea>
   );
 }

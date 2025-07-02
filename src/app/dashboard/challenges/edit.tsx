@@ -21,15 +21,7 @@ import {
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { Checkbox } from "~/components/ui/checkbox";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { Textarea } from "~/components/ui/textarea";
@@ -43,7 +35,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 import { Prose } from "~/lib/renderMarkdoc";
 
@@ -659,7 +650,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                     <Input
                       id="publishDate"
                       type="datetime-local"
-                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900 scheme-light"
+                      className="border-gray-900! bg-gray-200 text-gray-900 scheme-light ring-gray-200! ring-offset-gray-900"
                       defaultValue={row?.original.publishDate && getDateTimeLocalValue(row.original.publishDate)}
                       ref={publishDateRef}
                       required

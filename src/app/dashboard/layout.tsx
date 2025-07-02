@@ -1,10 +1,9 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <div className="mt-10 flex flex-col gap-4 lg:ml-12 lg:flex-row lg:gap-12 xl:ml-20 xl:gap-20">
+      <div className="mt-10 mb-12 flex flex-col gap-4 sm:mb-24 lg:ml-12 lg:flex-row lg:gap-12 xl:ml-20 xl:gap-20">
         <nav className="mt-8 self-center text-center lg:w-52 lg:self-start lg:text-left">
           <h1 className="text-2xl font-bold text-gray-400">Dashboard</h1>
           <div className="mt-4 flex flex-col gap-2">

@@ -3,39 +3,10 @@
 import { useState } from "react";
 import type { Session } from "next-auth";
 import Link from "next/link";
-import {
-  HiArrowUpRight,
-  HiBars3,
-  HiUserCircle,
-  HiXMark,
-  HiMiniArrowPath,
-  HiPencilSquare,
-  HiPlus,
-} from "react-icons/hi2";
+import { HiArrowUpRight, HiBars3, HiUserCircle } from "react-icons/hi2";
 import { Button } from "~/components/ui/button";
-import dayjs from "dayjs";
-import { api } from "~/trpc/react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "~/components/ui/sheet";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "~/components/ui/sheet";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { Textarea } from "~/components/ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { Prose } from "~/lib/renderMarkdoc";
-import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from "~/components/ui/command";
-import { cn } from "~/lib/utils";
-import { DropdownMenuItem } from "~/components/ui/dropdown-menu";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
 import { FaDiscord } from "react-icons/fa6";
 import { signIn } from "next-auth/react";
@@ -90,7 +61,13 @@ export default function MobileNavbar({ session }: { session?: Session | null }) 
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="flex flex-col gap-2">
-                      <span className="text-lg text-gray-500">CyberStudents CTF – Coming Soon</span>
+                      <Link
+                        href="/ctf"
+                        className="text-lg transition-colors hover:text-cyan-300"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        CSD CTF
+                      </Link>
                       <Link
                         href="/advent"
                         className="text-lg transition-colors hover:text-cyan-300"

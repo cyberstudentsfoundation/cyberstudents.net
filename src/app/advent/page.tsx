@@ -1,5 +1,5 @@
 import { HiOutlineAcademicCap, HiOutlineLifebuoy, HiOutlineTrophy } from "react-icons/hi2";
-import { getServerAuthSession } from "~/server/auth";
+// import { getServerAuthSession } from "~/server/auth";
 import Link from "next/link";
 import { api } from "~/trpc/server";
 import Image from "next/image";
@@ -12,12 +12,12 @@ import { LuBinary } from "react-icons/lu";
 import { BiNetworkChart } from "react-icons/bi";
 
 export default async function Advent() {
-  const session = await getServerAuthSession();
+  // const session = await getServerAuthSession();
 
-  let user = null;
-  if (session?.user) {
-    user = await api.user.me();
-  }
+  // let user = null;
+  // if (session?.user) {
+  //   user = await api.user.me();
+  // }
 
   const eventChallenges = await api.challenge.fetchPreview({ event: "aoc2024" });
 
@@ -33,9 +33,9 @@ export default async function Advent() {
               </h1>
               <p className="mt-8 text-lg">
                 Every day from December 1st to 25th, solve beginner-oriented gamified cybersecurity challenges. Get
-                familiar with capture-the-flag challenges and cyber concepts from a wide range of popular categories.
+                familiar with capture the flag challenges and cyber concepts from a wide range of popular categories.
               </p>
-              <ul className="mb-8 mt-6 text-lg">
+              <ul className="mt-6 mb-8 text-lg">
                 <li className="mb-1.5 flex items-center gap-1.5">
                   <HiOutlineAcademicCap className="h-6 w-6 shrink-0" />
                   <span>Beginner-oriented; challenges get harder as the month progresses</span>
@@ -103,12 +103,12 @@ export default async function Advent() {
                 <div className="flex items-center justify-center">F</div>
                 <div className="flex items-center justify-center">S</div>
               </div>
-              <div className="grid w-full max-w-3xl grid-cols-7 grid-rows-4 rounded-lg outline-solid outline-1 outline-gray-500">
+              <div className="grid w-full max-w-3xl grid-cols-7 grid-rows-4 rounded-lg outline-1 outline-gray-500 outline-solid">
                 {eventChallenges.challenges.map(({ id, title, category, points }, index) => (
                   <Link
                     key={index}
                     href={!id.startsWith("placeholder-") ? `/advent/challenges?challenge=${id}` : ""}
-                    className="flex cursor-pointer flex-col justify-between border-b border-r border-gray-700 bg-gray-800 p-3 hover:bg-gray-700"
+                    className="flex cursor-pointer flex-col justify-between border-r border-b border-gray-700 bg-gray-800 p-3 hover:bg-gray-700"
                   >
                     <div>
                       <div className="mb-1 hidden font-bold sm:block">

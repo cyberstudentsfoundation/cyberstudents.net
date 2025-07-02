@@ -9,7 +9,6 @@ import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "~/server/api/root";
 import type { Session } from "next-auth";
 import { signIn, signOut } from "next-auth/react";
-import { getCodeList } from "country-list";
 import { toast } from "sonner";
 import { registerSchema } from "~/lib/schemas";
 import { HiCheckCircle } from "react-icons/hi2";
@@ -28,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import CountrySelect from "~/components/CountrySelect";
 
 export default function RegisterForm({
   session,
@@ -181,32 +181,7 @@ export default function RegisterForm({
             </div>
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="country">Country of residence</Label>
-              <Select value={country} onValueChange={(country) => setCountry(country)} disabled={isRegistered}>
-                <SelectTrigger className="bg-gray-200! text-gray-900">
-                  <SelectValue placeholder="Select a country" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="US" /* uppercase to avoid collision with the one below */>
-                      United States of America
-                    </SelectItem>
-                    <SelectItem value="CA">Canada</SelectItem>
-                    <SelectItem value="IN">India</SelectItem>
-                  </SelectGroup>
-                  <SelectGroup>
-                    <SelectLabel className="-ml-2">
-                      <hr />
-                    </SelectLabel>
-                    {Object.entries(getCodeList())
-                      .sort(([, a], [, b]) => a.localeCompare(b))
-                      .map(([code, name]) => (
-                        <SelectItem key={code} value={code}>
-                          {name}
-                        </SelectItem>
-                      ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <CountrySelect country={country} setCountry={setCountry} disabled={isRegistered} />
             </div>
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="country">Current/incoming schooling status</Label>
@@ -215,7 +190,7 @@ export default function RegisterForm({
                 onValueChange={(status) => setSchoolingStatus(status)}
                 disabled={isRegistered}
               >
-                <SelectTrigger className="bg-gray-200! text-gray-900">
+                <SelectTrigger className="w-full bg-gray-200! text-gray-900!">
                   <SelectValue placeholder="Select your status" />
                 </SelectTrigger>
                 <SelectContent>

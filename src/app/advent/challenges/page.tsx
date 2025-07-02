@@ -1,6 +1,6 @@
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 import Challenges from "./challenges";
 import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
 
@@ -16,10 +16,10 @@ export default async function Register() {
 
   const eventChallenges = await api.challenge.fetch({ event: "aoc2024", fetchExtended: true }); // change back to !!session?.user for next event
 
-  let user = null;
-  if (session?.user) {
-    user = await api.user.me();
-  }
+  // let user = null;
+  // if (session?.user) {
+  //   user = await api.user.me();
+  // }
 
   return (
     <main className="mx-4 flex justify-center">
@@ -38,7 +38,7 @@ export default async function Register() {
             <a
               href="https://discord.com/users/575252669443211264"
               target="_blank"
-              className="text-nowrap rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
+              className="rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-nowrap text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
             >
               @ModMail
             </a>{" "}

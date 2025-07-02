@@ -26,7 +26,7 @@ export const dashboardRouter = createTRPCRouter({
     return authors;
   }),
 
-  getChallenges: adminProcedure.query(async ({ ctx, input }) => {
+  getChallenges: adminProcedure.query(async ({ ctx }) => {
     const challenges = await ctx.db.challenge.findMany({
       include: {
         author: true,
@@ -124,7 +124,7 @@ export const dashboardRouter = createTRPCRouter({
     await ctx.db.challenge.delete({ where: { id: input.id } });
   }),
 
-  getWriteUps: adminProcedure.query(async ({ ctx, input }) => {
+  getWriteUps: adminProcedure.query(async ({ ctx }) => {
     const writeUps = await ctx.db.writeUp.findMany({
       include: { challenge: { include: { author: true } } },
       orderBy: { challenge: { publishDate: "desc" } },
@@ -182,7 +182,7 @@ export const dashboardRouter = createTRPCRouter({
     await ctx.db.writeUp.delete({ where: { id: input.id } });
   }),
 
-  getVerifications: adminProcedure.query(async ({ ctx, input }) => {
+  getVerifications: adminProcedure.query(async ({ ctx }) => {
     const verifications = await ctx.db.verification.findMany({
       orderBy: { createdAt: "desc" },
       select: { id: true, user: true, userId: true, createdAt: true },
@@ -197,7 +197,7 @@ export const dashboardRouter = createTRPCRouter({
     return verification;
   }),
 
-  getUsers: adminProcedure.query(async ({ ctx, input }) => {
+  getUsers: adminProcedure.query(async ({ ctx }) => {
     const users = await ctx.db.user.findMany({
       include: {
         accounts: true,

@@ -2,8 +2,9 @@ import "~/styles/globals.css";
 
 import type { Metadata } from "next";
 import { Figtree, DM_Serif_Text, DM_Mono } from "next/font/google";
+import localFont from "next/font/local";
 // import { GeistMono } from "geist/font/mono";
-import { CSPostHogProvider } from "./providers";
+// import { ViewTransitions } from "next-view-transitions";
 import { TRPCReactProvider } from "~/trpc/react";
 import Navbar from "~/components/Navbar";
 import Footer from "~/components/Footer";
@@ -53,23 +54,29 @@ const dmMono = DM_Mono({
   variable: "--font-dm-mono",
 });
 
+const mokoto = localFont({
+  src: "../../public/Mokoto.ttf",
+  variable: "--font-mokoto",
+  display: "swap",
+});
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
+    // <ViewTransitions>
     <html
       lang="en"
-      className={`${figtree.className} ${figtree.variable} ${dmSerifText.variable} ${dmMono.variable} scroll-smooth`}
+      className={`${figtree.className} ${figtree.variable} ${dmSerifText.variable} ${dmMono.variable} ${mokoto.variable} scroll-smooth`}
     >
-      <CSPostHogProvider>
-        <body>
-          <TRPCReactProvider>
-            <NextTopLoader color="#138080" showSpinner={false} />
-            <Navbar />
-            {children}
-            <Footer />
-            <Toaster />
-          </TRPCReactProvider>
-        </body>
-      </CSPostHogProvider>
+      <body>
+        <TRPCReactProvider>
+          <NextTopLoader color="#138080" showSpinner={false} />
+          <Navbar />
+          {children}
+          <Footer />
+          <Toaster />
+        </TRPCReactProvider>
+      </body>
     </html>
+    // </ViewTransitions>
   );
 }

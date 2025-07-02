@@ -7,7 +7,7 @@ import Image from "next/image";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Edit from "./edit";
-import { HiArrowsUpDown, HiPencilSquare } from "react-icons/hi2";
+import { HiArrowsUpDown } from "react-icons/hi2";
 import { Button } from "~/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "~/components/ui/hover-card";
 
@@ -34,7 +34,7 @@ export const columns: ColumnDef<User>[] = [
         Edit
       </Button>
     ),
-    cell: ({ row, table }) => {
+    cell: ({ row }) => {
       return <Edit row={row} textButton={false} />;
     },
   },

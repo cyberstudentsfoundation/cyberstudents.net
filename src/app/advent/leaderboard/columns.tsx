@@ -111,7 +111,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
           <HoverCard>
             <HoverCardTrigger tabIndex={0}>
               <span>
-                <span className="underline decoration-dotted">
+                <span className="border-b-2 border-dotted border-gray-300">
                   {completedChallenges.length} / {totalPublishedChallenges}
                 </span>{" "}
                 <span className="text-gray-400">({(publishedChallengesCompletion * 100).toFixed(2)}%)</span>
@@ -120,10 +120,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
             <HoverCardContent className="border-gray-800 bg-gray-900">
               <div className="grid grid-cols-7 grid-rows-4 place-items-center gap-1">
                 {challengesByDay.map((day, index) => (
-                  <div
-                    key={index}
-                    className={`w-[2ch] text-center outline-1 outline-gray-800 ${day ? "text-green-400" : "text-gray-500"}`}
-                  >
+                  <div key={index} className={`w-[2ch] text-center ${day ? "text-green-400" : "text-gray-500"}`}>
                     {index + 1}
                   </div>
                 ))}

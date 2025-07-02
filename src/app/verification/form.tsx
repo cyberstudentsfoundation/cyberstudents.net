@@ -18,7 +18,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { getCodeList } from "country-list";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Button } from "~/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
@@ -27,6 +26,7 @@ import { z } from "zod";
 import type { verificationSubmitSchema } from "~/lib/schemas";
 import { toast } from "sonner";
 import { HiCheckCircle } from "react-icons/hi2";
+import CountrySelect from "~/components/CountrySelect";
 
 export default function VerificationForm({ session }: { session: Session | null }) {
   const schoolName = useRef<HTMLInputElement>(null);
@@ -113,19 +113,18 @@ export default function VerificationForm({ session }: { session: Session | null 
       </div>
       <form
         onSubmit={async (e) => {
-          console.log("Submitting identity verification application...");
           e.preventDefault();
 
           setIsLoading(true);
-          toast.loading("Submitting identity verification application...", { position: "top-center" });
+          toast.loading("Submitting identity verification application...", { position: "top-center", duration: 5000 });
 
           const data: z.infer<typeof verificationSubmitSchema> = {
             isStudent: isStudent === "yes",
             schoolName: isStudent === "yes" ? schoolName.current?.value : undefined,
             schoolYear:
               isStudent === "yes" ? (schoolYear as z.infer<typeof verificationSubmitSchema>["schoolYear"]) : "none",
-            fullName: isStudent === "yes" ? fullName.current?.value! : "none",
-            birthdate: new Date(birthdate.current?.value!),
+            fullName: isStudent === "yes" ? fullName.current!.value : "none",
+            birthdate: new Date(birthdate.current!.value),
             country: country!,
             verificationMethod: verificationMethod as z.infer<typeof verificationSubmitSchema>["verificationMethod"],
             schoolEmail:
@@ -165,7 +164,7 @@ export default function VerificationForm({ session }: { session: Session | null 
             { position: "top-center" },
           );
 
-          location.reload();
+          setTimeout(() => location.reload(), 1000);
         }}
       >
         <div className="max-w-2xl space-y-4">
@@ -180,13 +179,13 @@ export default function VerificationForm({ session }: { session: Session | null 
               onValueChange={(value) => setIsStudent(value)}
             >
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="yes" id="yes" />
+                <RadioGroupItem value="yes" id="yes" className="border-gray-500! bg-gray-700!" />
                 <Label htmlFor="yes" className="text-base">
                   Yes
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="no" id="no" />
+                <RadioGroupItem value="no" id="no" className="border-gray-500! bg-gray-700!" />
                 <Label htmlFor="no" className="text-base">
                   No
                 </Label>
@@ -213,7 +212,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                       School or university year
                     </Label>
                     <Select value={schoolYear} onValueChange={(status) => setSchoolYear(status)} required>
-                      <SelectTrigger className="bg-gray-200! text-gray-900">
+                      <SelectTrigger className="w-full bg-gray-200! text-gray-900!">
                         <SelectValue placeholder="Select your year" />
                       </SelectTrigger>
                       <SelectContent>
@@ -271,13 +270,14 @@ export default function VerificationForm({ session }: { session: Session | null 
                 <Label htmlFor="country" className="text-base">
                   Country of residence
                 </Label>
-                <Select value={country} onValueChange={(country) => setCountry(country)} required>
-                  <SelectTrigger className="bg-gray-200! text-gray-900">
+                <CountrySelect country={country} setCountry={setCountry} />
+                {/* <Select value={country} onValueChange={(country) => setCountry(country)} required>
+                  <SelectTrigger className="w-full bg-gray-200! text-gray-900!">
                     <SelectValue placeholder="Select a country" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem value="US" /* uppercase to avoid collision with the one below */>
+                      <SelectItem value="US" / uppercase to avoid collision with the one below />
                         United States of America
                       </SelectItem>
                       <SelectItem value="CA">Canada</SelectItem>
@@ -296,7 +296,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                         ))}
                     </SelectGroup>
                   </SelectContent>
-                </Select>
+                </Select> */}
               </div>
               <div className="grid w-full items-center gap-1.5 pt-4">
                 <Label htmlFor="verify-identity-select" className="text-base">
@@ -311,7 +311,11 @@ export default function VerificationForm({ session }: { session: Session | null 
                   {isStudent === "yes" ? (
                     <>
                       <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="verify-email" id="verify-email" />
+                        <RadioGroupItem
+                          value="verify-email"
+                          id="verify-email"
+                          className="border-gray-500! bg-gray-700!"
+                        />
                         <Label htmlFor="verify-email" className="text-base">
                           Verify my school/university email address
                         </Label>
@@ -319,7 +323,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                     </>
                   ) : null}
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="verify-id" id="verify-id" />
+                    <RadioGroupItem value="verify-id" id="verify-id" className="border-gray-500! bg-gray-700!" />
                     <Label htmlFor="verify-id" className="text-base">
                       {isStudent === "yes"
                         ? "Upload a photo of my student ID or another proof of enrollment"
@@ -327,7 +331,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="verify-other" id="verify-other" />
+                    <RadioGroupItem value="verify-other" id="verify-other" className="border-gray-500! bg-gray-700!" />
                     <Label htmlFor="verify-other" className="text-base">
                       Use another way to verify my identity
                     </Label>
@@ -414,7 +418,14 @@ export default function VerificationForm({ session }: { session: Session | null 
                         <Label htmlFor="photo" className="text-base">
                           Upload a photo (.jpg or .png, max 8 MB)
                         </Label>
-                        <input type="file" accept=".jpg,.jpeg,.png" id="photo" ref={idFile} required />
+                        <input
+                          type="file"
+                          accept=".jpg,.jpeg,.png"
+                          id="photo"
+                          ref={idFile}
+                          required
+                          className="file:mr-2 file:cursor-pointer file:rounded file:bg-gray-200 file:px-3 file:py-1 file:text-gray-900 file:transition-colors file:hover:bg-gray-300"
+                        />
                       </div>
                     </>
                   ) : (

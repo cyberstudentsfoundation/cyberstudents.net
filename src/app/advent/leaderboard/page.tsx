@@ -1,6 +1,6 @@
 import React from "react";
 import { getServerAuthSession } from "~/server/auth";
-import { api } from "~/trpc/server";
+// import { api } from "~/trpc/server";
 import Link from "next/link";
 import { HiChevronLeft } from "react-icons/hi2";
 import Leaderboard from "./leaderboard";
@@ -8,10 +8,10 @@ import Leaderboard from "./leaderboard";
 export default async function LeaderboardPage() {
   const session = await getServerAuthSession();
 
-  let user = null;
-  if (session?.user) {
-    user = await api.user.me();
-  }
+  // let user = null;
+  // if (session?.user) {
+  //   user = await api.user.me();
+  // }
 
   return (
     <main className="mx-4 flex justify-center">

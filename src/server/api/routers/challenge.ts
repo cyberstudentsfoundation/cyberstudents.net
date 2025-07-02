@@ -10,6 +10,7 @@ export const challengeRouter = createTRPCRouter({
       throw new TRPCError({ message: "Event not found.", code: "NOT_FOUND" });
     }
 
+    // eslint-disable-next-line prefer-const
     let user = ctx.session?.user
       ? await ctx.db.user.findUnique({ where: { id: ctx.session.user.id }, include: { events: true } })
       : null;
@@ -30,6 +31,7 @@ export const challengeRouter = createTRPCRouter({
             author: true,
             hints: true,
             challengeAttempts: user ? { where: { userId: ctx.session!.user.id } } : false,
+            writeUps: true,
           },
           orderBy: { publishDate: "asc" },
         },
@@ -109,6 +111,26 @@ export const challengeRouter = createTRPCRouter({
             },
             solvedAt: a.solvedAt!,
           })),
+
+        // only fetch one write-up (for advent; remove in future)
+        writeUps: input.fetchExtended
+          ? challenge.writeUps
+              .sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime())
+              .filter((w) => w.publishDate.getTime() <= Date.now())
+              .map((writeUp) => ({
+                id: writeUp.id,
+                createdAt: writeUp.createdAt,
+                updatedAt: writeUp.updatedAt,
+                publishDate: writeUp.publishDate,
+                authorPreferredName: writeUp.authorPreferredName,
+                authorMetadata: writeUp.authorMetadata,
+                title: writeUp.title,
+                content: writeUp.content,
+                originalURL: writeUp.originalURL,
+                contentCreatedAt: writeUp.contentCreatedAt,
+                contentUpdatedAt: writeUp.contentUpdatedAt,
+              }))
+          : null,
       })),
     };
 

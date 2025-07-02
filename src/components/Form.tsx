@@ -19,7 +19,7 @@ type UseZodForm<TInput extends FieldValues> = UseFormReturn<TInput> & {
    */
   id: string;
 };
-export function useZodForm<TSchema extends z.ZodType>(
+export function useZodForm<TSchema extends z.ZodTypeAny>(
   props: Omit<UseFormProps<TSchema["_input"]>, "resolver"> & {
     schema: TSchema;
   },
@@ -37,6 +37,7 @@ export function useZodForm<TSchema extends z.ZodType>(
   return form;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyZodForm = UseZodForm<any>;
 
 export function Form<TInput extends FieldValues>(

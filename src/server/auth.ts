@@ -38,9 +38,32 @@ export const authOptions: NextAuthOptions = {
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
+    {
+      id: "ctftime",
+      name: "CTFtime",
+      type: "oauth",
+      authorization: {
+        url: "https://oauth.ctftime.org/authorize",
+        params: { scope: "profile:read team:read" },
+      },
+      token: "https://oauth.ctftime.org/token",
+      userinfo: "https://oauth.ctftime.org/user",
+      clientId: env.CTFTIME_CLIENT_ID,
+      clientSecret: env.CTFTIME_CLIENT_SECRET,
+      profile(profile) {
+        throw new Error("CTFtime OAuth is not implemented yet");
+
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+        };
+      },
+    },
   ],
   callbacks: {
-    async session({ session, token, user }) {
+    async session({ session, user }) {
       if (session.user) session.user.id = user.id;
       return session;
     },

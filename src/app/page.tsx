@@ -1,4 +1,3 @@
-import { getServerAuthSession } from "~/server/auth";
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
@@ -6,15 +5,16 @@ import DailyCTFImages from "./daily-ctf-images";
 import CyberstartArchiveScroll from "./cyberstart-archive-scroll";
 import PhraseTransitions from "~/components/PhraseTransitions";
 import { Button } from "~/components/ui/button";
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "~/components/ui/tooltip";
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "~/components/ui-old/tooltip2";
 import { HiArrowRight, HiArrowUpRight } from "react-icons/hi2";
-import { MdCelebration, MdCollectionsBookmark, MdFlag, MdGroups } from "react-icons/md";
+import { MdCalendarMonth, MdCelebration, MdCollectionsBookmark, MdGroups } from "react-icons/md";
 import { TbChristmasTree } from "react-icons/tb";
 import { BiNetworkChart } from "react-icons/bi";
 import { CgBrowser } from "react-icons/cg";
-import { FaTableCellsRowLock, FaMagnifyingGlassChart, FaGear, FaGithub } from "react-icons/fa6";
+import { FaTableCellsRowLock, FaMagnifyingGlassChart, FaGear } from "react-icons/fa6";
 import { LuBinary } from "react-icons/lu";
 import { Table, TableBody, TableCell, TableRow } from "~/components/ui/table";
+import LiquidGlassButton from "~/components/LiquidGlassButton";
 
 import background from "~/../public/background.png";
 import icsred from "~/../public/icsred.png";
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const session = await getServerAuthSession();
+  // const session = await getServerAuthSession();
 
   const ctfCategories = [
     { name: "Web exploitation", icon: <CgBrowser className="h-6 w-6" /> },
@@ -51,30 +51,29 @@ export default async function Home() {
           <Image src={background} alt="" className="object-cover" fill={true} priority={true} />
         </div>
         <main className="mx-4 sm:mx-8 md:mx-10">
+          {/* update this below as well! */}
           <div className="my-24 flex justify-center sm:my-36">
             <div className="w-full max-w-(--breakpoint-lg) xl:max-w-(--breakpoint-xl)">
               <div className="mb-36 flex items-center justify-center">
                 <div className="w-full max-w-(--breakpoint-lg)">
-                  <h1 className="group font-serif text-4xl transition-all sm:text-5xl">
+                  <h1 className="group h-20 font-serif text-4xl transition-all sm:h-[6.0625rem] sm:text-5xl lg:h-[3.0625rem]">
                     Learn and grow <br className="lg:hidden" />
                     <PhraseTransitions />
                   </h1>
-                  <p className="my-8 text-lg sm:mb-16 sm:mt-8">
+                  <p className="my-8 text-lg sm:mt-8 sm:mb-16">
                     Talk, connect, and grow with others interested in learning and advancing in cybersecurity. Whether
                     you&rsquo;re in high school, college, or beyond, you&rsquo;ll fit right into our community with
                     thousands of other like-minded students and professionals.
                   </p>
                   <div className="flex flex-col gap-6 sm:flex-row sm:justify-between">
-                    <Button
-                      size="lg"
-                      asChild
-                      className="self-start bg-gray-100 text-base font-medium hover:bg-gray-300"
+                    <LiquidGlassButton
+                      href="https://discord.com/invite/cyberstudents-916144903686336513"
+                      target="_blank"
+                      className="flex items-center gap-1 text-lg"
                     >
-                      <a href="https://discord.com/invite/cyberstudents-916144903686336513" target="_blank">
-                        Join us on Discord
-                        <HiArrowUpRight className="ml-1 h-3 w-3 stroke-1" />
-                      </a>
-                    </Button>
+                      Join us on Discord
+                      <HiArrowUpRight className="ml-1 block h-3 w-3 stroke-1 sm:hidden md:block" />
+                    </LiquidGlassButton>
                     <div className="flex gap-8">
                       <div>
                         <h2 className="text-2xl font-bold sm:text-3xl">3,000+</h2>
@@ -93,8 +92,40 @@ export default async function Home() {
                 </div>
               </div>
               <div className="grid grid-flow-row grid-cols-1 gap-x-9 gap-y-16 sm:grid-cols-2 xl:grid-cols-3 xl:gap-y-24">
-                <div className="col-span-1 flex flex-col gap-8 sm:col-span-2 xl:col-span-3 xl:flex-row xl:justify-between">
-                  <div className="max-w-md">
+                <div className="col-span-1 flex flex-col items-center gap-8 sm:col-span-2 xl:col-span-3">
+                  <div className="relative w-screen overflow-x-clip md:w-auto">
+                    <div className="relative mx-4 max-w-196 sm:mx-8 md:mx-10 xl:max-w-5xl">
+                      <div className="motion-safe:animate-blob absolute top-0 left-52 h-54 w-54 overflow-y-visible rounded-full bg-purple-300 opacity-20 blur-xl filter sm:left-80" />
+                      <div className="motion-safe:animate-blob absolute top-0 right-52 h-54 w-54 overflow-y-visible rounded-full bg-cyan-300 opacity-20 blur-xl filter [animation-delay:2s]! sm:right-80" />
+                      <div className="relative flex max-w-196 flex-col items-center text-center xl:max-w-5xl">
+                        <div className="flex items-center justify-center gap-6">
+                          <h2 className="font-mokoto mb-4 flex text-4xl font-bold tracking-widest">
+                            <span className="absolute mx-auto box-content flex w-fit border bg-gradient-to-r from-cyan-500 to-cyan-300 bg-clip-text text-transparent blur-xl select-none">
+                              CSD<span className="tracking-[-0.1em]">&nbsp;</span>CTF
+                            </span>
+                            <span className="relative top-0 flex h-auto w-fit items-center justify-center bg-gradient-to-r from-cyan-500 to-cyan-300 bg-clip-text text-transparent select-auto">
+                              CSD<span className="tracking-[-0.1em]">&nbsp;</span>CTF
+                            </span>
+                            <span className="ml-4 pb-1.5 font-sans text-3xl font-light tracking-normal text-cyan-300">
+                              2025
+                            </span>
+                          </h2>
+                        </div>
+                        <p className="mb-4 text-lg">
+                          Our premier annual summer CTF competition brings together students and other cybersecurity
+                          learners for a weekend of practical and engaging cyber challenges online. Test your skills in
+                          a variety of categories and compete for prizes.
+                        </p>
+                        <LiquidGlassButton href="/ctf" className="flex items-center gap-1 text-lg">
+                          Compete
+                          <HiArrowRight className="ml-0.5 h-3 w-3 stroke-1" />
+                        </LiquidGlassButton>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-span-1 flex flex-col items-center gap-8 sm:col-span-2 xl:col-span-3 xl:flex-row xl:justify-between">
+                  <div className="max-w-196 xl:max-w-md">
                     <div className="mb-3 w-fit rounded-full border border-white/20 bg-white/10 p-4 shadow-xs shadow-white/25 backdrop-blur-xs">
                       <TbChristmasTree className="h-8 w-8 text-gray-100" />
                     </div>
@@ -160,7 +191,7 @@ export default async function Home() {
                         </TableBody>
                       </Table>
                     </div>
-                    <div className="flex h-full flex-col justify-between gap-8 md:gap-0 xl:pr-20">
+                    <div className="flex flex-col justify-between gap-8 md:gap-0 xl:pr-20">
                       <div>
                         <h3 className="mb-1 font-bold text-gray-400">
                           <span className="text-cyan-300/75">2024</span> Open - Write-Up Division
@@ -186,9 +217,6 @@ export default async function Home() {
                                   raul_26 <span className="text-gray-400">(Fl4gged)</span>
                                 </span>
                                 <Image src={austriaFlag} alt="Flag for Austria" title="Austria" className="h-5 w-5" />
-                                <a href="https://github.com/raul-dunca" target="_blank" rel="noopener noreferrer">
-                                  <FaGithub className="h-5 w-5 transition-opacity hover:opacity-75" />
-                                </a>
                               </TableCell>
                             </TableRow>
                           </TableBody>
@@ -203,21 +231,21 @@ export default async function Home() {
                     </div>
                   </div>
                 </div>
-                <div className="col-span-1 flex flex-col gap-8 sm:col-span-2 xl:col-span-3 xl:flex-row xl:justify-between">
-                  <div className="max-w-md">
+                <div className="col-span-1 flex flex-col items-center gap-8 sm:col-span-2 xl:col-span-3 xl:flex-row xl:justify-between">
+                  <div className="max-w-196 xl:max-w-md">
                     <div className="mb-3 w-fit rounded-full border border-white/20 bg-white/10 p-4 shadow-xs shadow-white/25 backdrop-blur-xs">
-                      <MdFlag className="h-8 w-8 text-gray-100" />
+                      <MdCalendarMonth className="h-8 w-8 text-gray-100" />
                     </div>
                     <h2 className="mb-2 text-2xl font-bold">Daily CTFs</h2>
                     <p className="mb-4 text-lg">
-                      Play in our beginner-friendly daily capture-the-flag challenges throughout the year. Learn new
+                      Play in our beginner-friendly daily capture the flag challenges throughout the year. Learn new
                       skills, discuss with others, and compete for prizes.
                     </p>
                     <div className="-ml-4 flex">
-                      {ctfCategories.map(({ name, icon }, index) => (
+                      {ctfCategories.map(({ name, icon }) => (
                         <TooltipProvider key={name} delayDuration={100} skipDelayDuration={1000}>
                           <Tooltip>
-                            <TooltipTrigger tabIndex={0} className={`cursor-help pl-4 pr-4 text-gray-400`}>
+                            <TooltipTrigger tabIndex={0} className={`cursor-help pr-4 pl-4 text-gray-400`}>
                               {icon}
                             </TooltipTrigger>
                             <TooltipContent>
@@ -260,8 +288,8 @@ export default async function Home() {
                     </p>
                   </div>
                 </div>
-                <div>
-                  <div>
+                <div className="sm:col-span-2 sm:col-start-1 sm:flex sm:justify-center xl:col-span-1 xl:col-start-auto xl:justify-self-auto">
+                  <div className="w-full max-w-[30.875rem]">
                     <div className="mb-3 w-fit rounded-full border border-white/20 bg-white/10 p-4 shadow-xs shadow-white/25 backdrop-blur-xs">
                       <MdCelebration className="h-8 w-8 text-gray-100" />
                     </div>
@@ -273,7 +301,7 @@ export default async function Home() {
                   </div>
                 </div>
                 <div className="col-span-1 flex flex-col gap-8 sm:col-span-2 xl:col-span-3 xl:flex-row-reverse xl:justify-between">
-                  <div className="max-w-md text-gray-300">
+                  <div className="flex max-w-2xl flex-col items-start self-center text-start text-lg text-gray-100 sm:items-center sm:text-center xl:items-start xl:text-start xl:text-base xl:text-gray-200">
                     <Image src={cyberstartCover} alt="CyberStart cover" className="mb-5 w-64 rounded-lg opacity-70" />
                     <p className="mb-4">
                       Founded on December 2, 2021, we were originally a dedicated server offering assistance for{" "}

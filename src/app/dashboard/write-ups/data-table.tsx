@@ -12,11 +12,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import type { Session } from "next-auth";
-import Link from "next/link";
 import Edit from "./edit";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import { Input } from "~/components/ui/input";
-import { Button } from "~/components/ui/button";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -26,7 +24,7 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
-  session,
+  // session,
 }: DataTableProps<TData, TValue> & { session: Session | null }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);

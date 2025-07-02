@@ -17,7 +17,7 @@ export default function TableOfContents() {
   const [isNavigating, setIsNavigating] = useState(-1);
 
   useEffect(() => {
-    let timeouts: NodeJS.Timeout[] = [];
+    const timeouts: NodeJS.Timeout[] = [];
 
     function handleHashChange() {
       setActiveSection(window.location.hash.replace("#", ""));

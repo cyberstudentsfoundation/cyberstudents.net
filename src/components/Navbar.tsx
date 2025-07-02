@@ -1,16 +1,16 @@
 import React from "react";
 import { getServerAuthSession } from "~/server/auth";
 import Image from "next/image";
-import wordmark from "../../public/wordmark.svg";
 import Link from "next/link";
+import wordmark from "../../public/wordmark.svg";
+import NavbarStatus from "~/components/NavbarStatus";
 import { FaDiscord } from "react-icons/fa";
-import { HiArrowUpRight } from "react-icons/hi2";
+// import { HiArrowUpRight } from "react-icons/hi2";
 import AccountDropdown from "~/components/AccountDropdown";
 import MobileNavbar from "~/components/MobileNavbar";
 import { Button } from "~/components/ui/button";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui-old/tooltip2";
 
-import { cn } from "~/lib/utils";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -18,28 +18,26 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "~/components/ui/navigation-menu";
 
-const components: { title: string; href: string; description: string; external?: boolean; disabled?: boolean }[] = [
-  {
-    title: "CyberStudents CTF – Coming Soon",
-    href: "/ctf",
-    description: "Our premier weekend-long CTF competition hosted every summer",
-    disabled: true,
-  },
-  {
-    title: "Advent of CTF",
-    href: "/advent",
-    description: "Solve beginner-friendly daily challenges every day in December",
-  },
-  {
-    title: "Daily CTF",
-    href: "https://discord.com/invite/cyberstudents-916144903686336513",
-    description: "Practice with community challenges every day with monthly rounds",
-    external: true,
-  },
-];
+// const components: { title: string; href: string; description: string; external?: boolean; disabled?: boolean }[] = [
+//   {
+//     title: "CyberStudents CTF",
+//     href: "/ctf",
+//     description: "Our premier weekend-long CTF competition hosted every summer",
+//   },
+//   {
+//     title: "Advent of CTF",
+//     href: "/advent",
+//     description: "Solve beginner-friendly daily challenges every day in December",
+//   },
+//   {
+//     title: "Daily CTF",
+//     href: "https://discord.com/invite/cyberstudents-916144903686336513",
+//     description: "Practice with community challenges every day with monthly rounds",
+//     external: true,
+//   },
+// ];
 
 const LINKS: { name: string; href: string; disabled?: boolean }[] = [
   { name: "Foundation", href: "/foundation", disabled: true },
@@ -97,22 +95,57 @@ export default async function Navbar() {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger
                     triggerMode="click"
-                    className="bg-transparent! text-base ring-offset-white hover:bg-gray-800! focus-visible:outline-hidden focus-visible:ring-0 focus-visible:ring-gray-300 focus-visible:ring-offset-2"
+                    className="bg-transparent! text-base ring-offset-white hover:bg-gray-800! focus-visible:ring-0 focus-visible:ring-gray-300 focus-visible:ring-offset-2 focus-visible:outline-hidden"
                   >
                     Competitions
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="flex w-[400px] flex-col gap-1 p-4 md:w-[500px] lg:w-[600px]">
-                      {components.map(({ title, href, description, external, disabled }) => (
+                      {/* {components.map(({ title, href, description, external, disabled }) => (
                         <ListItem key={title} title={title} href={href} external={external} disabled={disabled}>
                           {description}
                         </ListItem>
-                      ))}
+                      ))} */}
+                      <li>
+                        <NavigationMenuLink asChild>
+                          <Link href="/ctf" passHref>
+                            <div className="rounded-md px-4 py-3 transition-all hover:bg-gray-800">
+                              <div className="mb-1 leading-none font-medium">CSD CTF</div>
+                              <p className="line-clamp-2 text-gray-400">
+                                Our premier weekend-long CTF competition hosted every summer
+                              </p>
+                            </div>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                      <li>
+                        <NavigationMenuLink asChild>
+                          <Link href="/advent" passHref>
+                            <div className="rounded-md px-4 py-3 transition-all hover:bg-gray-800">
+                              <div className="mb-1 leading-none font-medium">Advent of CTF</div>
+                              <p className="line-clamp-2 text-gray-400">
+                                Solve beginner-friendly daily challenges every day in December
+                              </p>
+                            </div>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                      <li>
+                        <a href="https://discord.com/invite/cyberstudents-916144903686336513" target="_blank">
+                          <div className="rounded-md px-4 py-3 transition-all hover:bg-gray-800">
+                            <div className="mb-1 leading-none font-medium">Daily CTF</div>
+                            <p className="line-clamp-2 text-gray-400">
+                              Practice with community challenges every day with monthly rounds
+                            </p>
+                          </div>
+                        </a>
+                      </li>
                     </ul>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
+            <NavbarStatus />
           </div>
         </div>
         <div className="flex items-center">
@@ -124,10 +157,10 @@ export default async function Navbar() {
             className="hidden xl:block"
           >
             <div className="mr-2 flex items-center font-semibold text-gray-300 transition-colors hover:text-white">
-              <FaDiscord className="mb-px mr-2 h-6 w-6" />
-              <span className="hidden sm:block">Join our Discord community</span>
-              <span className="block sm:hidden">Discord</span>
-              <HiArrowUpRight className="mb-0.5 ml-1 h-3 w-3 stroke-1" />
+              <FaDiscord className="mr-2 mb-px h-6 w-6" />
+              <span className="hidden 2xl:block">Join our Discord community</span>
+              <span className="block 2xl:hidden">Discord</span>
+              {/* <HiArrowUpRight className="ml-1 h-3 w-3 stroke-1" /> */}
             </div>
           </a>
           <MobileNavbar session={session} />
@@ -140,30 +173,30 @@ export default async function Navbar() {
 const ListItem = React.forwardRef<
   React.ComponentRef<"a">,
   React.ComponentPropsWithoutRef<"a"> & { external?: boolean; disabled?: boolean }
->(({ className, title, children, href, external, disabled, ...props }, ref) => {
+>(({ title, children, href, external, disabled, ...props }, ref) => {
   return (
     <li>
       {disabled ? (
         <div className="rounded-md px-4 py-3">
-          <div className="mb-1 font-medium leading-none text-gray-500">{title}</div>
+          <div className="mb-1 leading-none font-medium text-gray-500">{title}</div>
           <p className="line-clamp-2 text-gray-500">{children}</p>
         </div>
       ) : external ? (
         <a ref={ref} href={href!} target="_blank" {...props}>
           <div className="rounded-md px-4 py-3 transition-all hover:bg-gray-800">
-            <div className="mb-1 font-medium leading-none">{title}</div>
+            <div className="mb-1 leading-none font-medium">{title}</div>
             <p className="line-clamp-2 text-gray-400">{children}</p>
           </div>
         </a>
       ) : (
-        <Link ref={ref} href={href!} {...props} passHref legacyBehavior>
-          <NavigationMenuLink>
+        <NavigationMenuLink asChild>
+          <Link ref={ref} href={href!} {...props} passHref>
             <div className="rounded-md px-4 py-3 transition-all hover:bg-gray-800">
-              <div className="mb-1 font-medium leading-none">{title}</div>
+              <div className="mb-1 leading-none font-medium">{title}</div>
               <p className="line-clamp-2 text-gray-400">{children}</p>
             </div>
-          </NavigationMenuLink>
-        </Link>
+          </Link>
+        </NavigationMenuLink>
       )}
     </li>
   );

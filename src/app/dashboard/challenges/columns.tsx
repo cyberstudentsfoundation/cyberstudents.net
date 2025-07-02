@@ -7,7 +7,7 @@ import Image from "next/image";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Edit from "./edit";
-import { HiArrowsUpDown, HiPencilSquare } from "react-icons/hi2";
+import { HiArrowsUpDown } from "react-icons/hi2";
 import { Button } from "~/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "~/components/ui/hover-card";
 
@@ -129,7 +129,7 @@ export const columns: ColumnDef<Challenge>[] = [
             <HoverCardTrigger tabIndex={0} className="block max-w-64 truncate underline decoration-dotted">
               {description}
             </HoverCardTrigger>
-            <HoverCardContent className="max-h-96 overflow-auto break-words border-gray-800 bg-gray-900">
+            <HoverCardContent className="max-h-96 overflow-auto border-gray-800 bg-gray-900 break-words">
               {description}
             </HoverCardContent>
           </HoverCard>
@@ -151,7 +151,7 @@ export const columns: ColumnDef<Challenge>[] = [
             <HoverCardTrigger tabIndex={0} className="underline decoration-dotted">
               {files.length} files
             </HoverCardTrigger>
-            <HoverCardContent className="break-words border-gray-800 bg-gray-900">
+            <HoverCardContent className="border-gray-800 bg-gray-900 break-words">
               <ul className="ml-4 list-disc space-y-2">
                 {files.map((file, index) => (
                   <li key={index}>
@@ -208,7 +208,7 @@ export const columns: ColumnDef<Challenge>[] = [
             <HoverCardTrigger tabIndex={0} className="max-w-64 truncate underline decoration-dotted">
               {globalFlags.length === 1 ? <code>{globalFlags}</code> : `${globalFlags.length} global flags`}
             </HoverCardTrigger>
-            <HoverCardContent className="break-words border-gray-800 bg-gray-900">
+            <HoverCardContent className="border-gray-800 bg-gray-900 break-words">
               <ul className="ml-4 list-disc space-y-2">
                 {globalFlags.map((flag, index) => (
                   <li key={index}>
@@ -249,7 +249,7 @@ export const columns: ColumnDef<Challenge>[] = [
                 `${globalRegexFlags.length} global regex flags`
               )}
             </HoverCardTrigger>
-            <HoverCardContent className="break-words border-gray-800 bg-gray-900">
+            <HoverCardContent className="border-gray-800 bg-gray-900 break-words">
               <ul className="ml-4 list-disc space-y-2">
                 {globalRegexFlags.map((flag, index) => (
                   <li key={index}>
