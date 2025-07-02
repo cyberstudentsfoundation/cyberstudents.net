@@ -125,7 +125,7 @@ export default function Register() {
                 <h2>Prizes and divisions</h2>
                 <p>
                   The prize pool for this event will be announced closer to the event date. The minimum prize pool, as
-                  of July 1, is <strong>$600</strong> (including non-monetary items) for all divisions.
+                  of July 2, is <strong>$200</strong> (including non-monetary items) for all divisions.
                 </p>
                 <table>
                   <thead>

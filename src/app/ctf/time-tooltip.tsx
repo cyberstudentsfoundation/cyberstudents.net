@@ -8,14 +8,14 @@ import { Separator } from "~/components/ui/separator";
 
 export default function TimeTooltip() {
   const [localTime, setLocalTime] = useState("Fri, August 8 (5:00 pm) – Sat, August 10 (5:00 pm) EDT");
-  const [timezoneOffsetHrs, setTimezoneOffsetHrs] = useState(-4); // change between EST/EDT
+  const [timezoneOffsetHrs, setTimezoneOffsetHrs] = useState(NaN); // change EST/EDT below
   const [localDays, setLocalDays] = useState("August 8 – 10");
 
   useEffect(() => {
     setTimezoneOffsetHrs(new Date().getTimezoneOffset() / -60);
 
     const startTime = dayjs("2025-08-08T17:00:00-04:00");
-    const endTime = dayjs("2025-08-09T17:00:00-04:00");
+    const endTime = dayjs("2025-08-10T17:00:00-04:00");
 
     const formattedStart = startTime.format("ddd, MMMM D (h:mm a)");
     const formattedEnd = endTime.format("ddd, MMMM D (h:mm a)");
@@ -50,7 +50,9 @@ export default function TimeTooltip() {
                   UTC{timezoneOffsetHrs >= 0 ? "+" : ""}
                   {timezoneOffsetHrs}
                 </span>
-                <span className="mb-0.75 self-end font-mono text-xs font-medium text-gray-600 uppercase">Local</span>
+                <span className="mb-0.75 self-end font-mono text-xs font-medium text-gray-600 uppercase">
+                  {timezoneOffsetHrs ? "Local" : "EDT"}
+                </span>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

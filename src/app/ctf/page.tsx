@@ -331,10 +331,8 @@ export default function CTF() {
               <p className="max-w-60 text-gray-300">practical and diverse categories</p>
             </div>
             <div className="flex w-full items-center gap-3 text-left md:w-49 md:flex-col md:items-center md:gap-2 md:text-center">
-              <h2 className="w-[5.7425rem] text-right text-2xl font-bold md:text-center md:text-3xl">$600+</h2>
-              <p className="max-w-60 text-gray-300">
-                prize pool, with <strong>$250</strong> reserved for students
-              </p>
+              <h2 className="w-[5.7425rem] text-right text-2xl font-bold md:text-center md:text-3xl">$200+</h2>
+              <p className="max-w-60 text-gray-300">prize pool, with prizes reserved for students</p>
             </div>
             <div className="flex w-full items-center gap-3 text-left md:w-49 md:flex-col md:items-center md:gap-2 md:text-center">
               <h2 className="w-[5.7425rem] text-right text-2xl font-bold md:text-center md:text-3xl">800+</h2>
@@ -349,7 +347,7 @@ export default function CTF() {
         <div className="max-w-(--breakpoint-2xl) overflow-hidden px-4 pt-16 sm:px-8 md:px-10 xl:px-20">
           <div className="mb-32 flex flex-col items-center justify-between gap-10 lg:flex-row lg:items-start lg:gap-16">
             <div className="flex w-full flex-col items-start lg:max-w-sm lg:self-stretch xl:max-w-md">
-              <h2 className="mb-1 font-mono font-medium tracking-wider text-cyan-300 uppercase">Over $600 in prizes</h2>
+              <h2 className="mb-1 font-mono font-medium tracking-wider text-cyan-300 uppercase">Over $200 in prizes</h2>
               <h1 className="mb-4 text-3xl font-bold">Three divisions for prizes</h1>
               <p className="mb-4 text-lg">
                 For the first time, CSD CTF will feature a high school and college division alongside an open division,
