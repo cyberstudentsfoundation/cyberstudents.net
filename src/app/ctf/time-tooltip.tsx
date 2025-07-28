@@ -7,6 +7,8 @@ import dayjs from "dayjs";
 import { Separator } from "~/components/ui/separator";
 
 export default function TimeTooltip() {
+  const isDelayed = true; // true to show delayed 
+
   const [localTime, setLocalTime] = useState("Fri, August 8 (5:00 pm) – Sat, August 10 (5:00 pm) EDT");
   const [timezoneOffsetHrs, setTimezoneOffsetHrs] = useState(NaN); // change EST/EDT below
   const [localDays, setLocalDays] = useState("August 8 – 10");
@@ -32,27 +34,43 @@ export default function TimeTooltip() {
     <div className="mb-8">
       <div className="grid items-start justify-center gap-8">
         <div className="group relative">
-          <div className="animate-tilt absolute -inset-0.5 rounded-full bg-gradient-to-r from-cyan-500 to-cyan-300 opacity-50 blur transition duration-500 group-hover:opacity-100 group-hover:duration-200" />
+          <div className={`animate-tilt absolute -inset-0.5 rounded-full bg-gradient-to-r opacity-50 blur transition duration-500 group-hover:opacity-100 group-hover:duration-200 ${
+            isDelayed 
+              ? "from-red-500 to-red-300" 
+              : "from-cyan-500 to-cyan-300"
+          }`} />
           <TooltipProvider delayDuration={100}>
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className="relative flex items-center rounded-full bg-gray-950 px-4 py-2 leading-none ring ring-cyan-900">
+                <div className={`relative flex items-center rounded-full bg-gray-950 px-4 py-2 leading-none ring ${
+                  isDelayed ? "ring-red-900" : "ring-cyan-900"
+                }`}>
                   <span className="flex items-center space-x-2">
-                    <HiCalendar className="h-4 w-4 -translate-y-px text-cyan-300" />
-                    <span className="text-sm text-gray-100">{localDays}</span>
+                    <HiCalendar className={`h-4 w-4 ${
+                      isDelayed ? "text-red-300" : "text-cyan-300"
+                    }`} />
+                    <span className="text-sm text-gray-100">
+                      {isDelayed ? "Delayed" : localDays}
+                    </span>
                   </span>
                 </div>
               </TooltipTrigger>
               <TooltipContent className="flex gap-2 px-4 py-2 text-base">
-                <span>{localTime}</span>
-                <Separator orientation="vertical" className="mx-0.5 my-0.5 h-auto bg-gray-400!" />
-                <span className="font-mono font-medium text-gray-600">
-                  UTC{timezoneOffsetHrs >= 0 ? "+" : ""}
-                  {timezoneOffsetHrs}
-                </span>
-                <span className="mb-0.75 self-end font-mono text-xs font-medium text-gray-600 uppercase">
-                  {timezoneOffsetHrs ? "Local" : "EDT"}
-                </span>
+                {isDelayed ? (
+                  <span>Delayed until further notice – New dates coming soon</span>
+                ) : (
+                  <>
+                    <span>{localTime}</span>
+                    <Separator orientation="vertical" className="mx-0.5 my-0.5 h-auto bg-gray-400!" />
+                    <span className="font-mono font-medium text-gray-600">
+                      UTC{timezoneOffsetHrs >= 0 ? "+" : ""}
+                      {timezoneOffsetHrs}
+                    </span>
+                    <span className="mb-0.75 self-end font-mono text-xs font-medium text-gray-600 uppercase">
+                      {timezoneOffsetHrs ? "Local" : "EDT"}
+                    </span>
+                  </>
+                )}
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

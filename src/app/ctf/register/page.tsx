@@ -38,8 +38,7 @@ export default function Register() {
               </div>
               <div className="prose prose-gray prose-invert">
                 <p>
-                  The event lasts 48 hours and runs from 5:00 pm on August 8, 2025 until 5:00 pm on August 10, 2025
-                  (Eastern Daylight Time). Registration remains open throughout the event.
+                  The event has been <strong>delayed</strong> until further notice. New dates will be announced soon. Registration will remain open throughout the event.
                 </p>
                 <p>
                   <strong>The following competition guidelines are subject to change ahead of the event.</strong>
