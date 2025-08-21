@@ -6,9 +6,11 @@ import { Button } from "~/components/ui/button";
 import logo from "../../public/logo.gif";
 
 import pfp_alex from "../../public/staff-pfps/alex.png";
-// import pfp_amir from "../../public/staff-pfps/amir.png";
-import pfp_ambush from "../../public/staff-pfps/ambush.png";
-import pfp_doctor_jang from "../../public/staff-pfps/doctor_jang.png";
+import pfp_amir from "../../public/staff-pfps/amir.png";
+import pfp_a_person from "../../public/staff-pfps/a_person.png";
+// import pfp_ambush from "../../public/staff-pfps/ambush.png";
+import pfp_cosmi from "../../public/staff-pfps/cosmi.png";
+// import pfp_doctor_jang from "../../public/staff-pfps/doctor_jang.png";
 import pfp_godder from "../../public/staff-pfps/decidueye.png";
 import pfp_kolmus from "../../public/staff-pfps/kolmus.png";
 // import pfp_kshau from "../../public/staff-pfps/kshau.png";
@@ -22,13 +24,15 @@ const STAFF: { name: string; position: string; pfp: StaticImageData; link?: stri
   { name: "Vipin", position: "CyberStudents Foundation Co-Chair", pfp: pfp_vipin, link: "https://www.vipin.xyz/" },
   { name: "GodderE2D", position: "CyberStudents Foundation Co-Chair", pfp: pfp_godder, link: "https://godder.xyz/" },
   { name: "Kolmus", position: "Challenge Developer", pfp: pfp_kolmus },
-  { name: "Doctor Jang", position: "Challenge Developer", pfp: pfp_doctor_jang },
+  { name: "a_person", position: "Curriculum Designer", pfp: pfp_a_person },
+  { name: "Cosmi", position: "Curriculum Designer", pfp: pfp_cosmi },
+  // { name: "Doctor Jang", position: "Challenge Developer", pfp: pfp_doctor_jang },
+  { name: "Amir", position: "Community Manager", pfp: pfp_amir },
   { name: "MathLegend_175", position: "Community Manager", pfp: pfp_mathlegend },
   { name: "Alex Volkov", position: "Server Moderator", pfp: pfp_alex },
-  { name: "AmbushDeKewl", position: "Server Moderator", pfp: pfp_ambush },
+  // { name: "AmbushDeKewl", position: "Server Moderator", pfp: pfp_ambush },
   { name: "Lord SkeletonMan", position: "Server Moderator", pfp: pfp_lordskeletonman },
   // { name: "Kushi", position: "Community Manager", pfp: pfp_kushi },
-  // { name: "Amir", position: "Community Manager", pfp: pfp_amir },
 ] as const;
 
 const LINKS: { name: string; href: string; external: boolean }[] = [
@@ -103,7 +107,7 @@ export default function Footer() {
             </div>
             <div className="w-full max-w-fit">
               <h2 className="mb-4 font-semibold">Thank you to our wonderful staff 🩵</h2>
-              <ul className="grid grid-flow-col grid-rows-4 gap-3 lg:grid-rows-8 xl:grid-rows-4">
+              <ul className="grid grid-flow-col grid-rows-5 gap-3 lg:grid-rows-9 xl:grid-rows-5">
                 {STAFF.map(({ name, pfp, position, link }) => (
                   <li key={name}>
                     <a
