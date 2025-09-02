@@ -913,7 +913,7 @@ export default function CTF() {
           <div className="mx-auto w-full max-w-3xl text-center">
             <h1 className="mb-2 text-xl font-bold">Thank you to our challenge developers 🩵</h1>
           </div>
-          <div className="mt-8 mb-16 grid w-full grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-9">
+          <div className="mt-8 mb-16 grid w-full grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8">
             {CHALLENGE_DEVELOPERS.map((dev) => (
               <div key={dev.name} className="flex flex-col items-center">
                 <Image
