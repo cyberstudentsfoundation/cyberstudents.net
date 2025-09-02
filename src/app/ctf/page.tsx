@@ -65,7 +65,6 @@ const CHALLENGE_DEVELOPERS = [
       </>
     ),
   },
-  { name: "Doctor Jang", pfp: pfp_doctor_jang },
   { name: "Mr_MPH", pfp: pfp_mr_mph },
   { name: "Kolmus", pfp: pfp_kolmus },
   { name: "MathLegend_175", pfp: pfp_mathlegend },
