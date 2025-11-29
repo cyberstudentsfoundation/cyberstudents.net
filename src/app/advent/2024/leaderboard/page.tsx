@@ -22,7 +22,7 @@ export default async function LeaderboardPage() {
             advent of ctf<span className="ml-3 font-sans font-light text-cyan-300">2024</span>
           </h1>
         </div>
-        <Link href="/advent" className="mb-4 flex w-fit items-center gap-1 text-gray-300 hover:text-cyan-300">
+        <Link href="/advent/2024" className="mb-4 flex w-fit items-center gap-1 text-gray-300 hover:text-cyan-300">
           <HiChevronLeft className="mb-0.5 h-4 w-4" />
           <span>Back to calendar</span>
         </Link>

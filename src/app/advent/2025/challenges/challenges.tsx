@@ -103,7 +103,7 @@ export default function Challenges({
   return (
     <>
       <div className="mb-4 flex flex-col justify-between gap-2 lg:flex-row">
-        <Link href="/advent" className="flex w-fit items-center gap-1 text-gray-300 hover:text-cyan-300">
+        <Link href="/advent/2024" className="flex w-fit items-center gap-1 text-gray-300 hover:text-cyan-300">
           <HiChevronLeft className="mb-0.5 h-4 w-4" />
           <span>Back to calendar</span>
         </Link>
@@ -130,7 +130,7 @@ export default function Challenges({
                 id={`${challenge.id}`}
                 className="flex items-center bg-gray-900 text-left"
                 onClick={() => {
-                  router.push("/advent/challenges?challenge=" + challenge.id, { scroll: false });
+                  router.push("/advent/2024/challenges?challenge=" + challenge.id, { scroll: false });
                   setFocusedChallenge(challenge.id);
                 }}
               >
@@ -469,20 +469,20 @@ export default function Challenges({
                 </div>
               ))
             ) : (
-              <div className="flex h-full flex-col items-center justify-center gap-4 px-4 py-16 text-gray-400 lg:py-0">
-                <HiOutlineCubeTransparent className="h-20 w-20 stroke-1" />
-                <span className="text-lg font-semibold">Select a challenge to get started.</span>
+              <div className="flex h-full flex-col items-center justify-center px-4 py-16 text-gray-400 lg:py-0">
+                <HiOutlineCubeTransparent className="mb-4 h-20 w-20 stroke-1" />
+                <span className="mb-2 text-lg font-semibold">Select a challenge to get started.</span>
                 <div className="flex items-center gap-1.5 text-sm">
-                  <HiOutlineChatBubbleLeftRight className="h-5 w-5 shrink-0 text-gray-400" />
+                  {/* <HiOutlineChatBubbleLeftRight className="h-5 w-5 shrink-0 text-gray-400" /> */}
                   <span>
                     Discuss challenges with others in{" "}
-                    <a
-                      href="https://discord.com/channels/916144903686336513/1313285716666748990"
-                      target="_blank"
+                    <span
+                      // href="https://discord.com/channels/916144903686336513/1313285716666748990"
+                      // target="_blank"
                       className="rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-nowrap text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
                     >
                       #🎄丨advent-of-ctf
-                    </a>{" "}
+                    </span>{" "}
                     on our{" "}
                     <a
                       href="https://discord.com/invite/cyberstudents-916144903686336513"

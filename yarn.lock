@@ -3660,6 +3660,7 @@ __metadata:
     react-dom: "npm:^19.1.0"
     react-hook-form: "npm:^7.59.0"
     react-icons: "npm:^5.5.0"
+    react-snowfall: "npm:^2.3.0"
     server-only: "npm:^0.0.1"
     sonner: "npm:^2.0.5"
     superjson: "npm:^2.2.2"
@@ -6352,6 +6353,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-fast-compare@npm:^3.2.2":
+  version: 3.2.2
+  resolution: "react-fast-compare@npm:3.2.2"
+  checksum: 10c0/0bbd2f3eb41ab2ff7380daaa55105db698d965c396df73e6874831dbafec8c4b5b08ba36ff09df01526caa3c61595247e3269558c284e37646241cba2b90a367
+  languageName: node
+  linkType: hard
+
 "react-hook-form@npm:^7.59.0":
   version: 7.59.0
   resolution: "react-hook-form@npm:7.59.0"
@@ -6444,6 +6452,18 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10c0/068e9704ff26816fffc4c8903e2c6c8df7291ee08615d7c1ab0cf8751f7080e2c5a5d78ef5d908b11b9cfc189f176d312e44cb02ea291ca0466d8283b479b438
+  languageName: node
+  linkType: hard
+
+"react-snowfall@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "react-snowfall@npm:2.3.0"
+  dependencies:
+    react-fast-compare: "npm:^3.2.2"
+  peerDependencies:
+    react: ^16.8 || 17.x || 18.x || 19.x
+    react-dom: ^16.8 || 17.x || 18.x || 19.x
+  checksum: 10c0/ab0cb06b2bbdb7ccb958e630a9b9608a5735a8eca7f54aa506fc92fc42bcb3bea021f8895119f0de43dd4ef503460aaeb4a061a428c8abf41442abe73d183d38
   languageName: node
   linkType: hard
 

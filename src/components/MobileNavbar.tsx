@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { Session } from "next-auth";
 import Link from "next/link";
 import { HiArrowUpRight, HiBars3, HiUserCircle } from "react-icons/hi2";
+import NavbarStatus from "~/components/NavbarStatus";
 import { Button } from "~/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "~/components/ui/sheet";
 import { ScrollArea } from "~/components/ui/scroll-area";
@@ -17,8 +18,8 @@ const LINKS: { name: string; href: string; disabled?: boolean }[] = [
   { name: "Practice – Coming Soon", href: "/practice", disabled: true },
   { name: "Learn – Coming Soon", href: "/learn", disabled: true },
   // { name: "Census", href: "/census", disabled: true },
-  // { name: "Competitions", href: "/advent" },
-  // { name: "Advent of CTF", href: "/advent" },
+  // { name: "Competitions", href: "/advent/2025" },
+  // { name: "Advent of CTF", href: "/advent/2025" },
   // { name: "CTF Archive", href: "https://github.com/cyberstudentsacademy/csd-ctf" },
 ] as const;
 
@@ -62,6 +63,13 @@ export default function MobileNavbar({ session }: { session?: Session | null }) 
                   <AccordionContent>
                     <div className="flex flex-col gap-2">
                       <Link
+                        href="/advent/2025"
+                        className="text-lg transition-colors hover:text-cyan-300"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        Advent of CTF 2025
+                      </Link>
+                      <Link
                         href="/ctf"
                         className="text-lg transition-colors hover:text-cyan-300"
                         onClick={() => setMenuOpen(false)}
@@ -69,11 +77,11 @@ export default function MobileNavbar({ session }: { session?: Session | null }) 
                         CSD CTF
                       </Link>
                       <Link
-                        href="/advent"
+                        href="/advent/2024"
                         className="text-lg transition-colors hover:text-cyan-300"
                         onClick={() => setMenuOpen(false)}
                       >
-                        Advent of CTF
+                        Advent of CTF 2024
                       </Link>
                       <Link
                         href="https://discord.com/invite/cyberstudents-916144903686336513"
@@ -104,6 +112,9 @@ export default function MobileNavbar({ session }: { session?: Session | null }) 
                 <span>Sign in</span>
               </div>
             )}
+            <div className="mt-2 -ml-2 w-fit">
+              <NavbarStatus />
+            </div>
           </div>
         </ScrollArea>
       </SheetContent>

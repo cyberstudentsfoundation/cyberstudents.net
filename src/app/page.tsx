@@ -25,6 +25,9 @@ import indiaFlag from "~/../public/flags/india.svg";
 import romaniaFlag from "~/../public/flags/romania.svg";
 import swedenFlag from "~/../public/flags/sweden.svg";
 import unitedStatesFlag from "~/../public/flags/united-states.svg";
+import CustomSnowfall from "~/app/advent/2025/custom-snowfall";
+import SnowBackground from "~/app/advent/2025/snow-background";
+import Countdown from "~/components/Countdown";
 
 export const metadata: Metadata = {
   other: {
@@ -52,7 +55,7 @@ export default async function Home() {
         </div>
         <main className="mx-4 sm:mx-8 md:mx-10">
           {/* update this below as well! */}
-          <div className="my-24 flex justify-center sm:my-36">
+          <div className="mt-24 flex justify-center sm:mt-36">
             <div className="w-full max-w-(--breakpoint-lg) xl:max-w-(--breakpoint-xl)">
               <div className="mb-36 flex items-center justify-center">
                 <div className="w-full max-w-(--breakpoint-lg)">
@@ -91,6 +94,64 @@ export default async function Home() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </main>
+        <div className="col-span-1 mb-24 flex w-full flex-col items-center gap-8 sm:col-span-2 xl:col-span-3">
+          {/* <div className="absolute right-0 left-0 w-full"> */}
+          <div className="relative w-full">
+            <CustomSnowfall />
+            <div className="absolute inset-0 z-0 w-full">
+              <SnowBackground className="h-full w-full overflow-x-hidden opacity-30 hue-rotate-[270deg]" />
+            </div>
+            <div className="flex w-full justify-center overflow-x-hidden bg-gray-900 px-4 py-8 sm:px-8 md:px-10 lg:bg-gray-950">
+              <div className="relative z-10 flex w-full justify-center">
+                <div className="flex w-full max-w-[60rem] flex-col items-center justify-between gap-4 sm:flex-row">
+                  <div className="flex flex-col items-center sm:items-start">
+                    <div className="mb-6 flex flex-col items-center justify-between sm:gap-16 xl:flex-row xl:gap-8">
+                      <div className="max-w-prose text-center sm:text-left">
+                        <h1 className="font-mono text-4xl font-bold">
+                          advent of ctf
+                          <br className="sm:hidden" />
+                          <span className="ml-5 font-sans font-light text-cyan-300">2025</span>
+                        </h1>
+                        <p className="mt-4 text-lg">
+                          We&rsquo;re back with our second annual Advent of CTF! Every day from December 1st to 25th,
+                          solve beginner-oriented gamified cybersecurity challenges for free. Get familiar with capture
+                          the flag competitions and cyber concepts from a wide range of popular categories.
+                        </p>
+                      </div>
+                    </div>
+                    <LiquidGlassButton href="/advent/2025" className="flex items-center gap-1 text-lg">
+                      Play
+                      <HiArrowRight className="ml-0.5 h-3 w-3 stroke-1" />
+                    </LiquidGlassButton>
+                  </div>
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <div className="text-lg">
+                      {Date.now() < new Date("2025-12-02T01:00:00Z").getTime()
+                        ? "First challenge in:"
+                        : Date.now() < new Date("2025-12-26T01:00:00Z").getTime()
+                          ? "Next challenge in:"
+                          : "Event ends in:"}
+                    </div>
+                    <Countdown
+                      date={
+                        Date.now() < new Date("2025-12-02T01:00:00Z").getTime()
+                          ? new Date("2025-12-02T01:00:00Z")
+                          : "next-challenge"
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <main className="mx-4 sm:mx-8 md:mx-10">
+          {/* update this below as well! */}
+          <div className="mb-24 flex justify-center sm:mb-36">
+            <div className="w-full max-w-(--breakpoint-lg) xl:max-w-(--breakpoint-xl)">
               <div className="grid grid-flow-row grid-cols-1 gap-x-9 gap-y-16 sm:grid-cols-2 xl:grid-cols-3 xl:gap-y-24">
                 <div className="col-span-1 flex flex-col items-center gap-8 sm:col-span-2 xl:col-span-3">
                   <div className="relative w-screen overflow-x-clip md:w-auto">
@@ -129,13 +190,13 @@ export default async function Home() {
                     <div className="mb-3 w-fit rounded-full border border-white/20 bg-white/10 p-4 shadow-xs shadow-white/25 backdrop-blur-xs">
                       <TbChristmasTree className="h-8 w-8 text-gray-100" />
                     </div>
-                    <h2 className="mb-2 text-2xl font-bold">Advent of CTF</h2>
+                    <h2 className="mb-2 text-2xl font-bold">Advent of CTF 2024</h2>
                     <p className="mb-4 text-lg">
                       Last December, we hosted a month-long beginner-friendly CTF competition with challenges released
                       daily and US$280 up for grabs. We plan to host this event and another weekend-long CTF this year.
                     </p>
                     <Button className="bg-gray-100 text-base hover:bg-gray-300" asChild>
-                      <Link href="/advent/2024">
+                      <Link href="/advent/2024/results">
                         Advent of CTF 2024
                         <HiArrowRight className="mb-0.5 ml-1 h-3 w-3 stroke-1" />
                       </Link>
@@ -224,7 +285,7 @@ export default async function Home() {
                       </div>
                       <div className="flex w-full items-center justify-center gap-4">
                         <p className="font-medium text-gray-400">Prizes sponsored by</p>
-                        <Link href="/advent/2024#a-note-on-the-delay-of-prizes">
+                        <Link href="/advent/2024/results#a-note-on-the-delay-of-prizes">
                           <Image src={icsred} alt="ICSRED Logo" className="h-32 w-32 rounded-lg opacity-70" />
                         </Link>
                       </div>

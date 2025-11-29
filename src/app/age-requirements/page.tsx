@@ -63,7 +63,7 @@ export default function ServerRules() {
 
           <h3>Oceania</h3>
           <ul>
-            <li>Australia: 16+ on and after December 1, 2025</li>
+            <li>Australia: 16+ on and after December 10, 2025</li>
           </ul>
 
           <h3>South America</h3>

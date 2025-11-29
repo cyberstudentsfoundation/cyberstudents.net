@@ -16,25 +16,25 @@ export default function AdventLayout({ children }: { children: React.ReactNode }
         <div className="w-full max-w-(--breakpoint-2xl) justify-between">
           <div className="flex w-full items-center justify-center gap-4 text-center text-gray-200 sm:justify-end sm:gap-8">
             <Link
-              href="/advent"
+              href="/advent/2024"
               className="text-sm font-medium underline transition-colors hover:text-cyan-300 sm:text-lg sm:no-underline"
             >
               Home
             </Link>
             <Link
-              href="/advent/challenges"
+              href="/advent/2024/challenges"
               className="text-sm font-medium underline transition-colors hover:text-cyan-300 sm:text-lg sm:no-underline"
             >
               Challenges
             </Link>
             <Link
-              href="/advent/leaderboard"
+              href="/advent/2024/leaderboard"
               className="text-sm font-medium underline transition-colors hover:text-cyan-300 sm:text-lg sm:no-underline"
             >
               Leaderboard
             </Link>
             <Link
-              href="/advent/register"
+              href="/advent/2024/register"
               className="text-sm font-medium underline transition-colors hover:text-cyan-300 sm:text-lg sm:no-underline"
             >
               Guidelines &amp; Info
@@ -46,7 +46,10 @@ export default function AdventLayout({ children }: { children: React.ReactNode }
               <AlertTitle>Advent of CTF 2024 has ended; thank you for playing!</AlertTitle>
               <AlertDescription className="mt-2 text-gray-300">
                 See final leaderboards, prizes, write-ups, statistics, and a note on the delay of prizes in{" "}
-                <Link className="font-semibold underline transition-all hover:text-cyan-300" href="/advent/2024">
+                <Link
+                  className="font-semibold underline transition-all hover:text-cyan-300"
+                  href="/advent/2024/results"
+                >
                   <span>this article.</span>
                 </Link>
               </AlertDescription>

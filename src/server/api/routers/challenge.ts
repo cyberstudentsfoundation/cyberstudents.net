@@ -6,9 +6,9 @@ import { sendNotification } from "~/server/send-notification";
 export const challengeRouter = createTRPCRouter({
   fetch: publicProcedure.input(challengeFetchSchema).query(async ({ ctx, input }) => {
     // hardcode check for now
-    if (input.event !== "aoc2024") {
-      throw new TRPCError({ message: "Event not found.", code: "NOT_FOUND" });
-    }
+    // if (input.event !== "aoc2024") {
+    //   throw new TRPCError({ message: "Event not found.", code: "NOT_FOUND" });
+    // }
 
     // eslint-disable-next-line prefer-const
     let user = ctx.session?.user
@@ -170,9 +170,9 @@ export const challengeRouter = createTRPCRouter({
   }),
 
   fetchPreview: publicProcedure.input(challengeFetchPreviewSchema).query(async ({ ctx, input }) => {
-    if (input.event !== "aoc2024") {
-      throw new TRPCError({ message: "Event not found.", code: "NOT_FOUND" });
-    }
+    // if (input.event !== "aoc2024") {
+    //   throw new TRPCError({ message: "Event not found.", code: "NOT_FOUND" });
+    // }
 
     const event = await ctx.db.event.findUnique({
       where: { name: input.event },

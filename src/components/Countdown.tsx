@@ -11,11 +11,12 @@ export default function Countdown({
 }) {
   const [timeLeft, setTimeLeft] = useState(0);
   const now = new Date();
-  const pastLastChallenge = now.getTime() >= new Date("2024-12-25T20:00:00Z").getTime();
+  const pastLastChallenge = now.getTime() >= new Date("2025-12-25T20:00:00Z").getTime();
+  const daysNeedToBeShown = date instanceof Date && date.getTime() - now.getTime() >= 8.64e7;
 
   if (date === "next-challenge") {
     if (pastLastChallenge) {
-      date = new Date("2025-01-01T04:59:00Z");
+      date = new Date("2026-01-01T04:59:00Z");
     } else if (now.getUTCHours() >= 20) {
       // Today or tomorrow's date at 8 pm UTC (3 pm EST)
       date = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 20, 0, 0, 0));
@@ -42,23 +43,33 @@ export default function Countdown({
   }, [date]);
 
   return (
-    <div className={`flex items-center font-mono ${variant === "small" ? "gap-2 text-xl" : "gap-3 text-2xl"}`}>
-      {pastLastChallenge && variant === "normal" ? (
-        <div className="w-16 rounded-lg bg-gray-800 p-3 text-center">
+    <div
+      className={`flex items-center font-mono ${variant === "small" ? "gap-2 text-xl" : "gap-2 px-2 md:gap-3 md:px-3 md:text-2xl"}`}
+    >
+      {daysNeedToBeShown ? (
+        <div
+          className={`rounded-lg p-2 text-center ${variant === "small" ? "w-14 bg-gray-800" : "w-12 bg-gray-800/50 backdrop-blur-sm md:w-14"}`}
+        >
           {`${Math.floor(timeLeft / 8.64e7)}`.padStart(2, "0")}
           <div className="font-sans text-sm text-gray-400">days</div>
         </div>
       ) : null}
-      <div className="w-16 rounded-lg bg-gray-800 p-3 text-center">
+      <div
+        className={`rounded-lg p-2 text-center ${variant === "small" ? "w-14 bg-gray-800" : "w-12 bg-gray-800/50 backdrop-blur-sm md:w-14"}`}
+      >
         {`${Math.floor((timeLeft % 8.64e7) / 3.6e6)}`.padStart(2, "0")}
         <div className="font-sans text-sm text-gray-400">hours</div>
       </div>
-      <div className="w-16 rounded-lg bg-gray-800 p-3 text-center">
+      <div
+        className={`rounded-lg p-2 text-center ${variant === "small" ? "w-14 bg-gray-800" : "w-12 bg-gray-800/50 backdrop-blur-sm md:w-14"}`}
+      >
         {`${Math.floor((timeLeft % 3.6e6) / 60_000)}`.padStart(2, "0")}
         <div className="font-sans text-sm text-gray-400">mins</div>
       </div>
-      {!pastLastChallenge || variant !== "normal" ? (
-        <div className="w-16 rounded-lg bg-gray-800 p-3 text-center">
+      {!daysNeedToBeShown || variant !== "normal" ? (
+        <div
+          className={`rounded-lg p-2 text-center ${variant === "small" ? "w-14 bg-gray-800" : "w-12 bg-gray-800/50 backdrop-blur-sm md:w-14"}`}
+        >
           {`${Math.floor((timeLeft % 60_000) / 1000)}`.padStart(2, "0")}
           <div className="font-sans text-sm text-gray-400">secs</div>
         </div>

@@ -43,8 +43,8 @@ const LINKS: { name: string; href: string; disabled?: boolean }[] = [
   { name: "Foundation", href: "/foundation", disabled: true },
   { name: "Learn", href: "/learn", disabled: true },
   // { name: "Census", href: "/census" },
-  // { name: "Competitions", href: "/advent" },
-  // { name: "Advent of CTF", href: "/advent" },
+  // { name: "Competitions", href: "/advent/2025" },
+  // { name: "Advent of CTF", href: "/advent/2025" },
   { name: "Practice", href: "/gym/challenges", disabled: true },
   // { name: "CTF Archive", href: "https://github.com/cyberstudentsacademy/csd-ctf" },
 ] as const;
@@ -108,6 +108,18 @@ export default async function Navbar() {
                       ))} */}
                       <li>
                         <NavigationMenuLink asChild>
+                          <Link href="/advent/2025" passHref>
+                            <div className="rounded-md px-4 py-3 transition-all hover:bg-gray-800">
+                              <div className="mb-1 leading-none font-medium">Advent of CTF 2025</div>
+                              <p className="line-clamp-2 text-gray-400">
+                                Solve daily beginner-friendly challenges and win prizes this December!
+                              </p>
+                            </div>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                      <li>
+                        <NavigationMenuLink asChild>
                           <Link href="/ctf" passHref>
                             <div className="rounded-md px-4 py-3 transition-all hover:bg-gray-800">
                               <div className="mb-1 leading-none font-medium">CSD CTF</div>
@@ -120,11 +132,11 @@ export default async function Navbar() {
                       </li>
                       <li>
                         <NavigationMenuLink asChild>
-                          <Link href="/advent" passHref>
+                          <Link href="/advent/2024" passHref>
                             <div className="rounded-md px-4 py-3 transition-all hover:bg-gray-800">
-                              <div className="mb-1 leading-none font-medium">Advent of CTF</div>
+                              <div className="mb-1 leading-none font-medium">Advent of CTF 2024</div>
                               <p className="line-clamp-2 text-gray-400">
-                                Solve beginner-friendly daily challenges every day in December
+                                Our inaugural Advent of CTF event hosted in December 2024
                               </p>
                             </div>
                           </Link>

@@ -37,7 +37,7 @@ const STAFF: { name: string; position: string; pfp: StaticImageData; link?: stri
 
 const LINKS: { name: string; href: string; external: boolean }[] = [
   { name: "CSD CTF", href: "/ctf", external: false },
-  { name: "Advent of CTF", href: "/advent", external: false },
+  { name: "Advent of CTF", href: "/advent/2025", external: false },
   { name: "CTF Archive", href: "https://github.com/cyberstudentsacademy/csd-ctf", external: true },
   { name: "GitHub", href: "https://github.com/cyberstudentsacademy", external: true },
   { name: "CTFtime", href: "https://ctftime.org/team/365239", external: true },

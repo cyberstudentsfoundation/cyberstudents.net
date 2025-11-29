@@ -702,7 +702,7 @@ export default function CTF() {
                   and US$280 up for grabs. We plan to host this event again this year.
                 </p>
                 <Button className="bg-gray-100 text-base hover:bg-gray-300" asChild>
-                  <Link href="/advent/2024">
+                  <Link href="/advent/2024/results">
                     Advent of CTF 2024
                     <HiArrowRight className="mb-0.5 h-3 w-3 stroke-1" />
                   </Link>
@@ -795,7 +795,7 @@ export default function CTF() {
                       <br />
                       prizes sponsored by
                     </p>
-                    <Link href="/advent/2024#a-note-on-the-delay-of-prizes">
+                    <Link href="/advent/2024/results#a-note-on-the-delay-of-prizes">
                       <Image src={icsred} alt="ICSRED Logo" className="h-32 w-32 rounded-lg opacity-70" />
                     </Link>
                   </div>

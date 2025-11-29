@@ -62,7 +62,7 @@ export default function RegisterForm({
   useEffect(() => {
     if (searchParams.get("showError") === "true") {
       toast.error("You must be registered to the event to do that.", { position: "top-center" });
-      router.replace("/advent/register");
+      router.replace("/advent/2024/register");
     }
   }, [router, searchParams]);
 
@@ -118,7 +118,10 @@ export default function RegisterForm({
             />
             <span className="text-lg">
               Logged in as <strong className="">{session?.user?.name}</strong>.&emsp;&emsp;Not you?{" "}
-              <button className="underline" onClick={() => signOut({ callbackUrl: "/advent/register#registration" })}>
+              <button
+                className="underline"
+                onClick={() => signOut({ callbackUrl: "/advent/2024/register#registration" })}
+              >
                 Sign out.
               </button>
             </span>
@@ -148,7 +151,7 @@ export default function RegisterForm({
 
               if (!adventRegisterMutation.isError) {
                 setError("");
-                router.push("/advent");
+                router.push("/advent/2024");
                 toast.success("Registration complete; happy hacking!", { position: "top-center", duration: 20_000 });
               }
             }}
@@ -254,7 +257,7 @@ export default function RegisterForm({
           <Button
             className="!hover:bg-[#5865f2]/70 flex items-center bg-[#5865f2]! font-bold text-gray-200!"
             onClick={() => {
-              signIn("discord", { callbackUrl: "/advent/register#registration" });
+              signIn("discord", { callbackUrl: "/advent/2024/register#registration" });
             }}
           >
             <FaDiscord className="h-6! w-6!" />
@@ -292,7 +295,7 @@ export default function RegisterForm({
             <Button
               className="mt-2 flex items-center font-bold text-gray-900"
               onClick={() => {
-                signIn("google", { callbackUrl: "/advent/register#registration" });
+                signIn("google", { callbackUrl: "/advent/2024/register#registration" });
               }}
             >
               <FaGoogle className="h-5! w-5!" />

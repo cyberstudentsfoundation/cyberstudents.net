@@ -18,7 +18,7 @@ export default async function Register() {
         <div className="w-full max-w-(--breakpoint-2xl)">
           <div className="flex flex-col items-center justify-between gap-16 xl:flex-row xl:items-start xl:gap-8">
             <div className="max-w-prose">
-              {/* <Link href="/advent" className="mb-4 flex items-center gap-2 text-sm text-gray-300 hover:underline">
+              {/* <Link href="/advent/2024" className="mb-4 flex items-center gap-2 text-sm text-gray-300 hover:underline">
                 <HiChevronLeft className="mb-px h-4 w-4" />
                 <span className="">Back to Advent of CTF</span>
               </Link> */}

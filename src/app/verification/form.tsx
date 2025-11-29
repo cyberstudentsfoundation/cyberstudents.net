@@ -456,7 +456,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                     <Checkbox id="terms2" required />
                     <label htmlFor="terms2" className="peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                       I have read, agreed, and adhered to the{" "}
-                      <a href="/advent/register" target="_blank" className="font-bold underline">
+                      <a href="/advent/2024/register" target="_blank" className="font-bold underline">
                         competition guidelines
                       </a>{" "}
                       throughout the competition.

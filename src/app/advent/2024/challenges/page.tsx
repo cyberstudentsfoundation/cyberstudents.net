@@ -9,10 +9,10 @@ export default async function Register() {
 
   // Uncomment for next event
 
-  // if (!session?.user) redirect("/advent/register?showError=true");
+  // if (!session?.user) redirect("/advent/2024/register?showError=true");
 
   // const { events } = await api.user.me();
-  // if (!events.includes("aoc2024")) redirect("/advent/register?showError=true");
+  // if (!events.includes("aoc2024")) redirect("/advent/2024/register?showError=true");
 
   const eventChallenges = await api.challenge.fetch({ event: "aoc2024", fetchExtended: true }); // change back to !!session?.user for next event
 

@@ -6,10 +6,10 @@ export default function NavbarStatus() {
 
   // if (pathname.startsWith("/ctf")) return null;
 
-  const isDelayed = true; // true or false for delayed status
+  const isDelayed = false; // true or false for delayed status
 
-  // Hours/days/weeks until August 8, 9 pm UTC
-  const targetDate = new Date("2025-08-08T21:00:00Z");
+  // Hours/days/weeks until December 2, 1 am UTC
+  const targetDate = new Date("2025-12-02T01:00:00Z");
   const now = new Date();
   const timeDiff = targetDate.getTime() - now.getTime();
 
@@ -19,24 +19,22 @@ export default function NavbarStatus() {
 
   return (
     <Link
-      href="/ctf"
+      href="/advent/2025"
       className={`group ml-2 hidden items-center gap-1.5 rounded-full py-1 pr-2 pl-1.5 text-xs decoration-gray-200/75 underline-offset-2 transition-all hover:underline lg:flex ${
-        isDelayed 
-          ? "bg-red-500/30 hover:bg-red-500/40" 
-          : "bg-green-500/30 hover:bg-green-500/40"
+        isDelayed ? "bg-red-500/30 hover:bg-red-500/40" : "bg-green-500/30 hover:bg-green-500/40"
       }`}
     >
       <span className="relative flex size-3">
-        <span className={`absolute inline-flex h-full w-full rounded-full opacity-75 group-hover:animate-ping ${
-          isDelayed ? "bg-red-400" : "bg-green-400"
-        }`} />
-        <span className={`relative inline-flex size-3 rounded-full ${
-          isDelayed ? "bg-red-500" : "bg-green-500"
-        }`} />
+        <span
+          className={`absolute inline-flex h-full w-full rounded-full opacity-75 group-hover:animate-ping ${
+            isDelayed ? "bg-red-400" : "bg-green-400"
+          }`}
+        />
+        <span className={`relative inline-flex size-3 rounded-full ${isDelayed ? "bg-red-500" : "bg-green-500"}`} />
       </span>
       <span>
-        CSD CTF &rsquo;25{" "}
-        {isDelayed 
+        Advent of CTF &rsquo;25{" "}
+        {isDelayed
           ? "is delayed"
           : timeDiff < -1.728e8
             ? "has ended"
