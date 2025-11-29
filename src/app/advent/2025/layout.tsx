@@ -7,7 +7,7 @@ import { Tooltip, TooltipTrigger, TooltipContent } from "~/components/ui/tooltip
 export const metadata: Metadata = {
   title: "Advent of CTF 2025 · CyberStudents",
   description:
-    "Join us for CSD CTF 2025 – a thrilling 48-hour capture the flag competition designed for students and beyond. Evolve your skills in cybersecurity, solve practical and fun challenges across various categories, climb the leaderboard across two divisions, and compete for prizes.",
+    "We’re back with our second annual Advent of CTF! Every day from December 1st to 25th, solve beginner-oriented gamified cybersecurity challenges for free. Get familiar with capture the flag competitions and cyber concepts from a wide range of popular categories.",
 };
 
 export default function AdventLayout({ children }: { children: React.ReactNode }) {
