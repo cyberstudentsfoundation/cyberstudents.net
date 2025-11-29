@@ -16,6 +16,26 @@ const config = {
         destination: "https://discord.com/invite/cyberstudents-916144903686336513",
         permanent: true,
       },
+
+      // 1. EXACT /advent → /advent/2025
+      {
+        source: "/advent",
+        destination: "/advent/2025",
+        permanent: false,
+      },
+
+      // 2. ONLY redirect specific subroutes to /advent/2024/*
+      {
+        source: "/advent/:path(challenges|leaderboard|register|results)",
+        destination: "/advent/2024/:path",
+        permanent: true,
+      },
+      {
+        // Also catch deeper nested versions like /advent/challenges/123
+        source: "/advent/:path(challenges|leaderboard|register|results)/:subpath*",
+        destination: "/advent/2024/:path/:subpath*",
+        permanent: true,
+      },
     ];
   },
   async rewrites() {

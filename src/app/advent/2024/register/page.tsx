@@ -3,6 +3,7 @@ import { api } from "~/trpc/server";
 import RegisterForm from "./form";
 import { HiExclamationCircle } from "react-icons/hi2";
 import { Alert, AlertTitle, AlertDescription } from "~/components/ui/alert";
+import Link from "next/link";
 
 export default async function Register() {
   const session = await getServerAuthSession();
@@ -22,7 +23,11 @@ export default async function Register() {
                 <HiChevronLeft className="mb-px h-4 w-4" />
                 <span className="">Back to Advent of CTF</span>
               </Link> */}
-              <p className="mb-1 text-xl font-bold text-gray-200">CyberStudents&rsquo;</p>
+              <Link href="/advent/2025/register" className="font-bold text-orange-300 underline">
+                Looking to register for Advent of CTF 2025?
+              </Link>
+              <p>We apologize for any old or broken links.</p>
+              <div className="h-8" />
               <h1 className="mb-8 font-mono text-4xl font-bold">
                 advent of ctf<span className="ml-5 font-sans font-light text-cyan-300">2024</span>
               </h1>

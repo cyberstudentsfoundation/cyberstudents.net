@@ -44,31 +44,31 @@ export default function Countdown({
 
   return (
     <div
-      className={`flex items-center font-mono ${variant === "small" ? "gap-2 text-xl" : "gap-2 px-2 md:gap-3 md:px-3 md:text-2xl"}`}
+      className={`flex items-center font-mono ${variant === "small" ? "gap-2 text-xl" : "gap-1 px-2 2xl:gap-3 2xl:px-3 2xl:text-2xl"}`}
     >
       {daysNeedToBeShown ? (
         <div
-          className={`rounded-lg p-2 text-center ${variant === "small" ? "w-14 bg-gray-800" : "w-12 bg-gray-800/50 backdrop-blur-sm md:w-14"}`}
+          className={`rounded-lg p-2 text-center ${variant === "small" ? "w-14 bg-gray-800" : "w-12 bg-gray-800/50 backdrop-blur-sm 2xl:w-14"}`}
         >
           {`${Math.floor(timeLeft / 8.64e7)}`.padStart(2, "0")}
           <div className="font-sans text-sm text-gray-400">days</div>
         </div>
       ) : null}
       <div
-        className={`rounded-lg p-2 text-center ${variant === "small" ? "w-14 bg-gray-800" : "w-12 bg-gray-800/50 backdrop-blur-sm md:w-14"}`}
+        className={`rounded-lg p-2 text-center ${variant === "small" ? "w-14 bg-gray-800" : "w-12 bg-gray-800/50 backdrop-blur-sm 2xl:w-14"}`}
       >
         {`${Math.floor((timeLeft % 8.64e7) / 3.6e6)}`.padStart(2, "0")}
         <div className="font-sans text-sm text-gray-400">hours</div>
       </div>
       <div
-        className={`rounded-lg p-2 text-center ${variant === "small" ? "w-14 bg-gray-800" : "w-12 bg-gray-800/50 backdrop-blur-sm md:w-14"}`}
+        className={`rounded-lg p-2 text-center ${variant === "small" ? "w-14 bg-gray-800" : "w-12 bg-gray-800/50 backdrop-blur-sm 2xl:w-14"}`}
       >
         {`${Math.floor((timeLeft % 3.6e6) / 60_000)}`.padStart(2, "0")}
         <div className="font-sans text-sm text-gray-400">mins</div>
       </div>
       {!daysNeedToBeShown || variant !== "normal" ? (
         <div
-          className={`rounded-lg p-2 text-center ${variant === "small" ? "w-14 bg-gray-800" : "w-12 bg-gray-800/50 backdrop-blur-sm md:w-14"}`}
+          className={`rounded-lg p-2 text-center ${variant === "small" ? "w-14 bg-gray-800" : "w-12 bg-gray-800/50 backdrop-blur-sm 2xl:w-14"}`}
         >
           {`${Math.floor((timeLeft % 60_000) / 1000)}`.padStart(2, "0")}
           <div className="font-sans text-sm text-gray-400">secs</div>
