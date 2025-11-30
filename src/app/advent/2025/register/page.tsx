@@ -1,9 +1,19 @@
+import { getServerAuthSession } from "~/server/auth";
+import { api } from "~/trpc/server";
 import { HiArrowUpRight, HiExclamationCircle, HiLightBulb } from "react-icons/hi2";
+import RegisterForm from "./form";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
 import { ScrollArea } from "~/components/ui/scroll-area";
 
-export default function Register() {
+export default async function Register() {
+  const session = await getServerAuthSession();
+
+  let user = null;
+  if (session?.user) {
+    user = await api.user.me();
+  }
+
   return (
     <main className="mb-12 sm:mb-24">
       <div className="flex justify-center">
@@ -121,7 +131,7 @@ export default function Register() {
                 <h2>Prizes and divisions</h2>
                 <p>
                   The prize pool for this event will be announced closer to the event date. The minimum prize pool as of
-                  December 29, is <strong>$200 USD</strong> (including non-monetary items) for all divisions.
+                  December 30, is <strong>$12,000 USD</strong> (including non-monetary items) for all divisions.
                 </p>
                 <table>
                   <thead>
@@ -212,7 +222,7 @@ export default function Register() {
                   </li>
                   <li>
                     Sharing or accepting flags or any other type of disallowed collaboration (see &ldquo;Help and
-                    collaboration&rdquo; above) to individuals outside of their team during the event is prohibited.
+                    collaboration&rdquo; above) to other players during the event is prohibited.
                   </li>
                   <li>
                     Negligently making flags or any other type of disallowed collaboration accessible to other players
@@ -331,12 +341,13 @@ export default function Register() {
                 thumbClassName="dark:bg-gray-600"
               >
                 <a id="form" className="scroll-mt-26" />
+                {/* <RegisterForm session={session} user={user} /> */}
                 <h1 className="mt-8 mb-4 text-2xl font-bold">Registration</h1>
                 <Alert className="my-2 bg-red-500/50! text-gray-100! dark:bg-red-500">
                   <HiExclamationCircle className="h-5 w-5" />
                   <AlertTitle>Registration for this event has not opened yet.</AlertTitle>
                   <AlertDescription className="mt-2 text-gray-300">
-                    Registration for Advent of CTF 2025 will open soon. Please join our{" "}
+                    Registration for Advent of CTF 2025 will open later today. Please join our{" "}
                     <a
                       href="https://discord.com/invite/cyberstudents-916144903686336513"
                       target="_blank"

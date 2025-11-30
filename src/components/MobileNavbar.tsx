@@ -70,18 +70,18 @@ export default function MobileNavbar({ session }: { session?: Session | null }) 
                         Advent of CTF 2025
                       </Link>
                       <Link
-                        href="/ctf"
-                        className="text-lg transition-colors hover:text-cyan-300"
-                        onClick={() => setMenuOpen(false)}
-                      >
-                        CSD CTF
-                      </Link>
-                      <Link
                         href="/advent/2024"
                         className="text-lg transition-colors hover:text-cyan-300"
                         onClick={() => setMenuOpen(false)}
                       >
                         Advent of CTF 2024
+                      </Link>
+                      <Link
+                        href="/ctf"
+                        className="text-lg transition-colors hover:text-cyan-300"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        CSD CTF
                       </Link>
                       <Link
                         href="https://discord.com/invite/cyberstudents-916144903686336513"
@@ -113,7 +113,7 @@ export default function MobileNavbar({ session }: { session?: Session | null }) 
               </div>
             )}
             <div className="mt-2 -ml-2 w-fit">
-              <NavbarStatus />
+              <NavbarStatus className="flex" />
             </div>
           </div>
         </ScrollArea>

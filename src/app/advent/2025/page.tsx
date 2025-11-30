@@ -34,6 +34,7 @@ import {
 } from "~/components/ui/dialog";
 import SnowBackground from "~/app/advent/2025/snow-background";
 import ctftimeLogo from "~/../public/ctftime-logo.png";
+import verialabsLogo from "~/../public/verialabs.png";
 import ctfguideLogo from "~/../public/ctfguide.png";
 import apisecLogo from "~/../public/apisec.png";
 
@@ -43,11 +44,13 @@ import romaniaFlag from "~/../public/flags/romania.svg";
 import swedenFlag from "~/../public/flags/sweden.svg";
 import unitedStatesFlag from "~/../public/flags/united-states.svg";
 
+import pfp_a_person from "~/../public/staff-pfps/a_person.png";
+import pfp_flocto from "~/../public/staff-pfps/flocto.png";
 import pfp_godder from "~/../public/staff-pfps/decidueye.png";
-import pfp_kolmus from "~/../public/staff-pfps/kolmus.png";
-import pfp_logix from "~/../public/staff-pfps/logix.png";
-import pfp_mathlegend from "~/../public/staff-pfps/mathlegend.png";
-import pfp_mr_mph from "~/../public/staff-pfps/mr_mph.png";
+// import pfp_kolmus from "~/../public/staff-pfps/kolmus.png";
+// import pfp_logix from "~/../public/staff-pfps/logix.png";
+// import pfp_mathlegend from "~/../public/staff-pfps/mathlegend.png";
+// import pfp_mr_mph from "~/../public/staff-pfps/mr_mph.png";
 import pfp_vipin from "~/../public/staff-pfps/vipin.png";
 import pfp_vy from "~/../public/staff-pfps/vy.png";
 import pfp_wjaaaaaaat from "~/../public/staff-pfps/wjaaaaaaat.png";
@@ -71,12 +74,14 @@ const CHALLENGE_DEVELOPERS = [
       </>
     ),
   },
+  { name: "a_person", pfp: pfp_a_person },
+  { name: "flocto", pfp: pfp_flocto },
   // { name: "Mr_MPH", pfp: pfp_mr_mph },
   // { name: "Kolmus", pfp: pfp_kolmus },
   // { name: "MathLegend_175", pfp: pfp_mathlegend },
-  // { name: "wjaaaaaaat", pfp: pfp_wjaaaaaaat },
-  // { name: "vy", pfp: pfp_vy },
-  { name: "Logix", pfp: pfp_logix },
+  { name: "wjaaaaaaat", pfp: pfp_wjaaaaaaat },
+  { name: "vy", pfp: pfp_vy },
+  // { name: "Logix", pfp: pfp_logix },
 ];
 
 export default async function Advent2025() {
@@ -327,7 +332,7 @@ export default async function Advent2025() {
       name: "Miscellaneous",
       icon: BiNetworkChart,
       description:
-        "A diverse category that includes more creative challenges, such as open-source intelligence (OSINT), jails, defensive OS , and more.",
+        "A diverse category that includes more creative challenges, such as open-source intelligence (OSINT), jails, blue-team OS images, and more.",
       color: "bg-purple-500/10 text-purple-500 border-purple-500/20",
       borderColor: "border-purple-500/35!",
       alignments: [
@@ -412,7 +417,7 @@ export default async function Advent2025() {
                         <HiOutlineTrophy className="h-6 w-6 sm:h-8 sm:w-8" />
                       </div>
                       <div>
-                        <p className="leading-6 font-semibold">Over $200 USD in prizes for students</p>
+                        <p className="leading-6 font-semibold">Over $12,000 worth of prizes for students</p>
                         <p className="text-base text-gray-300 sm:text-lg">And an open division for anyone to play in</p>
                       </div>
                     </div>
@@ -434,29 +439,36 @@ export default async function Advent2025() {
                 {/* <p className="mb-8 text-sm text-gray-400">
                 *Community help is always allowed; staff can help after someone has solved the challenge.
               </p> */}
-                <div className="flex flex-col items-center gap-4 sm:flex-row">
+                <div className="flex flex-col items-center gap-8 sm:flex-row sm:gap-4">
                   <div className="flex w-full flex-col items-center sm:items-start">
                     <LiquidGlassButton href="/advent/2025/register" className="flex items-center gap-1 text-lg">
                       Register
                       <HiArrowRight className="ml-0.5 h-3 w-3 stroke-1" />
                     </LiquidGlassButton>
-                    <div className="mt-2 w-fit text-sm text-gray-300">Registration is open through Dec 31st.</div>
+                    <div className="mt-2 w-fit text-sm text-gray-300">Registration is open through 12/31.</div>
                   </div>
                   <div className="shrink-0">
-                    <p className="mb-1 text-gray-200">Sponsored by:</p>
-                    <div className="flex items-center gap-8">
-                      <a href="https://ctfguide.com/" target="_blank" rel="noopener noreferrer">
+                    <p className="mb-1 text-center text-gray-200 sm:text-left">Sponsored by:</p>
+                    <div className="flex items-center">
+                      <a href="https://verialabs.com/" target="_blank" rel="noopener noreferrer" className="mr-5">
+                        <Image
+                          src={verialabsLogo}
+                          alt="Veria Labs"
+                          className="h-14 w-auto opacity-70 invert transition-all hover:opacity-100 sm:h-16"
+                        />
+                      </a>
+                      <a href="https://ctfguide.com/" target="_blank" rel="noopener noreferrer" className="mr-5">
                         <Image
                           src={ctfguideLogo}
                           alt="CTFGuide"
-                          className="h-8 w-auto opacity-70 transition-all hover:opacity-100"
+                          className="h-5 w-auto opacity-70 transition-all hover:opacity-100 sm:h-7"
                         />
                       </a>
                       <a href="https://www.apisecuniversity.com/" target="_blank" rel="noopener noreferrer">
                         <Image
                           src={apisecLogo}
                           alt="APIsec"
-                          className="h-11 w-auto opacity-100 transition-all hover:opacity-80"
+                          className="h-9 w-auto opacity-100 transition-all hover:opacity-80 sm:h-11"
                         />
                       </a>
                     </div>
@@ -572,10 +584,12 @@ export default async function Advent2025() {
         </div>
       </div>
       <div className="flex w-full justify-center bg-gray-900">
-        <div className="max-w-(--breakpoint-2xl) overflow-hidden px-4 pt-16 sm:px-8 md:px-10 xl:px-20">
-          <div className="mb-32 flex flex-col items-center justify-between gap-10 lg:flex-row lg:items-start lg:gap-16">
+        <div className="flex w-full flex-col items-center overflow-hidden pt-16">
+          <div className="mb-16 flex w-full max-w-(--breakpoint-2xl) flex-col items-center justify-between gap-10 px-4 sm:px-8 md:px-10 lg:flex-row lg:items-start lg:gap-16 xl:px-20">
             <div className="flex w-full flex-col items-start lg:max-w-sm lg:self-stretch xl:max-w-md">
-              <h2 className="mb-1 font-mono font-medium tracking-wider text-cyan-300 uppercase">Over $200 in prizes</h2>
+              <h2 className="mb-1 font-mono font-medium tracking-wider text-cyan-300 uppercase">
+                Over $12,000 worth of prizes
+              </h2>
               <h1 className="mb-4 text-3xl font-bold">Compete in three divisions</h1>
               <p className="mb-4 text-lg">
                 Advent of CTF will feature a competitive High School and College Division with prizes exclusive for
@@ -607,7 +621,7 @@ export default async function Advent2025() {
                       <div>
                         <span>High School and College Division</span>
                         <CardDescription className="mt-1 text-sm font-normal sm:text-base">
-                          Individual; $200+ USD
+                          Individual; $10,000+ USD
                         </CardDescription>
                       </div>
                       <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-lg border-sky-300/20 bg-sky-300/10 text-sky-300 sm:flex">
@@ -715,197 +729,150 @@ export default async function Advent2025() {
               </div>
             </div>
           </div>
-          <div className="mb-32 flex flex-col items-center gap-8">
-            <div className="w-full max-w-(--breakpoint-lg) lg:text-center">
-              <h1 className="mb-4 text-3xl font-bold">
-                <span>Challenges from six core categories</span>
-                {/* <br />
+          <div className="mb-16 flex w-full justify-center bg-gray-800">
+            <div className="flex w-full max-w-(--breakpoint-2xl) flex-col items-center gap-8 px-4 py-16 sm:px-8 md:px-10 xl:px-20">
+              <div className="w-full max-w-(--breakpoint-lg) lg:text-center">
+                <h1 className="mb-4 text-3xl font-bold">
+                  <span>Challenges from six core categories</span>
+                  {/* <br />
                 <span className="text-cyan-300">Progressively harder.</span> */}
-              </h1>
-              <p className="text-lg">
-                Advent of CTF features a wide range of challenges of varying difficulties across six of the most
-                popular, practical, and relevant categories within cybersecurity. These categories reflect those present
-                in other CTFs and practical training environments. Regardless of your skill level, we promise that there
-                will be something for you to learn and enjoy this holiday season.
-              </p>
-            </div>
-            <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
-              {ctfCategories.map((category) => (
-                <Card
-                  key={category.name}
-                  className={`h-full transition-shadow hover:shadow-lg ${category.borderColor} border-2`}
-                >
-                  <CardHeader>
-                    <div
-                      className={`mb-4 hidden h-12 w-12 items-center justify-center rounded-lg lg:flex ${category.color}`}
-                    >
-                      {category.icon && <category.icon className="h-6 w-6" />}
-                    </div>
-                    <CardTitle className="mb-1 flex items-center justify-between text-xl lg:mb-0">
-                      <span>{category.name}</span>
+                </h1>
+                <p className="text-lg">
+                  Advent of CTF features a wide range of challenges of varying difficulties across six of the most
+                  popular, practical, and relevant categories within cybersecurity. These categories reflect those
+                  present in other CTFs and practical training environments. Regardless of your skill level, we promise
+                  that there will be something for you to learn and enjoy this holiday season.
+                </p>
+              </div>
+              <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
+                {ctfCategories.map((category) => (
+                  <Card
+                    key={category.name}
+                    className={`h-full transition-shadow hover:shadow-lg ${category.borderColor} border-2`}
+                  >
+                    <CardHeader>
                       <div
-                        className={`flex h-12 w-12 items-center justify-center rounded-lg lg:hidden ${category.color}`}
+                        className={`mb-4 hidden h-12 w-12 items-center justify-center rounded-lg lg:flex ${category.color}`}
                       >
                         {category.icon && <category.icon className="h-6 w-6" />}
                       </div>
-                    </CardTitle>
-                    <CardContent className="px-0">
-                      <CardDescription className="mb-4 text-base">{category.description}</CardDescription>
-                      <h2 className="mb-1 flex items-center text-sm font-semibold text-gray-500">
-                        <span>Framework alignments</span>
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <button title="About curriculum framework alignments" className="ml-1">
-                              <CircleQuestionMark className="h-4 w-4 cursor-pointer text-gray-400" />
-                            </button>
-                          </DialogTrigger>
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle className="mb-2 text-left">
-                                About curriculum framework alignments
-                              </DialogTitle>
-                              <DialogDescription className="text-left text-base">
-                                <span>
-                                  These alignments are based on the{" "}
-                                  <a
-                                    href="https://www.nist.gov/itl/applied-cybersecurity/nice/nice-framework-resource-center"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="font-medium text-gray-300 underline"
-                                  >
-                                    NICE Workforce Framework for Cybersecurity
-                                  </a>
-                                  ,{" "}
-                                  <a
-                                    href="https://attack.mitre.org/"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="font-medium text-gray-300 underline"
-                                  >
-                                    MITRE ATT&CK
-                                  </a>
-                                  , and{" "}
-                                  <a
-                                    href="https://apcentral.collegeboard.org/media/pdf/ap-cybersecurity-course-framework.pdf"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="font-medium text-gray-300 underline"
-                                  >
-                                    AP® Cybersecurity
-                                  </a>
-                                  . CyberStudents Learn will use these alignments in the future to develop supplementary
-                                  learning materials and resources for each topic.
-                                </span>
-                                <span className="mt-4 block">
-                                  Hover over each alignment on desktop for more information.
-                                </span>
-                              </DialogDescription>
-                            </DialogHeader>
-                          </DialogContent>
-                        </Dialog>
-                      </h2>
-                      <div className="flex w-full flex-wrap gap-1">
-                        <TooltipProvider delayDuration={100}>
-                          {category.alignments.map((alignment) => (
-                            <Tooltip key={alignment.name}>
-                              <TooltipTrigger asChild>
-                                <button className="cursor-help">
-                                  <Badge className={`text-xs ${alignment.color} cursor-help`}>
-                                    <span>{alignment.name}</span>
-                                  </Badge>
-                                </button>
-                              </TooltipTrigger>
-                              <TooltipContent>{alignment.description}</TooltipContent>
-                            </Tooltip>
-                          ))}
-                        </TooltipProvider>
-                      </div>
-                    </CardContent>
-                  </CardHeader>
-                </Card>
-              ))}
+                      <CardTitle className="mb-1 flex items-center justify-between text-xl lg:mb-0">
+                        <span>{category.name}</span>
+                        <div
+                          className={`flex h-12 w-12 items-center justify-center rounded-lg lg:hidden ${category.color}`}
+                        >
+                          {category.icon && <category.icon className="h-6 w-6" />}
+                        </div>
+                      </CardTitle>
+                      <CardContent className="px-0">
+                        <CardDescription className="mb-4 text-base">{category.description}</CardDescription>
+                        <h2 className="mb-1 flex items-center text-sm font-semibold text-gray-500">
+                          <span>Framework alignments</span>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <button title="About curriculum framework alignments" className="ml-1">
+                                <CircleQuestionMark className="h-4 w-4 cursor-pointer text-gray-400" />
+                              </button>
+                            </DialogTrigger>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle className="mb-2 text-left">
+                                  About curriculum framework alignments
+                                </DialogTitle>
+                                <DialogDescription className="text-left text-base">
+                                  <span>
+                                    These alignments are based on the{" "}
+                                    <a
+                                      href="https://www.nist.gov/itl/applied-cybersecurity/nice/nice-framework-resource-center"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="font-medium text-gray-300 underline"
+                                    >
+                                      NICE Workforce Framework for Cybersecurity
+                                    </a>
+                                    ,{" "}
+                                    <a
+                                      href="https://attack.mitre.org/"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="font-medium text-gray-300 underline"
+                                    >
+                                      MITRE ATT&CK
+                                    </a>
+                                    , and{" "}
+                                    <a
+                                      href="https://apcentral.collegeboard.org/media/pdf/ap-cybersecurity-course-framework.pdf"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="font-medium text-gray-300 underline"
+                                    >
+                                      AP® Cybersecurity
+                                    </a>
+                                    . CyberStudents Learn will use these alignments in the future to develop
+                                    supplementary learning materials and resources for each topic.
+                                  </span>
+                                  <span className="mt-4 block">
+                                    Hover over each alignment on desktop for more information.
+                                  </span>
+                                </DialogDescription>
+                              </DialogHeader>
+                            </DialogContent>
+                          </Dialog>
+                        </h2>
+                        <div className="flex w-full flex-wrap gap-1">
+                          <TooltipProvider delayDuration={100}>
+                            {category.alignments.map((alignment) => (
+                              <Tooltip key={alignment.name}>
+                                <TooltipTrigger asChild>
+                                  <button className="cursor-help">
+                                    <Badge className={`text-xs ${alignment.color} cursor-help`}>
+                                      <span>{alignment.name}</span>
+                                    </Badge>
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent>{alignment.description}</TooltipContent>
+                              </Tooltip>
+                            ))}
+                          </TooltipProvider>
+                        </div>
+                      </CardContent>
+                    </CardHeader>
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
-          <div className="mx-auto mb-16 w-full max-w-3xl md:text-center">
-            <h1 className="mb-2 text-3xl font-bold">Our past competitions</h1>
-            <p className="text-lg">
-              We&rsquo;ve hosted many competitions directed to students and beginners over the last three years. Explore
-              our past competitions and challenges to learn more and practice your skills.
-            </p>
-          </div>
-          <div className="mb-32 grid grid-flow-row grid-cols-1 gap-x-9 gap-y-16 sm:grid-cols-2 xl:grid-cols-3 xl:gap-y-24">
-            <div className="col-span-1 flex flex-col items-center gap-8 sm:col-span-2 xl:col-span-3 xl:flex-row xl:justify-between">
-              <div className="max-w-196 xl:max-w-md">
-                <div className="mb-3 w-fit rounded-full border border-white/20 bg-white/10 p-4 shadow-xs shadow-white/25 backdrop-blur-xs">
-                  <TbChristmasTree className="h-8 w-8 text-gray-100" />
+          <div className="w-full max-w-(--breakpoint-2xl) px-4 sm:px-8 md:px-10 xl:px-20">
+            <div className="mx-auto mb-16 w-full max-w-3xl md:text-center">
+              <h1 className="mb-2 text-3xl font-bold">Our past competitions</h1>
+              <p className="text-lg">
+                We&rsquo;ve hosted many competitions directed to students and beginners over the last three years.
+                Explore our past competitions and challenges to learn more and practice your skills.
+              </p>
+            </div>
+            <div className="mb-32 grid grid-flow-row grid-cols-1 gap-x-9 gap-y-16 sm:grid-cols-2 xl:grid-cols-3 xl:gap-y-24">
+              <div className="col-span-1 flex flex-col items-center gap-8 sm:col-span-2 xl:col-span-3 xl:flex-row xl:justify-between">
+                <div className="max-w-196 xl:max-w-md">
+                  <div className="mb-3 w-fit rounded-full border border-white/20 bg-white/10 p-4 shadow-xs shadow-white/25 backdrop-blur-xs">
+                    <TbChristmasTree className="h-8 w-8 text-gray-100" />
+                  </div>
+                  <h2 className="mb-2 text-2xl font-bold">Advent of CTF 2024</h2>
+                  <p className="mb-4 text-lg">
+                    Last December, we hosted the same month-long beginner-friendly CTF competition with challenges
+                    released daily and US$280 up for grabs. We&rsquo;re excited to bring new challenges and prizes for
+                    you this year!
+                  </p>
+                  <Button className="bg-gray-100 text-base hover:bg-gray-300" asChild>
+                    <Link href="/advent/2024/results">
+                      Advent of CTF 2024
+                      <HiArrowRight className="mb-0.5 h-3 w-3 stroke-1" />
+                    </Link>
+                  </Button>
                 </div>
-                <h2 className="mb-2 text-2xl font-bold">Advent of CTF 2024</h2>
-                <p className="mb-4 text-lg">
-                  Last December, we hosted the same month-long beginner-friendly CTF competition with challenges
-                  released daily and US$280 up for grabs. We&rsquo;re excited to bring new challenges and prizes for you
-                  this year!
-                </p>
-                <Button className="bg-gray-100 text-base hover:bg-gray-300" asChild>
-                  <Link href="/advent/2024/results">
-                    Advent of CTF 2024
-                    <HiArrowRight className="mb-0.5 h-3 w-3 stroke-1" />
-                  </Link>
-                </Button>
-              </div>
-              <div className="flex flex-col gap-8 md:flex-row xl:min-w-196 xl:justify-between xl:gap-4">
-                <div>
-                  <h3 className="mb-1 font-bold text-gray-400">
-                    <span className="text-cyan-300/75">2024</span> High School & College Division
-                  </h3>
-                  <Table className="table-fixed overflow-hidden rounded-lg text-gray-200 md:w-80">
-                    <TableBody className="rounded-md">
-                      <TableRow className="bg-yellow-300/25 hover:bg-yellow-300/35!">
-                        <TableCell className="w-14">1st</TableCell>
-                        <TableCell className="flex items-center gap-1.5">
-                          <span>zarnex__</span>
-                          <Image
-                            src={unitedStatesFlag}
-                            alt="Flag for United States"
-                            title="United States"
-                            className="h-5 w-5"
-                          />
-                        </TableCell>
-                      </TableRow>
-                      <TableRow className="bg-gray-300/25 hover:bg-gray-300/35!">
-                        <TableCell className="w-14">2nd</TableCell>
-                        <TableCell className="flex items-center gap-1.5">
-                          <span>minipif</span>
-                          <Image src={romaniaFlag} alt="Flag for Romania" title="Romania" className="h-5 w-5" />
-                        </TableCell>
-                      </TableRow>
-                      <TableRow className="bg-yellow-800/25 hover:bg-yellow-800/35!">
-                        <TableCell className="w-14">3rd</TableCell>
-                        <TableCell className="flex items-center gap-1.5">
-                          <span>pligonstein</span>
-                          <Image src={romaniaFlag} alt="Flag for Romania" title="Romania" className="h-5 w-5" />
-                        </TableCell>
-                      </TableRow>
-                      <TableRow className="bg-gray-600/25 hover:bg-gray-600/35!">
-                        <TableCell className="w-14">4th</TableCell>
-                        <TableCell className="flex items-center gap-1.5">
-                          <span>silence_</span>
-                          <Image src={indiaFlag} alt="Flag for India" title="India" className="h-5 w-5" />
-                        </TableCell>
-                      </TableRow>
-                      <TableRow className="bg-gray-600/25 hover:bg-gray-600/35!">
-                        <TableCell className="w-14">5th</TableCell>
-                        <TableCell className="flex items-center gap-1.5">
-                          <span>trixai</span>
-                          <Image src={swedenFlag} alt="Flag for Sweden" title="Sweden" className="h-5 w-5" />
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </div>
-                <div className="flex flex-col justify-between gap-8 md:gap-0 xl:pr-20">
+                <div className="flex flex-col gap-8 md:flex-row xl:min-w-196 xl:justify-between xl:gap-4">
                   <div>
                     <h3 className="mb-1 font-bold text-gray-400">
-                      <span className="text-cyan-300/75">2024</span> Open - Write-Up Division
+                      <span className="text-cyan-300/75">2024</span> High School & College Division
                     </h3>
                     <Table className="table-fixed overflow-hidden rounded-lg text-gray-200 md:w-80">
                       <TableBody className="rounded-md">
@@ -924,93 +891,146 @@ export default async function Advent2025() {
                         <TableRow className="bg-gray-300/25 hover:bg-gray-300/35!">
                           <TableCell className="w-14">2nd</TableCell>
                           <TableCell className="flex items-center gap-1.5">
-                            <span>
-                              raul_26 <span className="text-gray-400">(Fl4gged)</span>
-                            </span>
-                            <Image src={austriaFlag} alt="Flag for Austria" title="Austria" className="h-5 w-5" />
+                            <span>minipif</span>
+                            <Image src={romaniaFlag} alt="Flag for Romania" title="Romania" className="h-5 w-5" />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow className="bg-yellow-800/25 hover:bg-yellow-800/35!">
+                          <TableCell className="w-14">3rd</TableCell>
+                          <TableCell className="flex items-center gap-1.5">
+                            <span>pligonstein</span>
+                            <Image src={romaniaFlag} alt="Flag for Romania" title="Romania" className="h-5 w-5" />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow className="bg-gray-600/25 hover:bg-gray-600/35!">
+                          <TableCell className="w-14">4th</TableCell>
+                          <TableCell className="flex items-center gap-1.5">
+                            <span>silence_</span>
+                            <Image src={indiaFlag} alt="Flag for India" title="India" className="h-5 w-5" />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow className="bg-gray-600/25 hover:bg-gray-600/35!">
+                          <TableCell className="w-14">5th</TableCell>
+                          <TableCell className="flex items-center gap-1.5">
+                            <span>trixai</span>
+                            <Image src={swedenFlag} alt="Flag for Sweden" title="Sweden" className="h-5 w-5" />
                           </TableCell>
                         </TableRow>
                       </TableBody>
                     </Table>
                   </div>
-                  <div className="flex max-w-80 items-center justify-center gap-4">
-                    <p className="text-center font-medium text-gray-400">
-                      Advent of CTF 2024
-                      <br />
-                      prizes sponsored by
-                    </p>
-                    <Link href="/advent/2024/results#a-note-on-the-delay-of-prizes">
-                      <Image src={icsred} alt="ICSRED Logo" className="h-32 w-32 rounded-lg opacity-70" />
-                    </Link>
+                  <div className="flex flex-col justify-between gap-8 md:gap-0 xl:pr-20">
+                    <div>
+                      <h3 className="mb-1 font-bold text-gray-400">
+                        <span className="text-cyan-300/75">2024</span> Open - Write-Up Division
+                      </h3>
+                      <Table className="table-fixed overflow-hidden rounded-lg text-gray-200 md:w-80">
+                        <TableBody className="rounded-md">
+                          <TableRow className="bg-yellow-300/25 hover:bg-yellow-300/35!">
+                            <TableCell className="w-14">1st</TableCell>
+                            <TableCell className="flex items-center gap-1.5">
+                              <span>zarnex__</span>
+                              <Image
+                                src={unitedStatesFlag}
+                                alt="Flag for United States"
+                                title="United States"
+                                className="h-5 w-5"
+                              />
+                            </TableCell>
+                          </TableRow>
+                          <TableRow className="bg-gray-300/25 hover:bg-gray-300/35!">
+                            <TableCell className="w-14">2nd</TableCell>
+                            <TableCell className="flex items-center gap-1.5">
+                              <span>
+                                raul_26 <span className="text-gray-400">(Fl4gged)</span>
+                              </span>
+                              <Image src={austriaFlag} alt="Flag for Austria" title="Austria" className="h-5 w-5" />
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                    </div>
+                    <div className="flex max-w-80 items-center justify-center gap-4">
+                      <p className="text-center font-medium text-gray-400">
+                        Advent of CTF 2024
+                        <br />
+                        prizes sponsored by
+                      </p>
+                      <Link href="/advent/2024/results#a-note-on-the-delay-of-prizes">
+                        <Image src={icsred} alt="ICSRED Logo" className="h-32 w-32 rounded-lg opacity-70" />
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="col-span-1 flex flex-col items-center gap-8 sm:col-span-2 xl:col-span-3 xl:flex-row xl:justify-between">
-              <div className="max-w-196 xl:max-w-md">
-                <div className="mb-3 w-fit rounded-full border border-white/20 bg-white/10 p-4 shadow-xs shadow-white/25 backdrop-blur-xs">
-                  <MdCalendarMonth className="h-8 w-8 text-gray-100" />
+              <div className="col-span-1 flex flex-col items-center gap-8 sm:col-span-2 xl:col-span-3 xl:flex-row xl:justify-between">
+                <div className="max-w-196 xl:max-w-md">
+                  <div className="mb-3 w-fit rounded-full border border-white/20 bg-white/10 p-4 shadow-xs shadow-white/25 backdrop-blur-xs">
+                    <MdCalendarMonth className="h-8 w-8 text-gray-100" />
+                  </div>
+                  <h2 className="mb-2 text-2xl font-bold">Daily CTFs</h2>
+                  <p className="mb-4 text-lg">
+                    Play in our beginner-friendly daily capture the flag challenges throughout the year. Learn new
+                    skills, discuss with others, and compete for prizes.
+                  </p>
+                  <div className="-ml-4 flex">
+                    {dailyCtfCategories.map(({ name, icon }) => (
+                      <TooltipProvider key={name} delayDuration={100} skipDelayDuration={1000}>
+                        <Tooltip>
+                          <TooltipTrigger tabIndex={0} className={`cursor-help pr-4 pl-4 text-gray-400`}>
+                            {icon}
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{name}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    ))}
+                  </div>
+                  <Button className="mt-6 bg-gray-100 text-base hover:bg-gray-300" asChild>
+                    <a href="https://discord.com/invite/cyberstudents-916144903686336513" target="_blank">
+                      Play in our Discord
+                      <HiArrowUpRight className="mb-0.5 h-3 w-3 stroke-1" />
+                    </a>
+                  </Button>
                 </div>
-                <h2 className="mb-2 text-2xl font-bold">Daily CTFs</h2>
+                <DailyCTFImages />
+              </div>
+            </div>
+          </div>
+          <div className="mb-16 flex w-full justify-center bg-gray-800">
+            <div className="flex max-w-(--breakpoint-2xl) flex-col items-center gap-10 overflow-x-hidden px-4 py-16 sm:px-8 md:px-10 xl:px-20">
+              <div className="mx-auto flex w-full max-w-4xl flex-col sm:text-center">
+                <h1 className="mb-4 text-3xl font-bold">Discover past CTF challenges</h1>
                 <p className="mb-4 text-lg">
-                  Play in our beginner-friendly daily capture the flag challenges throughout the year. Learn new skills,
-                  discuss with others, and compete for prizes.
+                  Get a taste of some of the challenges you&rsquo;ll come across in Advent of CTF this year from our
+                  past competitions.
                 </p>
-                <div className="-ml-4 flex">
-                  {dailyCtfCategories.map(({ name, icon }) => (
-                    <TooltipProvider key={name} delayDuration={100} skipDelayDuration={1000}>
-                      <Tooltip>
-                        <TooltipTrigger tabIndex={0} className={`cursor-help pr-4 pl-4 text-gray-400`}>
-                          {icon}
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>{name}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  ))}
+                <div className="flex flex-col justify-center gap-4 sm:flex-row sm:items-center">
+                  <Button className="bg-gray-100 hover:bg-gray-300" asChild>
+                    <a href="https://github.com/cyberstudentsacademy/Advent-of-CTF" target="_blank">
+                      Advent of CTF Write-Ups
+                      <HiArrowUpRight className="mb-0.5 stroke-1" />
+                    </a>
+                  </Button>
+                  <Button className="bg-gray-100 hover:bg-gray-300" asChild>
+                    <a href="https://github.com/cyberstudentsacademy/csd-ctf" target="_blank">
+                      Daily CTFs Write-Ups
+                      <HiArrowUpRight className="mb-0.5 stroke-1" />
+                    </a>
+                  </Button>
                 </div>
-                <Button className="mt-6 bg-gray-100 text-base hover:bg-gray-300" asChild>
-                  <a href="https://discord.com/invite/cyberstudents-916144903686336513" target="_blank">
-                    Play in our Discord
-                    <HiArrowUpRight className="mb-0.5 h-3 w-3 stroke-1" />
-                  </a>
-                </Button>
               </div>
-              <DailyCTFImages />
-            </div>
-          </div>
-          <div className="mb-32 flex flex-col items-center gap-10 overflow-x-hidden">
-            <div className="mx-auto flex w-full max-w-4xl flex-col sm:text-center">
-              <h1 className="mb-4 text-3xl font-bold">Discover past CTF challenges</h1>
-              <p className="mb-4 text-lg">
-                Get a taste of some of the challenges you&rsquo;ll come across in Advent of CTF this year from our past
-                competitions.
-              </p>
-              <div className="flex flex-col justify-center gap-4 sm:flex-row sm:items-center">
-                <Button className="bg-gray-100 hover:bg-gray-300" asChild>
-                  <a href="https://github.com/cyberstudentsacademy/Advent-of-CTF" target="_blank">
-                    Advent of CTF Write-Ups
-                    <HiArrowUpRight className="mb-0.5 stroke-1" />
-                  </a>
-                </Button>
-                <Button className="bg-gray-100 hover:bg-gray-300" asChild>
-                  <a href="https://github.com/cyberstudentsacademy/csd-ctf" target="_blank">
-                    Daily CTFs Write-Ups
-                    <HiArrowUpRight className="mb-0.5 stroke-1" />
-                  </a>
-                </Button>
-              </div>
-            </div>
-            <div className="h-full w-full overflow-x-hidden px-9 sm:px-12">
-              <ChallengesCarousel />
-              <div className="mt-2 flex items-center justify-center gap-2 xl:hidden">
-                <MdSwipe className="mb-0.5 h-5 w-5 text-gray-500" />
-                <span className="text-sm font-semibold text-gray-500">Swipe to see more challenges</span>
+              <div className="h-full w-full overflow-x-hidden px-9 sm:px-12">
+                <ChallengesCarousel />
+                <div className="mt-2 flex items-center justify-center gap-2 xl:hidden">
+                  <MdSwipe className="mb-0.5 h-5 w-5 text-gray-500" />
+                  <span className="text-sm font-semibold text-gray-500">Swipe to see more challenges</span>
+                </div>
               </div>
             </div>
           </div>
-          <div className="mb-16 flex flex-col items-center justify-between gap-16 lg:flex-row lg:items-start lg:gap-32">
+          <div className="mb-16 flex max-w-(--breakpoint-2xl) flex-col items-center justify-between gap-16 px-4 sm:px-8 md:px-10 lg:flex-row lg:items-start lg:gap-32 xl:px-20">
             <div className="flex w-full flex-col items-start lg:self-stretch">
               <h2 className="mb-1 font-mono font-medium tracking-wider text-cyan-300 uppercase">Introduction</h2>
               <h1 className="mb-4 text-3xl font-bold">What&rsquo;s capture the flag?</h1>
@@ -1067,61 +1087,63 @@ export default async function Advent2025() {
               <p className="text-sm text-gray-400"></p>
             </div>
           </div>
-          <div className="mx-auto w-full max-w-3xl text-center">
-            <h1 className="mb-2 text-xl font-bold">Thank you to our challenge developers 🩵</h1>
-          </div>
-          {/* <div className="mt-8 mb-16 grid w-full grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8"> */}
-          <div className="mt-8 mb-4 grid grid-cols-3 gap-4">
-            {CHALLENGE_DEVELOPERS.map((dev) => (
-              <div key={dev.name} className="flex flex-col items-center">
-                <Image
-                  src={dev.pfp}
-                  alt={`Profile picture of ${dev.name}`}
-                  className="mb-2 h-16 w-16 rounded-full object-cover"
-                />
-                <span className="text-base font-medium text-gray-200">{dev.name}</span>
-                <span className="text-sm text-gray-400">{dev.description}</span>
-              </div>
-            ))}
-          </div>
-          <div className="mb-16 flex items-center justify-center text-gray-300">and more&hellip;</div>
-          <div className="flex flex-col justify-center gap-4 sm:flex-row">
-            <Button className="bg-gray-100 text-base hover:bg-gray-300" asChild>
-              <Link href="/advent/2025/register">
-                Register
-                <HiArrowRight className="mb-0.5 stroke-1" />
-              </Link>
-            </Button>
-            <div className="h-px self-stretch bg-gray-700 sm:mx-2 sm:h-auto sm:w-px" />
-            <a href="https://discord.com/invite/cyberstudents-916144903686336513" target="_blank">
-              <Button
-                tabIndex={-1}
-                className="flex w-full items-center bg-[#5865f2]! text-base text-gray-200! hover:bg-[#5865f2]/70!"
-              >
-                <FaDiscord className="h-6! w-6!" />
-                <span>Discord</span>
+          <div className="w-full max-w-(--breakpoint-2xl) px-4 sm:px-8 md:px-10 xl:px-20">
+            <div className="mx-auto w-full max-w-3xl text-center">
+              <h1 className="mb-2 text-xl font-bold">Thank you to our challenge developers 🩵</h1>
+            </div>
+            {/* <div className="mt-8 mb-4 grid grid-cols-3 gap-4"> */}
+            <div className="mx-auto mt-8 mb-16 grid w-full max-w-(--breakpoint-lg) grid-cols-3 gap-4 sm:grid-cols-6">
+              {CHALLENGE_DEVELOPERS.map((dev) => (
+                <div key={dev.name} className="flex flex-col items-center">
+                  <Image
+                    src={dev.pfp}
+                    alt={`Profile picture of ${dev.name}`}
+                    className="mb-2 h-16 w-16 rounded-full object-cover"
+                  />
+                  <span className="text-base font-medium text-gray-200">{dev.name}</span>
+                  <span className="text-sm text-gray-400">{dev.description}</span>
+                </div>
+              ))}
+            </div>
+            {/* <div className="mb-16 flex items-center justify-center text-gray-300">and more&hellip;</div> */}
+            <div className="flex flex-col justify-center gap-4 sm:flex-row">
+              <Button className="bg-gray-100 text-base hover:bg-gray-300" asChild>
+                <Link href="/advent/2025/register">
+                  Register
+                  <HiArrowRight className="mb-0.5 stroke-1" />
+                </Link>
               </Button>
-            </a>
-            {/* TODO: change to actual event link */}
-            <a href="https://ctftime.org/ctf/1218" target="_blank">
-              <Button
-                tabIndex={-1}
-                className="flex w-full items-center bg-[#e3000b]! text-base text-gray-200! hover:bg-[#e3000b]/70!"
+              <div className="h-px self-stretch bg-gray-700 sm:mx-2 sm:h-auto sm:w-px" />
+              <a href="https://discord.com/invite/cyberstudents-916144903686336513" target="_blank">
+                <Button
+                  tabIndex={-1}
+                  className="flex w-full items-center bg-[#5865f2]! text-base text-gray-200! hover:bg-[#5865f2]/70!"
+                >
+                  <FaDiscord className="h-6! w-6!" />
+                  <span>Discord</span>
+                </Button>
+              </a>
+              {/* TODO: change to actual event link */}
+              <a href="https://ctftime.org/ctf/1218" target="_blank">
+                <Button
+                  tabIndex={-1}
+                  className="flex w-full items-center bg-[#e3000b]! text-base text-gray-200! hover:bg-[#e3000b]/70!"
+                >
+                  <Image src={ctftimeLogo} alt="CTFtime Logo" className="h-5 w-5" />
+                  <span>CTFtime</span>
+                </Button>
+              </a>
+            </div>
+            <div className="mt-8 flex justify-center">
+              <a
+                href="https://www.vecteezy.com/free-vector/background"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-gray-400 hover:underline"
               >
-                <Image src={ctftimeLogo} alt="CTFtime Logo" className="h-5 w-5" />
-                <span>CTFtime</span>
-              </Button>
-            </a>
-          </div>
-          <div className="mt-8 flex justify-center">
-            <a
-              href="https://www.vecteezy.com/free-vector/background"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-gray-400 hover:underline"
-            >
-              Background Vectors by Vecteezy
-            </a>
+                Background Vectors by Vecteezy
+              </a>
+            </div>
           </div>
         </div>
       </div>

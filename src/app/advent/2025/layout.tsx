@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function AdventLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <nav className="sticky top-14 z-20 flex h-12 -translate-y-px items-center justify-center border-t border-b border-[#1d2947] bg-[#1d2947]/75 px-4 py-2 backdrop-blur-lg">
+      <nav className="sticky top-14 z-20 flex h-12 -translate-y-px items-center justify-center border-t border-b border-[#0a0e1a] bg-[#0a0e1a]/50 px-4 py-2 backdrop-blur-lg">
         <div className="flex w-full max-w-(--breakpoint-2xl) items-center justify-center sm:justify-between">
           <div className="flex items-center">
             <div className="hidden items-center xl:flex">

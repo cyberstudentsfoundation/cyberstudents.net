@@ -12,7 +12,8 @@ import { signIn, signOut } from "next-auth/react";
 import { toast } from "sonner";
 import { registerSchema } from "~/lib/schemas";
 import { HiCheckCircle } from "react-icons/hi2";
-import { FaDiscord, FaGoogle } from "react-icons/fa6";
+import { FaDiscord, FaLinkedin } from "react-icons/fa6";
+import { FcGoogle } from "react-icons/fc";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -28,6 +29,10 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import CountrySelect from "~/components/CountrySelect";
+import ctftimeLogo from "~/../public/ctftime-logo.png";
+import { Separator } from "~/components/ui/separator";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
+import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "~/components/ui/input-group";
 
 export default function RegisterForm({
   session,
@@ -43,11 +48,17 @@ export default function RegisterForm({
   const [acceptedAccessCode, setAcceptedAccessCode] = useState<boolean>(false);
 
   const preferredEmailRef = useRef<HTMLInputElement>(null);
+  const displayNameRef = useRef<HTMLInputElement>(null);
+  const linkedinRef = useRef<HTMLInputElement>(null);
   const [country, setCountry] = useState<string>();
   const [schoolingStatus, setSchoolingStatus] = useState<string>();
+  const [howDidYouHearAboutUs, setHowDidYouHearAboutUs] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
   const [acceptTerms, setAcceptTerms] = useState<boolean>(false);
+  const [allowSponsorContact, setAllowSponsorContact] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+
+  const [leaderboardPreferencesShown, setLeaderboardPreferencesShown] = useState<string | undefined>();
 
   const adventRegisterMutation = api.event.adventRegister.useMutation({
     onError: (error) => {
@@ -57,12 +68,12 @@ export default function RegisterForm({
   });
   const checkAccessCodeMutation = api.event.checkAccessCode.useMutation();
 
-  const isRegistered = user?.events.includes("aoc2024");
+  const isRegistered = user?.events.includes("aoc2025");
 
   useEffect(() => {
     if (searchParams.get("showError") === "true") {
       toast.error("You must be registered to the event to do that.", { position: "top-center" });
-      router.replace("/advent/2024/register");
+      router.replace("/advent/2025/register");
     }
   }, [router, searchParams]);
 
@@ -73,20 +84,18 @@ export default function RegisterForm({
     if (localStorageAccessCode) {
       setAccessCode(localStorageAccessCode);
       setAcceptedAccessCode(true);
-      setTimeout(() => toast.info("Access code detected; you can login with Google.", { position: "top-center" }));
+      setTimeout(() => toast.info("Access code detected; please login with Google.", { position: "top-center" }));
     }
   }, []);
 
   return (
     <div>
-      <h1 id="registration" className="mb-4 scroll-mt-12 text-3xl font-bold">
-        Registration
-      </h1>
+      <h1 className="mt-8 mb-4 text-2xl font-bold">Registration</h1>
       {isRegistered && (
         <>
           <Alert className="mb-4 bg-green-500/50! dark:bg-green-500">
             <HiCheckCircle className="h-5 w-5" />
-            <AlertTitle>You are registered for CyberStudents&rsquo; Advent of CTF 2024.</AlertTitle>
+            <AlertTitle>You are registered for CyberStudents&rsquo; Advent of CTF 2025.</AlertTitle>
             <AlertDescription>
               If you need to update any details, please DM Modmail in our{" "}
               <a
@@ -102,10 +111,19 @@ export default function RegisterForm({
         </>
       )}
       <p className="mb-2">
-        You must register with your Discord account. Only your username and profile picture will be visible to other
-        players. You&apos;ll be able to customize your preferred method of communication.
+        {session?.user ? (
+          <>
+            You&rsquo;re almost done! Please answer the questions below to complete your registration for Advent of CTF
+            2025.
+          </>
+        ) : (
+          <>
+            Registering for Advent of CTF is free and open to everyone. To get started, please sign in with one of the
+            options below. Only your name and profile picture will be visible to other players.
+          </>
+        )}
       </p>
-      <p className="mb-3.5">This event has ended.</p>
+      {/* <p className="mb-3.5">This event has ended.</p> */}
       {session?.user ? (
         <>
           <div className="mt-4 mb-8 flex items-center gap-2">
@@ -120,7 +138,7 @@ export default function RegisterForm({
               Logged in as <strong className="">{session?.user?.name}</strong>.&emsp;&emsp;Not you?{" "}
               <button
                 className="underline"
-                onClick={() => signOut({ callbackUrl: "/advent/2024/register#registration" })}
+                onClick={() => signOut({ callbackUrl: "/advent/2025/register#registration" })}
               >
                 Sign out.
               </button>
@@ -165,7 +183,7 @@ export default function RegisterForm({
                 defaultValue={session.user.email ?? ""}
               />
               <span className="text-xs text-gray-400">
-                This is the email associated with your Discord account when you signed up.
+                This is the email address associated with your Discord or Google account when you signed up.
               </span>
             </div>
             <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -174,12 +192,12 @@ export default function RegisterForm({
                 type="email"
                 id="preferred-email"
                 ref={preferredEmailRef}
-                className="bg-gray-200 text-gray-900"
+                className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                 defaultValue={session.user.email ?? ""}
                 disabled={isRegistered}
               />
               <span className="text-xs text-gray-400">
-                We will attempt to contact you using this email if you are unreachable via Discord.
+                We will attempt to contact you using this email address if you are unreachable via Discord.
               </span>
             </div>
             <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -194,17 +212,10 @@ export default function RegisterForm({
                 disabled={isRegistered}
               >
                 <SelectTrigger className="w-full bg-gray-200! text-gray-900!">
-                  <SelectValue placeholder="Select your status" />
+                  <SelectValue placeholder="Select status..." />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="none">None of the following</SelectItem>
                   <SelectGroup>
-                    <SelectLabel className="-ml-2">
-                      <hr />
-                    </SelectLabel>
-                    <SelectItem value="ms_disabled" disabled>
-                      Middle school (removed as of 12/2&mdash;see Discord)
-                    </SelectItem>
                     <SelectItem value="hs1">9th grade (high school or equivalent)</SelectItem>
                     <SelectItem value="hs2">10th grade (high school or equivalent)</SelectItem>
                     <SelectItem value="hs3">11th grade (high school or equivalent)</SelectItem>
@@ -224,14 +235,96 @@ export default function RegisterForm({
                     <SelectLabel className="-ml-2">
                       <hr />
                     </SelectLabel>
-                    <SelectItem value="other">Other middle/high school or college (or equivalent)</SelectItem>
+                    <SelectItem value="other">Other high school or college (or equivalent)</SelectItem>
+                    <SelectItem value="none">None of the above</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
               <span className="text-xs text-gray-400">
-                We need this information to determine your eligibility for leaderboards and prizes.
+                We need this information to determine which division you will be competing in for the event.
               </span>
             </div>
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+              <Label htmlFor="country">
+                How did you hear about Advent of CTF? <span className="text-gray-400">(Optional)</span>
+              </Label>
+              <Select
+                value={howDidYouHearAboutUs}
+                onValueChange={(option) => setHowDidYouHearAboutUs(option)}
+                disabled={isRegistered}
+              >
+                <SelectTrigger className="w-full bg-gray-200! text-gray-900!">
+                  <SelectValue placeholder="Select an option..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="csd-discord">CyberStudents Discord server</SelectItem>
+                    <SelectItem value="other-ctf-discord">
+                      Other cybersecurity Discord servers or communities
+                    </SelectItem>
+                    <SelectItem value="ctftime">CTFtime</SelectItem>
+                    <SelectItem value="sponsor">One of our sponsors</SelectItem>
+                    <SelectItem value="google-social-media">Google or social media</SelectItem>
+                    <SelectItem value="friend">A friend told me about it</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <Accordion
+              type="single"
+              collapsible
+              value={leaderboardPreferencesShown}
+              onValueChange={setLeaderboardPreferencesShown}
+              className="mb-4"
+            >
+              <AccordionItem value="show-leaderboard-preferences" className="border-gray-600">
+                <AccordionTrigger className="pt-2 pb-4">
+                  {leaderboardPreferencesShown ? "Hide" : "Show"} leaderboard preferences
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="mb-4 grid w-full max-w-sm items-center gap-1.5">
+                    <Label htmlFor="display-name">Name to appear on leaderboards</Label>
+                    <Input
+                      type="text"
+                      id="display-name"
+                      ref={displayNameRef}
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
+                      defaultValue={session.user.name ?? ""}
+                      disabled={isRegistered}
+                      maxLength={32}
+                    />
+                    <span className="text-xs text-gray-400">
+                      You can only change your display name every hour. Max 32 characters.
+                    </span>
+                  </div>
+                  <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <Label htmlFor="linkedin">
+                      LinkedIn profile to appear beside name <span className="text-gray-400">(Optional)</span>
+                    </Label>
+                    <InputGroup className="border-gray-900! bg-gray-200! text-gray-900! ring-gray-200! ring-offset-gray-900">
+                      <InputGroupInput
+                        type="text"
+                        id="linkedin"
+                        ref={linkedinRef}
+                        className="text-gray-900! ring-offset-0!"
+                        defaultValue={""} // set to current linkedin value once we allow edits
+                        placeholder="your-linkedin-username"
+                        disabled={isRegistered}
+                        maxLength={100}
+                      />
+                      <InputGroupAddon>
+                        <FaLinkedin className="text-gray-500" />
+                        <InputGroupText className="mt-0.5 text-gray-500!">linkedin.com/in/</InputGroupText>
+                      </InputGroupAddon>
+                    </InputGroup>
+                    <span className="text-xs text-gray-400">
+                      Providing your LinkedIn profile can help other players, sponsors, and recruiters connect with you.
+                    </span>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="terms"
@@ -244,6 +337,22 @@ export default function RegisterForm({
                 className="text-sm font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
                 I agree to the competition guidelines and other aforementioned information.
+                <span className="text-red-500">*</span>
+              </label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="allow-sponsor-contact"
+                checked={allowSponsorContact}
+                onCheckedChange={(state) => setAllowSponsorContact(state === "indeterminate" ? false : state)}
+                disabled={isRegistered}
+              />
+              <label
+                htmlFor="allow-sponsor-contact"
+                className="text-sm font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Allow Advent of CTF 2025 sponsors to contact me regarding recruitment and other opportunities.{" "}
+                <span className="text-gray-400">(Optional)</span>
               </label>
             </div>
             <Button type="submit" className="mt-4 self-start" disabled={!acceptTerms || loading}>
@@ -253,55 +362,93 @@ export default function RegisterForm({
           </form>
         </>
       ) : (
-        <div>
-          <Button
-            className="!hover:bg-[#5865f2]/70 flex items-center bg-[#5865f2]! font-bold text-gray-200!"
-            onClick={() => {
-              signIn("discord", { callbackUrl: "/advent/2024/register#registration" });
-            }}
-          >
-            <FaDiscord className="h-6! w-6!" />
-            <span>Login with Discord</span>
-          </Button>
-          <p className="mt-10 mb-3 text-gray-200">Or if you have an access code:</p>
-          {!acceptedAccessCode ? (
-            <div className="flex items-center gap-2">
-              <Input
-                value={accessCode}
-                onChange={(e) => setAccessCode(e.target.value)}
-                placeholder="Access code"
-                className="max-w-xs bg-gray-900 text-gray-200"
-              />
+        <div className="mt-4">
+          <div className="flex w-fit flex-col gap-2">
+            <div className="flex items-center gap-3">
               <Button
-                className="bg-gray-200 font-bold text-gray-900"
-                onClick={async () => {
-                  if (!accessCode?.trim()) return;
-
-                  const result = await checkAccessCodeMutation.mutateAsync({ code: accessCode });
-
-                  if (result) {
-                    localStorage.setItem("accessCode", accessCode);
-                    setAcceptedAccessCode(true);
-                    toast.success("Access code accepted; you can login with Google.", { position: "top-center" });
-                  } else {
-                    toast.error("Invalid access code.", { position: "top-center" });
-                  }
+                className="flex w-52 items-center bg-[#5865f2]! font-bold text-gray-200! hover:bg-[#5865f2]/70!"
+                onClick={() => {
+                  signIn("discord", { callbackUrl: "/advent/2025/register#registration" });
                 }}
               >
-                Submit
+                <FaDiscord className="h-6! w-6!" />
+                <span>Login with Discord</span>
               </Button>
+              <em className="text-gray-400">recommended</em>
             </div>
-          ) : (
-            <Button
-              className="mt-2 flex items-center font-bold text-gray-900"
+            <div className="flex w-52 items-center gap-4">
+              <Separator className="flex-1 bg-gray-500!" />
+              <span className="text-gray-400">or</span>
+              <Separator className="flex-1 bg-gray-500!" />
+            </div>
+            {/* <Button
+              className="flex w-52 items-center bg-[#e3000b]! font-bold text-gray-200! hover:bg-[#e3000b]/70!"
               onClick={() => {
-                signIn("google", { callbackUrl: "/advent/2024/register#registration" });
+                signIn("ctftime", { callbackUrl: "/advent/2025/register#registration" });
               }}
             >
-              <FaGoogle className="h-5! w-5!" />
+              <Image src={ctftimeLogo} alt="CTFtime Logo" className="h-6! w-6!" />
+              <span>Login with CTFtime</span>
+            </Button>
+            <div className="flex w-52 items-center gap-4">
+              <Separator className="flex-1 bg-gray-500!" />
+              <span className="text-gray-400">or</span>
+              <Separator className="flex-1 bg-gray-500!" />
+            </div> */}
+            <Button
+              className="flex w-52 items-center font-bold text-gray-900"
+              onClick={() => {
+                signIn("google", { callbackUrl: "/advent/2025/register#registration" });
+              }}
+            >
+              <FcGoogle className="h-6! w-6!" />
               <span>Login with Google</span>
             </Button>
-          )}
+            <div className="flex w-52 items-center gap-4">
+              <Separator className="flex-1 bg-gray-500!" />
+              <span className="text-gray-400">or</span>
+              <Separator className="flex-1 bg-gray-500!" />
+            </div>
+            <p className="text-gray-200">Or if you&rsquo;ve been given an access code by a staff member:</p>
+            {!acceptedAccessCode ? (
+              <div className="flex items-center gap-2">
+                <Input
+                  value={accessCode}
+                  onChange={(e) => setAccessCode(e.target.value)}
+                  placeholder="Access code"
+                  className="max-w-xs border-gray-400 bg-gray-900 text-gray-200"
+                />
+                <Button
+                  className="bg-gray-200 font-bold text-gray-900"
+                  onClick={async () => {
+                    if (!accessCode?.trim()) return;
+
+                    const result = await checkAccessCodeMutation.mutateAsync({ code: accessCode });
+
+                    if (result) {
+                      localStorage.setItem("accessCode", accessCode);
+                      setAcceptedAccessCode(true);
+                      toast.success("Access code accepted; please login with Google.", { position: "top-center" });
+                    } else {
+                      toast.error("Invalid access code.", { position: "top-center" });
+                    }
+                  }}
+                >
+                  Submit
+                </Button>
+              </div>
+            ) : (
+              <Button
+                className="mt-2 flex items-center font-bold text-gray-900"
+                onClick={() => {
+                  signIn("google", { callbackUrl: "/advent/2025/register#registration" });
+                }}
+              >
+                <FcGoogle className="h-5! w-5!" />
+                <span>Login with Google with my access code</span>
+              </Button>
+            )}
+          </div>
         </div>
       )}
     </div>

@@ -57,7 +57,8 @@ export default async function Home() {
           {/* update this below as well! */}
           <div className="mt-24 flex justify-center sm:mt-36">
             <div className="w-full max-w-(--breakpoint-lg) xl:max-w-(--breakpoint-xl)">
-              <div className="mb-36 flex items-center justify-center">
+              <div className="mb-18.5 flex items-center justify-center">
+                {/* this used to be mb-36 */}
                 <div className="w-full max-w-(--breakpoint-lg)">
                   <h1 className="group h-20 font-serif text-4xl transition-all sm:h-[6.0625rem] sm:text-5xl lg:h-[3.0625rem]">
                     Learn and grow <br className="lg:hidden" />
@@ -102,7 +103,10 @@ export default async function Home() {
           <div className="relative w-full">
             <CustomSnowfall />
             <div className="absolute inset-0 z-0 w-full">
-              <SnowBackground className="h-full w-full overflow-x-hidden opacity-30 hue-rotate-[270deg]" />
+              <SnowBackground
+                className="h-full w-full overflow-x-hidden opacity-30 hue-rotate-[270deg]"
+                viewBox="0 -300 3839.988 2160"
+              />
             </div>
             <div className="flex w-full justify-center overflow-x-hidden bg-gray-900 px-4 py-8 sm:px-8 md:px-10 lg:bg-gray-950">
               <div className="relative z-10 flex w-full justify-center">

@@ -1,7 +1,9 @@
+import React from "react";
 import Link from "next/link";
+import { cn } from "~/lib/utils";
 // import { usePathname } from "next/navigation";
 
-export default function NavbarStatus() {
+export default function NavbarStatus({ className }: { className?: string }) {
   // const pathname = usePathname();
 
   // if (pathname.startsWith("/ctf")) return null;
@@ -20,9 +22,11 @@ export default function NavbarStatus() {
   return (
     <Link
       href="/advent/2025"
-      className={`group ml-2 hidden items-center gap-1.5 rounded-full py-1 pr-2 pl-1.5 text-xs decoration-gray-200/75 underline-offset-2 transition-all hover:underline lg:flex ${
-        isDelayed ? "bg-red-500/30 hover:bg-red-500/40" : "bg-green-500/30 hover:bg-green-500/40"
-      }`}
+      className={cn(
+        "group ml-2 hidden items-center gap-1.5 rounded-full py-1 pr-2 pl-1.5 text-xs decoration-gray-200/75 underline-offset-2 transition-all hover:underline lg:flex",
+        isDelayed ? "bg-red-500/30 hover:bg-red-500/40" : "bg-green-500/30 hover:bg-green-500/40",
+        className,
+      )}
     >
       <span className="relative flex size-3">
         <span
