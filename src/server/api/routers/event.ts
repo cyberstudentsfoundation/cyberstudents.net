@@ -10,22 +10,22 @@ export const eventRouter = createTRPCRouter({
       where: { id: ctx.session.user.id },
       include: { events: true, accounts: { select: { provider: true } } },
     });
-    const event = await ctx.db.event.findUnique({ where: { name: "aoc2024" } });
+    const event = await ctx.db.event.findUnique({ where: { name: "aoc2025" } });
 
     if (!user) throw new TRPCError({ message: "User not found.", code: "INTERNAL_SERVER_ERROR" });
     if (!event) throw new TRPCError({ message: "Event not found.", code: "INTERNAL_SERVER_ERROR" });
 
-    if (user.accounts.some((account) => account.provider === "google")) {
-      const codes = env.ACCESS_CODES?.trim().split(",") ?? [];
-      if (!codes.includes(input.accessCode ?? "")) {
-        throw new TRPCError({
-          message: "An access code is required to register with a Google account.",
-          code: "FORBIDDEN",
-        });
-      }
-    }
+    // if (user.accounts.some((account) => account.provider === "google")) {
+    //   const codes = env.ACCESS_CODES?.trim().split(",") ?? [];
+    //   if (!codes.includes(input.accessCode ?? "")) {
+    //     throw new TRPCError({
+    //       message: "An access code is required to register with a Google account.",
+    //       code: "FORBIDDEN",
+    //     });
+    //   }
+    // }
 
-    if (user.events.some((event) => event.name === "aoc2024")) {
+    if (user.events.some((event) => event.name === "aoc2025")) {
       throw new TRPCError({ message: "You have already registered for this event.", code: "FORBIDDEN" });
     }
 
@@ -35,7 +35,7 @@ export const eventRouter = createTRPCRouter({
 
     let newFlags = [...user.flags];
 
-    if (input.schoolingStatus === "none") {
+    if (["none", "college5"].includes(input.schoolingStatus)) {
       newFlags = newFlags.filter((flag) => flag !== "ms_hs_college_eligible");
     } else {
       newFlags.push("ms_hs_college_eligible");
@@ -45,23 +45,86 @@ export const eventRouter = createTRPCRouter({
     await ctx.db.user.update({
       where: { id: ctx.session.user.id },
       data: {
-        events: { connect: { name: "aoc2024" } },
+        events: { connect: { name: "aoc2025" } },
         preferredEmail: input.preferredEmail,
         flags: { set: newFlags },
+        schoolingStatus: input.schoolingStatus,
+        country: input.country,
+        howDidYouHearAboutUs: input.howDidYouHearAboutUs,
+        displayName: input.displayName,
+        displayNameUpdatedAt: new Date(),
+        linkedin: input.linkedin,
+        allowSponsorContact: input.allowSponsorContact,
       },
     });
 
     sendNotification(
       [
-        `User \`${user.id}\` registered for event \`aoc2024\`.`,
-        `- ${input.accessCode ? "Google" : "Discord"}: \`${ctx.session.user.name}\``,
+        `User \`${user.id}\` registered for event \`aoc2025\`.`,
+        `- ${user.accounts.map((account) => account.provider[0]?.toUpperCase() + account.provider.slice(1)).join(", ")}: \`${ctx.session.user.name}\``,
         `- Account email: \`${ctx.session.user.email}\``,
         `- Preferred email: \`${input.preferredEmail}\``,
         `- Country: \`${input.country}\``,
         `- Schooling status: \`${input.schoolingStatus}\``,
+        `- How did you hear about us: \`${input.howDidYouHearAboutUs}\``,
+        input.displayName !== ctx.session.user.name ? `- Display name: \`${input.displayName}\`` : "",
+        input.linkedin ? `- LinkedIn: <https://linkedin.com/in/${input.linkedin}>\`` : "",
+        `- Allow sponsor contact: ${input.allowSponsorContact}`,
         input.accessCode ? `- Access code: \`${input.accessCode}\`` : "",
       ].join("\n"),
     );
+
+    return;
+  }),
+
+  adventUpdateRegistration: protectedProcedure.input(registerSchema).mutation(async ({ ctx, input }) => {
+    const user = await ctx.db.user.findUnique({
+      where: { id: ctx.session.user.id },
+      include: { events: true },
+    });
+
+    if (!user) throw new TRPCError({ message: "User not found.", code: "INTERNAL_SERVER_ERROR" });
+
+    if (!user.events.some((event) => event.name === "aoc2025")) {
+      throw new TRPCError({ message: "You are not registered for this event.", code: "FORBIDDEN" });
+    }
+
+    if (
+      user.displayName &&
+      input.displayName !== user.displayName &&
+      Date.now() - (user.displayNameUpdatedAt?.getTime() ?? 0) < 60 * 60 * 1000
+    ) {
+      throw new TRPCError({
+        message: "You can only change your display name once per hour.",
+        code: "TOO_MANY_REQUESTS",
+      });
+    }
+
+    // Do not allow flags to be changed:
+    // let newFlags = [...user.flags];
+
+    // if (["none", "college5"].includes(input.schoolingStatus)) {
+    //   newFlags = newFlags.filter((flag) => flag !== "ms_hs_college_eligible");
+    // }
+    // else {
+    //   newFlags.push("ms_hs_college_eligible");
+    //   newFlags = [...new Set(newFlags)];
+    // }
+
+    await ctx.db.user.update({
+      where: { id: ctx.session.user.id },
+      data: {
+        preferredEmail: input.preferredEmail,
+        schoolingStatus: input.schoolingStatus,
+        country: input.country,
+        // flags: { set: newFlags },
+        howDidYouHearAboutUs: input.howDidYouHearAboutUs,
+        displayName: input.displayName,
+        displayNameUpdatedAt: input.displayName !== user.displayName ? new Date() : user.displayNameUpdatedAt,
+        linkedin: input.linkedin,
+        allowSponsorContact: input.allowSponsorContact,
+      },
+    });
 
     return;
   }),

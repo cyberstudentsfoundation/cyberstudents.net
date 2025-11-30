@@ -44,18 +44,22 @@ export default function RegisterForm({
   const searchParams = useSearchParams();
   const router = useRouter();
 
+  const isRegistered = user?.events.includes("aoc2025");
+
   const [accessCode, setAccessCode] = useState<string>("");
   const [acceptedAccessCode, setAcceptedAccessCode] = useState<boolean>(false);
 
   const preferredEmailRef = useRef<HTMLInputElement>(null);
   const displayNameRef = useRef<HTMLInputElement>(null);
   const linkedinRef = useRef<HTMLInputElement>(null);
-  const [country, setCountry] = useState<string>();
-  const [schoolingStatus, setSchoolingStatus] = useState<string>();
-  const [howDidYouHearAboutUs, setHowDidYouHearAboutUs] = useState<string>();
+  const [country, setCountry] = useState<string | undefined>(user?.country ?? undefined);
+  const [schoolingStatus, setSchoolingStatus] = useState<string | undefined>(user?.schoolingStatus ?? undefined);
+  const [howDidYouHearAboutUs, setHowDidYouHearAboutUs] = useState<string | undefined>(
+    user?.howDidYouHearAboutUs ?? undefined,
+  );
   const [loading, setLoading] = useState<boolean>(false);
-  const [acceptTerms, setAcceptTerms] = useState<boolean>(false);
-  const [allowSponsorContact, setAllowSponsorContact] = useState<boolean>(false);
+  const [acceptTerms, setAcceptTerms] = useState<boolean>(isRegistered ?? false);
+  const [allowSponsorContact, setAllowSponsorContact] = useState<boolean>(user?.allowSponsorContact ?? false);
   const [error, setError] = useState<string>("");
 
   const [leaderboardPreferencesShown, setLeaderboardPreferencesShown] = useState<string | undefined>();
@@ -66,9 +70,15 @@ export default function RegisterForm({
       setError(error.message);
     },
   });
-  const checkAccessCodeMutation = api.event.checkAccessCode.useMutation();
 
-  const isRegistered = user?.events.includes("aoc2025");
+  const adventUpdateRegistrationMutation = api.event.adventUpdateRegistration.useMutation({
+    onError: (error) => {
+      setLoading(false);
+      setError(error.message);
+    },
+  });
+
+  const checkAccessCodeMutation = api.event.checkAccessCode.useMutation();
 
   useEffect(() => {
     if (searchParams.get("showError") === "true") {
@@ -97,25 +107,20 @@ export default function RegisterForm({
             <HiCheckCircle className="h-5 w-5" />
             <AlertTitle>You are registered for CyberStudents&rsquo; Advent of CTF 2025.</AlertTitle>
             <AlertDescription>
-              If you need to update any details, please DM Modmail in our{" "}
-              <a
-                href="https://discord.com/invite/cyberstudents-916144903686336513"
-                target="_blank"
-                className="underline"
-              >
-                Discord server
-              </a>
-              .
+              Some of your registration details can be updated below. If you have any issues, please contact an
+              administrator. Happy hacking!
             </AlertDescription>
           </Alert>
         </>
       )}
       <p className="mb-2">
         {session?.user ? (
-          <>
-            You&rsquo;re almost done! Please answer the questions below to complete your registration for Advent of CTF
-            2025.
-          </>
+          !isRegistered ? (
+            <>
+              You&rsquo;re almost done! Please answer the questions below to complete your registration for Advent of
+              CTF 2025.
+            </>
+          ) : null
         ) : (
           <>
             Registering for Advent of CTF is free and open to everyone. To get started, please sign in with one of the
@@ -134,15 +139,29 @@ export default function RegisterForm({
               alt="Profile Picture"
               className="h-12 w-12 rounded-full"
             />
-            <span className="text-lg">
-              Logged in as <strong className="">{session?.user?.name}</strong>.&emsp;&emsp;Not you?{" "}
-              <button
-                className="underline"
-                onClick={() => signOut({ callbackUrl: "/advent/2025/register#registration" })}
-              >
-                Sign out.
-              </button>
-            </span>
+            <div>
+              <div className="text-lg">
+                Logged in as <strong className="">{session?.user?.name}</strong>.&emsp;&emsp;Not you?{" "}
+                <button
+                  className="underline"
+                  onClick={() => signOut({ callbackUrl: "/advent/2025/register#registration" })}
+                >
+                  Sign out.
+                </button>
+              </div>
+              <div className="text-sm leading-4 text-gray-400">
+                {user?.accounts
+                  .map(
+                    (account) =>
+                      ({
+                        discord: "Discord",
+                        google: "Google",
+                        ctftime: "CTFtime",
+                      })[account.provider],
+                  )
+                  .join(", ") ?? "Unknown login method"}
+              </div>
+            </div>
           </div>
           <form
             className="flex flex-col gap-4"
@@ -151,11 +170,23 @@ export default function RegisterForm({
 
               setLoading(true);
 
+              if (!acceptTerms) {
+                setError("You must agree to the competition guidelines and other aforementioned information");
+                return setLoading(false);
+              }
+
               const parsed = registerSchema.safeParse({
                 preferredEmail: preferredEmailRef.current?.value,
                 country: country,
                 schoolingStatus: schoolingStatus,
                 accessCode: accessCode || undefined,
+                howDidYouHearAboutUs: howDidYouHearAboutUs || undefined,
+                displayName:
+                  // this is so that if their discord/google names are weird,
+                  // the ascii & char limit filter will still accept their provider names
+                  displayNameRef.current?.value === session.user.name ? undefined : displayNameRef.current?.value,
+                linkedin: linkedinRef.current?.value || undefined,
+                allowSponsorContact: allowSponsorContact,
               });
 
               if (!parsed.success) {
@@ -163,14 +194,26 @@ export default function RegisterForm({
                 return setLoading(false);
               }
 
-              await adventRegisterMutation.mutateAsync(parsed.data);
+              if (isRegistered) {
+                await adventUpdateRegistrationMutation.mutateAsync(parsed.data);
 
-              setLoading(false);
+                setLoading(false);
 
-              if (!adventRegisterMutation.isError) {
+                // I believe that we don't need this? otherwise isError is delayed by one request
+                // if (!adventUpdateRegistrationMutation.isError) {
+                setError("");
+                toast.success("Registration updated successfully", { position: "top-center" });
+                // }
+              } else {
+                await adventRegisterMutation.mutateAsync(parsed.data);
+
+                setLoading(false);
+
+                // if (!adventRegisterMutation.isError) {
                 setError("");
                 router.push("/advent/2025");
                 toast.success("Registration complete; happy hacking!", { position: "top-center", duration: 20_000 });
+                // }
               }
             }}
           >
@@ -193,8 +236,7 @@ export default function RegisterForm({
                 id="preferred-email"
                 ref={preferredEmailRef}
                 className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
-                defaultValue={session.user.email ?? ""}
-                disabled={isRegistered}
+                defaultValue={user?.preferredEmail ?? session.user.email ?? ""}
               />
               <span className="text-xs text-gray-400">
                 We will attempt to contact you using this email address if you are unreachable via Discord.
@@ -202,7 +244,7 @@ export default function RegisterForm({
             </div>
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="country">Country of residence</Label>
-              <CountrySelect country={country} setCountry={setCountry} disabled={isRegistered} />
+              <CountrySelect country={country} setCountry={setCountry} />
             </div>
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="country">Current/incoming schooling status</Label>
@@ -242,17 +284,16 @@ export default function RegisterForm({
               </Select>
               <span className="text-xs text-gray-400">
                 We need this information to determine which division you will be competing in for the event.
+                {isRegistered
+                  ? " You need to contact an administrator if you wish to change your schooling status."
+                  : ""}
               </span>
             </div>
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="country">
                 How did you hear about Advent of CTF? <span className="text-gray-400">(Optional)</span>
               </Label>
-              <Select
-                value={howDidYouHearAboutUs}
-                onValueChange={(option) => setHowDidYouHearAboutUs(option)}
-                disabled={isRegistered}
-              >
+              <Select value={howDidYouHearAboutUs} onValueChange={(option) => setHowDidYouHearAboutUs(option)}>
                 <SelectTrigger className="w-full bg-gray-200! text-gray-900!">
                   <SelectValue placeholder="Select an option..." />
                 </SelectTrigger>
@@ -290,8 +331,7 @@ export default function RegisterForm({
                       id="display-name"
                       ref={displayNameRef}
                       className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
-                      defaultValue={session.user.name ?? ""}
-                      disabled={isRegistered}
+                      defaultValue={user?.displayName ?? session.user.name ?? ""}
                       maxLength={32}
                     />
                     <span className="text-xs text-gray-400">
@@ -308,9 +348,8 @@ export default function RegisterForm({
                         id="linkedin"
                         ref={linkedinRef}
                         className="text-gray-900! ring-offset-0!"
-                        defaultValue={""} // set to current linkedin value once we allow edits
+                        defaultValue={user?.linkedin ?? ""}
                         placeholder="your-linkedin-username"
-                        disabled={isRegistered}
                         maxLength={100}
                       />
                       <InputGroupAddon>
@@ -330,7 +369,6 @@ export default function RegisterForm({
                 id="terms"
                 checked={acceptTerms}
                 onCheckedChange={(state) => setAcceptTerms(state === "indeterminate" ? false : state)}
-                disabled={isRegistered}
               />
               <label
                 htmlFor="terms"
@@ -345,7 +383,6 @@ export default function RegisterForm({
                 id="allow-sponsor-contact"
                 checked={allowSponsorContact}
                 onCheckedChange={(state) => setAllowSponsorContact(state === "indeterminate" ? false : state)}
-                disabled={isRegistered}
               />
               <label
                 htmlFor="allow-sponsor-contact"
@@ -355,10 +392,11 @@ export default function RegisterForm({
                 <span className="text-gray-400">(Optional)</span>
               </label>
             </div>
-            <Button type="submit" className="mt-4 self-start" disabled={!acceptTerms || loading}>
-              Complete registration
-            </Button>
+
             <div className="text-red-500">{error}</div>
+            <Button type="submit" className="mb-4 self-start" disabled={loading}>
+              {isRegistered ? "Update registration" : "Complete registration"}
+            </Button>
           </form>
         </>
       ) : (

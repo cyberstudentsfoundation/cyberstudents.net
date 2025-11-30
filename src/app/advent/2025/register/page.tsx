@@ -96,16 +96,16 @@ export default async function Register() {
                 </p>
                 <h2>Scoring</h2>
                 <p>
-                  Each challenge has a point value assigned to it, which roughly indicates its difficulty. Keep in mind
-                  that we may adjust how many points a challenge is worth during the event based on feedback we receive.
+                  Each challenge starts at <strong>500 points</strong>, and the points will decrease over time as the
+                  challenge is solved by other players.
                 </p>
                 <p>
-                  In case of a tiebreaker between points, the player who has solved their most recent challenge the
-                  earliest will be placed first.
+                  Please note that the updated points will retroactively apply to all teams who have solved the
+                  challenge, meaning you will not be at a disadvantage if you solve a challenge later in the event.
                 </p>
                 <p>
-                  Flag hoarding (i.e., waiting to submit many flags near the end) is discouraged, but not prohibited.
-                  Waiting to submit flags may result in a longer verification process at the end of the event.
+                  In case of a tiebreaker between points, however, the player who has solved their most recent challenge
+                  the earliest will be placed first.
                 </p>
                 <h2>Help and collaboration</h2>
                 <p>
@@ -128,6 +128,23 @@ export default async function Register() {
                     solely relying on others without genuine effort.
                   </li>
                 </ul>
+                <h2>Technical requirements</h2>
+                <p>
+                  Many Advent of CTF 2025 challenges can be solved without any special software that needs to be
+                  installed on your computer.
+                </p>
+                <p>
+                  However, some challenges may require you to download files, use command-line tools, or write code to
+                  solve them. For those challenges, you will need a computer that can run and install the necessary
+                  software. Don&rsquo;t worry if you&rsquo;re not sure how to use certain tools or programming. There
+                  are many resources available, and we&rsquo;re always here to help you get started!
+                </p>
+                <p>
+                  Some challenges involving binaries or virtual machine images may only be compatible with computers
+                  with x86_64 (AMD64) architecture. If you have a computer with ARM architecture (e.g., Apple Silicon,
+                  Chromebooks), you may need to use virtualization software or emulators to run those challenges.
+                  We&rsquo;re happy to help you set this up if needed.
+                </p>
                 <h2>Prizes and divisions</h2>
                 <p>
                   The prize pool for this event will be announced closer to the event date. The minimum prize pool as of
@@ -219,6 +236,10 @@ export default async function Register() {
                   <li>
                     Participants should always show sportsmanship and be respectful towards other players and event
                     administrators.
+                  </li>
+                  <li>
+                    Flag hoarding (i.e., waiting to submit many flags near the end) is discouraged, but not prohibited.
+                    Waiting to submit flags may result in a longer verification process at the end of the event.
                   </li>
                   <li>
                     Sharing or accepting flags or any other type of disallowed collaboration (see &ldquo;Help and
@@ -341,8 +362,8 @@ export default async function Register() {
                 thumbClassName="dark:bg-gray-600"
               >
                 <a id="form" className="scroll-mt-26" />
-                {/* <RegisterForm session={session} user={user} /> */}
-                <h1 className="mt-8 mb-4 text-2xl font-bold">Registration</h1>
+                <RegisterForm session={session} user={user} />
+                {/* <h1 className="mt-8 mb-4 text-2xl font-bold">Registration</h1>
                 <Alert className="my-2 bg-red-500/50! text-gray-100! dark:bg-red-500">
                   <HiExclamationCircle className="h-5 w-5" />
                   <AlertTitle>Registration for this event has not opened yet.</AlertTitle>
@@ -357,7 +378,7 @@ export default async function Register() {
                     </a>{" "}
                     for updates.
                   </AlertDescription>
-                </Alert>
+                </Alert> */}
               </ScrollArea>
             </div>
           </div>

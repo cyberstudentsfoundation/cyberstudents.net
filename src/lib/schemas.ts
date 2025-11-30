@@ -13,6 +13,18 @@ export const registerSchema = z.object({
     { message: "Schooling status is invalid" },
   ),
   accessCode: z.string().optional(),
+  howDidYouHearAboutUs: z
+    .enum(["csd-discord", "other-ctf-discord", "ctftime", "sponsor", "google-social-media", "friend", "other"], {
+      message: "How did you hear about us is invalid",
+    })
+    .optional(),
+  displayName: z
+    .string()
+    .max(32)
+    .regex(/^[\x00-\x7F]+$/, { message: "Display name must contain only ASCII characters" })
+    .optional(),
+  linkedin: z.string().max(100).optional(),
+  allowSponsorContact: z.boolean(),
 });
 
 export const checkAccessCodeSchema = z.object({

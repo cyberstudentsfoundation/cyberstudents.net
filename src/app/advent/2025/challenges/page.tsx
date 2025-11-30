@@ -36,15 +36,7 @@ export default async function Register() {
         <div className="mt-4 flex items-center justify-end gap-1.5 text-sm text-gray-400">
           <HiOutlineQuestionMarkCircle className="h-5 w-5 shrink-0 text-gray-400" />
           <span>
-            Need help with a challenge? Is a challenge broken? DM{" "}
-            <a
-              href="https://discord.com/users/575252669443211264"
-              target="_blank"
-              className="rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-nowrap text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
-            >
-              @ModMail
-            </a>{" "}
-            in our{" "}
+            Need help with a challenge? Is a challenge broken? Open a ticket in our{" "}
             <a
               href="https://discord.com/invite/cyberstudents-916144903686336513"
               target="_blank"

@@ -51,6 +51,14 @@ model User {
   flags          String[] // these are NOT ctf flags; "ms_hs_college_eligible" | "admin" | "suspended"
   note           String   @default("")
 
+  schoolingStatus      String?   @map("schooling_status")
+  country              String?
+  howDidYouHearAboutUs String?   @map("how_did_you_hear_about_us") // when registering for an event
+  displayName          String?   @map("display_name") // for leaderboards
+  displayNameUpdatedAt DateTime? @map("display_name_updated_at")
+  linkedin             String? // for leaderboards
+  allowSponsorContact  Boolean?  @map("allow_sponsor_contact")
+
   events             Event[]
   challengeAttempts  ChallengeAttempt[]
   authoredChallenges Challenge[]
