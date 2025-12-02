@@ -35,12 +35,13 @@ export const eventRouter = createTRPCRouter({
 
     let newFlags = [...user.flags];
 
-    if (["none", "college5"].includes(input.schoolingStatus)) {
-      newFlags = newFlags.filter((flag) => flag !== "ms_hs_college_eligible");
-    } else {
-      newFlags.push("ms_hs_college_eligible");
-      newFlags = [...new Set(newFlags)];
-    }
+    const isHighSchool = ["hs1", "hs2", "hs3", "hs4"].includes(input.schoolingStatus);
+    const isStudent = isHighSchool || ["college1", "college2", "college3", "college4"].includes(input.schoolingStatus);
+
+    if (isStudent) newFlags.push("ms_hs_college_eligible");
+    if (isHighSchool) newFlags.push("hs_eligible");
+
+    newFlags = [...new Set(newFlags)];
 
     await ctx.db.user.update({
       where: { id: ctx.session.user.id },
