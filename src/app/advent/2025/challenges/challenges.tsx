@@ -151,7 +151,12 @@ export default function Challenges({
                   </div>
                   <p className="mb-1 flex items-center gap-1 text-sm text-gray-300">
                     <HiMiniCalendar className="mb-0.5 h-4 w-4" />
-                    <span>December {challenge.publishDate.getUTCDate()}</span>
+                    <span>
+                      December{" "}
+                      {parseInt(
+                        challenge.publishDate.toLocaleString("en-US", { timeZone: "America/New_York", day: "numeric" }),
+                      )}
+                    </span>
                   </p>
                   <h2 className="flex items-center gap-1 text-sm text-gray-300 lg:gap-1.5 lg:text-base">
                     <span className="h-4 w-4">{CATEGORY_ICON_MAP[challenge.category]}</span>
