@@ -68,7 +68,7 @@ export const dashboardRouter = createTRPCRouter({
           submissionsEnabled: input.submissionsEnabled,
           updatedAt: new Date(),
           published: false,
-          eventName: "aoc2024",
+          eventName: "aoc2025",
         },
       });
 

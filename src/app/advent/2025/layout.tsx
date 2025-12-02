@@ -37,7 +37,7 @@ export default function AdventLayout({ children }: { children: React.ReactNode }
             >
               <Link href="/advent/2025">Home</Link>
             </Button>
-            <Tooltip delayDuration={0}>
+            {/* <Tooltip delayDuration={0}>
               <TooltipTrigger asChild>
                 <Button
                   size="sm"
@@ -51,16 +51,16 @@ export default function AdventLayout({ children }: { children: React.ReactNode }
               <TooltipContent side="bottom">
                 <p className="text-sm font-medium">Available Soon</p>
               </TooltipContent>
-            </Tooltip>
-            {/* <Button
+            </Tooltip> */}
+            <Button
               size="sm"
               variant="link"
               asChild
               className="px-1.5 text-base hover:text-cyan-300 hover:no-underline sm:px-3"
             >
-              <Link href="/ctf/challenges">Challenges</Link>
-            </Button> */}
-            <Tooltip delayDuration={0}>
+              <Link href="/advent/2025/challenges">Challenges</Link>
+            </Button>
+            {/* <Tooltip delayDuration={0}>
               <TooltipTrigger asChild>
                 <Button
                   size="sm"
@@ -74,15 +74,15 @@ export default function AdventLayout({ children }: { children: React.ReactNode }
               <TooltipContent side="bottom">
                 <p className="text-sm font-medium">Available Soon</p>
               </TooltipContent>
-            </Tooltip>
-            {/* <Button
+            </Tooltip> */}
+            <Button
               size="sm"
               variant="link"
               asChild
               className="px-1.5 text-base hover:text-cyan-300 hover:no-underline sm:px-3"
             >
-              <Link href="/ctf/leaderboard">Leaderboard</Link>
-            </Button> */}
+              <Link href="/advent/2025/leaderboard">Leaderboard</Link>
+            </Button>
             {/* <Button size="sm" variant="default" asChild className="ml-2 text-base">
                 <Link href="/ctf/register">Register</Link>
               </Button> */}

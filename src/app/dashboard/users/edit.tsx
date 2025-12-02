@@ -397,8 +397,8 @@ export default function Edit({ row, textButton }: { row?: Row<User>; textButton:
                       className="w-full max-w-sm"
                     />
                     <span className="text-xs text-gray-400">
-                      Deselecting an account will only desassociate it from the user. Accounts cannot be re-added from
-                      the dashboard. See table view for account details.
+                      Deselecting an account will only dissociate it from the user. Accounts cannot be re-added from the
+                      dashboard. See table view for account details.
                     </span>
                   </div>
 

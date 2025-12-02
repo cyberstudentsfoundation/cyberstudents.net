@@ -77,7 +77,7 @@ export default function Challenges({
   const submitFlagMutation = api.challenge.submitFlag.useMutation();
 
   const getLeaderboardQuery = api.event.getLeaderboard.useQuery(
-    { event: "aoc2024", onlyShowCurrentUser: true },
+    { event: "aoc2025", onlyShowCurrentUser: true },
     { refetchInterval: 10_000 },
   );
 
@@ -103,7 +103,7 @@ export default function Challenges({
   return (
     <>
       <div className="mb-4 flex flex-col justify-between gap-2 lg:flex-row">
-        <Link href="/advent/2024" className="flex w-fit items-center gap-1 text-gray-300 hover:text-cyan-300">
+        <Link href="/advent/2025" className="flex w-fit items-center gap-1 text-gray-300 hover:text-cyan-300">
           <HiChevronLeft className="mb-0.5 h-4 w-4" />
           <span>Back to calendar</span>
         </Link>
@@ -130,7 +130,7 @@ export default function Challenges({
                 id={`${challenge.id}`}
                 className="flex items-center bg-gray-900 text-left"
                 onClick={() => {
-                  router.push("/advent/2024/challenges?challenge=" + challenge.id, { scroll: false });
+                  router.push("/advent/2025/challenges?challenge=" + challenge.id, { scroll: false });
                   setFocusedChallenge(challenge.id);
                 }}
               >
@@ -363,13 +363,18 @@ export default function Challenges({
                               },
                             );
 
+                            const solves = 1 + (challenge.solvedPlayers?.length ?? 0);
+                            const k = 162;
+                            const factor = Math.min(1, k / (solves + (k - 1)));
+                            const calculatedPoints = Math.max(50, Math.floor(500 * Math.pow(factor, 1.5)));
+
                             if (result === true) {
                               if (oldIsSolved) {
                                 toast.success(`That flag is correct.`, {
                                   position: "top-center",
                                 });
                               } else {
-                                toast.success(`Congratulations! You gained ${challenge.points} points.`, {
+                                toast.success(`Congratulations! You gained ${calculatedPoints} points.`, {
                                   position: "top-center",
                                 });
 
@@ -420,7 +425,8 @@ export default function Challenges({
                           </span>
                         </div>
                         <div className="max-w-prose">
-                          <h2 className="mt-8 mb-2 text-xl font-bold text-gray-400">Write-up</h2>
+                          {/* add back when write-ups are released, also below */}
+                          {/* <h2 className="mt-8 mb-2 text-xl font-bold text-gray-400">Write-up</h2> */}
                           {challenge.writeUps?.length ? (
                             <>
                               <p className="text-gray-300">
@@ -457,10 +463,12 @@ export default function Challenges({
                               </div>
                             </>
                           ) : (
-                            <p className="text-gray-300">
-                              No write-up has been submitted for this challenge, nor did the challenge author provide an
-                              official solution.
-                            </p>
+                            // add back when write-ups are released
+                            // <p className="text-gray-300">
+                            //   No write-up has been submitted for this challenge, nor did the challenge author provide an
+                            //   official solution.
+                            // </p>
+                            ""
                           )}
                         </div>
                       </div>

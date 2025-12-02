@@ -23,9 +23,13 @@ export default async function VerificationPage() {
               persisted for up to 30 days after the event ends, after which they will be deleted.
             </p>
             <p className="font-bold">You will only need to verify your identity if you are a potential prize winner.</p>
+            <p className="font-bold text-yellow-500">
+              You do not need to verify your identity unless you have been contacted by an administrator at the end of
+              an event. Verification is temporarily disabled until then.
+            </p>
             <hr className="border-gray-700" />
           </div>
-          <VerificationForm session={session} />
+          {/* <VerificationForm session={session} /> */}
         </div>
       </div>
     </main>

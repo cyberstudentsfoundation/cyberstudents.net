@@ -66,72 +66,82 @@ export const challengeRouter = createTRPCRouter({
 
     const eventChallenges = {
       name: event.name,
-      challenges: event.challenges.map((challenge) => ({
-        id: challenge.id,
-        createdAt: challenge.createdAt,
-        updatedAt: challenge.updatedAt,
-        published: challenge.publishDate.getTime() <= Date.now(),
-        publishDate: challenge.publishDate,
-        submissionsEnabled: challenge.submissionsEnabled,
+      challenges: event.challenges.map((challenge) => {
+        const solves =
+          allChallengeAttempts.find((c) => c.id === challenge.id)?.challengeAttempts.filter((a) => a.solvedAt).length ??
+          0;
 
-        author: {
-          id: challenge.author.id,
-          name: challenge.author.name,
-          image: challenge.author.image,
-        },
+        const k = 162;
+        const factor = Math.min(1, k / (solves + (k - 1)));
+        const calculatedPoints = Math.max(50, Math.floor(500 * Math.pow(factor, 1.5)));
 
-        challengeAttempt:
-          input.fetchExtended && challenge.challengeAttempts?.[0]
-            ? {
-                id: challenge.challengeAttempts[0].id,
-                createdAt: challenge.challengeAttempts[0].createdAt,
-                solvedAt: challenge.challengeAttempts[0].solvedAt,
-                attempts: challenge.challengeAttempts[0].attempts,
-                pointsAdjustment: challenge.challengeAttempts[0].pointsAdjustment,
-              }
+        return {
+          id: challenge.id,
+          createdAt: challenge.createdAt,
+          updatedAt: challenge.updatedAt,
+          published: challenge.publishDate.getTime() <= Date.now(),
+          publishDate: challenge.publishDate,
+          submissionsEnabled: challenge.submissionsEnabled,
+
+          author: {
+            id: challenge.author.id,
+            name: challenge.author.name,
+            image: challenge.author.image,
+          },
+
+          challengeAttempt:
+            input.fetchExtended && challenge.challengeAttempts?.[0]
+              ? {
+                  id: challenge.challengeAttempts[0].id,
+                  createdAt: challenge.challengeAttempts[0].createdAt,
+                  solvedAt: challenge.challengeAttempts[0].solvedAt,
+                  attempts: challenge.challengeAttempts[0].attempts,
+                  pointsAdjustment: challenge.challengeAttempts[0].pointsAdjustment,
+                }
+              : null,
+
+          title: isChallengePublished(challenge) ? challenge.title : null,
+          category: challenge.category,
+          points: calculatedPoints,
+          hints: [] as { id: string; number: number; title: string; content: string }[], // assigned below
+          description: isChallengePublished(challenge) && input.fetchExtended ? challenge.description : null,
+          files: isChallengePublished(challenge) && input.fetchExtended ? challenge.files : null,
+
+          solvedPlayers: allChallengeAttempts
+            .find((c) => c.id === challenge.id)
+            ?.challengeAttempts.filter((a) => a.solvedAt)
+            .sort((a, b) => a.solvedAt!.getTime() - b.solvedAt!.getTime())
+            .map((a) => ({
+              user: {
+                id: a.user.id,
+                image: a.user.image,
+                name: a.user.name,
+                flags: a.user.flags.filter((f) => f === "ms_hs_college_eligible"), // only return ms_hs_college_eligible flag, if any
+              },
+              solvedAt: a.solvedAt!,
+            })),
+
+          // only fetch one write-up (for advent; remove in future)
+          writeUps: input.fetchExtended
+            ? challenge.writeUps
+                .sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime())
+                .filter((w) => w.publishDate.getTime() <= Date.now())
+                .map((writeUp) => ({
+                  id: writeUp.id,
+                  createdAt: writeUp.createdAt,
+                  updatedAt: writeUp.updatedAt,
+                  publishDate: writeUp.publishDate,
+                  authorPreferredName: writeUp.authorPreferredName,
+                  authorMetadata: writeUp.authorMetadata,
+                  title: writeUp.title,
+                  content: writeUp.content,
+                  originalURL: writeUp.originalURL,
+                  contentCreatedAt: writeUp.contentCreatedAt,
+                  contentUpdatedAt: writeUp.contentUpdatedAt,
+                }))
             : null,
-
-        title: isChallengePublished(challenge) ? challenge.title : null,
-        category: challenge.category,
-        points: challenge.points,
-        hints: [] as { id: string; number: number; title: string; content: string }[], // assigned below
-        description: isChallengePublished(challenge) && input.fetchExtended ? challenge.description : null,
-        files: isChallengePublished(challenge) && input.fetchExtended ? challenge.files : null,
-
-        solvedPlayers: allChallengeAttempts
-          .find((c) => c.id === challenge.id)
-          ?.challengeAttempts.filter((a) => a.solvedAt)
-          .sort((a, b) => a.solvedAt!.getTime() - b.solvedAt!.getTime())
-          .map((a) => ({
-            user: {
-              id: a.user.id,
-              image: a.user.image,
-              name: a.user.name,
-              flags: a.user.flags.filter((f) => f === "ms_hs_college_eligible"), // only return ms_hs_college_eligible flag, if any
-            },
-            solvedAt: a.solvedAt!,
-          })),
-
-        // only fetch one write-up (for advent; remove in future)
-        writeUps: input.fetchExtended
-          ? challenge.writeUps
-              .sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime())
-              .filter((w) => w.publishDate.getTime() <= Date.now())
-              .map((writeUp) => ({
-                id: writeUp.id,
-                createdAt: writeUp.createdAt,
-                updatedAt: writeUp.updatedAt,
-                publishDate: writeUp.publishDate,
-                authorPreferredName: writeUp.authorPreferredName,
-                authorMetadata: writeUp.authorMetadata,
-                title: writeUp.title,
-                content: writeUp.content,
-                originalURL: writeUp.originalURL,
-                contentCreatedAt: writeUp.contentCreatedAt,
-                contentUpdatedAt: writeUp.contentUpdatedAt,
-              }))
-          : null,
-      })),
+        };
+      }),
     };
 
     for (const challenge of eventChallenges.challenges) {
@@ -179,7 +189,7 @@ export const challengeRouter = createTRPCRouter({
       include: {
         challenges: {
           where: { eventName: input.event },
-          include: { author: true },
+          include: { author: true, challengeAttempts: true },
           orderBy: { publishDate: "asc" },
         },
       },
@@ -189,14 +199,21 @@ export const challengeRouter = createTRPCRouter({
 
     const eventChallenges = {
       name: event.name,
-      challenges: event.challenges.map((challenge) => ({
-        id: challenge.id,
-        published: challenge.publishDate.getTime() <= Date.now(),
-        publishDate: challenge.publishDate,
-        title: challenge.publishDate.getTime() <= Date.now() ? challenge.title : null,
-        category: challenge.category as string | null,
-        points: challenge.points as number | null,
-      })),
+      challenges: event.challenges.map((challenge) => {
+        const solves = challenge.challengeAttempts.filter((a) => a.solvedAt).length ?? 0;
+        const k = 162;
+        const factor = Math.min(1, k / (solves + (k - 1)));
+        const calculatedPoints = Math.max(50, Math.floor(500 * Math.pow(factor, 1.5)));
+
+        return {
+          id: challenge.id,
+          published: challenge.publishDate.getTime() <= Date.now(),
+          publishDate: challenge.publishDate,
+          title: challenge.publishDate.getTime() <= Date.now() ? challenge.title : null,
+          category: challenge.category as string | null,
+          points: calculatedPoints as number | null,
+        };
+      }),
     };
 
     const now = new Date();
@@ -230,14 +247,14 @@ export const challengeRouter = createTRPCRouter({
       throw new TRPCError({ message: "Challenge is not published or submissions are disabled", code: "FORBIDDEN" });
     }
 
-    if (!user?.events.some((event) => event.name === "aoc2024")) {
+    if (!user?.events.some((event) => event.name === "aoc2025")) {
       throw new TRPCError({ message: "You are not registered for this challenge's event.", code: "FORBIDDEN" });
     }
 
-    if (Date.now() > (user.events.find((event) => event.name === "aoc2024")?.eventEnd.getTime() ?? 0)) {
+    if (Date.now() > (user.events.find((event) => event.name === "aoc2025")?.eventEnd.getTime() ?? 0)) {
       throw new TRPCError({
         message:
-          "This event has ended and is no longer accepting flag submissions. Thank you for playing in Advent of CTF 2024!",
+          "This event has ended and is no longer accepting flag submissions. Thank you for playing in Advent of CTF 2025!",
         code: "FORBIDDEN",
       });
     }

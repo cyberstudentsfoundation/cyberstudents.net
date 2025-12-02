@@ -147,48 +147,84 @@ export default async function Register() {
                 </p>
                 <h2>Prizes and divisions</h2>
                 <p>
-                  The prize pool for this event will be announced closer to the event date. The minimum prize pool as of
-                  December 30, is <strong>$12,000 USD</strong> (including non-monetary items) for all divisions.
+                  The prize pool for this event will be over <strong>$12,000 USD</strong> for all divisions and the
+                  raffle, including non-monetary items like APIsec certifications and CTFGuide Pro subscriptions.
+                </p>
+                <p>
+                  We will also host a raffle for all participants who solve at least one challenge to win up to{" "}
+                  <strong>$5,000</strong> worth of APIsec certifications! More details about the raffle will be
+                  announced during the event.
                 </p>
                 <table>
                   <thead>
                     <tr>
                       <th>Division</th>
                       <th>Placement</th>
-                      <th>Prize</th>
+                      <th>Prize (USD)</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td rowSpan={5}>High School and College</td>
+                      <td rowSpan={3}>
+                        Student
+                        <br />
+                        (HS & College)
+                      </td>
                       <td>1st</td>
-                      <td>TBD</td>
+                      <td>
+                        <strong>$225</strong> + ASCP, CASA, ACP (APIsec) + CTFGuide Pro (1 year)
+                      </td>
                     </tr>
                     <tr>
                       <td className="ps-[0.5714286em]">2nd</td>
-                      <td>TBD</td>
+                      <td>
+                        <strong>$125</strong> + ASCP, CASA, ACP (APIsec) + CTFGuide Pro (3 mo)
+                      </td>
                     </tr>
                     <tr>
                       <td className="ps-[0.5714286em]">3rd</td>
-                      <td>TBD</td>
+                      <td>
+                        <strong>$75</strong> + ASCP, CASA, ACP (APIsec) + CTFGuide Pro (1 mo)
+                      </td>
                     </tr>
                     <tr>
-                      <td className="ps-[0.5714286em]">4th</td>
-                      <td>TBD</td>
+                      <td rowSpan={3}>High School</td>
+                      <td>1st</td>
+                      <td>ASCP, CASA, ACP (APIsec) + CTFGuide Pro (1 year)</td>
                     </tr>
                     <tr>
-                      <td className="ps-[0.5714286em]">5th</td>
-                      <td>TBD</td>
+                      <td className="ps-[0.5714286em]">2nd</td>
+                      <td>ASCP, CASA, ACP (APIsec) + CTFGuide Pro (3 mo)</td>
                     </tr>
                     <tr>
-                      <td rowSpan={1}>Open</td>
-                      <td></td>
-                      <td></td>
+                      <td className="ps-[0.5714286em]">3rd</td>
+                      <td>ASCP, CASA, ACP (APIsec) + CTFGuide Pro (1 mo)</td>
                     </tr>
                     <tr>
-                      <td rowSpan={1}>Write-Up</td>
+                      <td rowSpan={3}>Write-Up</td>
+                      <td>Best well-written</td>
+                      <td>
+                        <strong>$25</strong> + CASA, ACP (APIsec) + CTFGuide Pro (3 mo)
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="ps-[0.5714286em]">Best technical</td>
+                      <td>
+                        <strong>$25</strong> + CASA, ACP (APIsec) + CTFGuide Pro (3 mo)
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="ps-[0.5714286em]">Best unintended solution</td>
+                      <td>
+                        <strong>$25</strong> + CASA, ACP (APIsec) + CTFGuide Pro (3 mo)
+                      </td>
+                    </tr>
+                    <tr>
+                      <td rowSpan={1}>Raffle</td>
                       <td></td>
-                      <td></td>
+                      <td>
+                        Win up to <strong>$5,000</strong> worth of APIsec certifications
+                      </td>
                     </tr>
                   </tbody>
                 </table>

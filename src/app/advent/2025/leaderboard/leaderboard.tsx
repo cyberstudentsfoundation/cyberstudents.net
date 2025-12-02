@@ -11,7 +11,7 @@ export default function Leaderboard({ session }: { session: Session | null }) {
   const [division, setDivision] = useState("open");
 
   const getLeaderboardQuery = api.event.getLeaderboard.useQuery(
-    { event: "aoc2024", onlyShowCurrentUser: false },
+    { event: "aoc2025", onlyShowCurrentUser: false },
     { refetchInterval: 10_000 },
   );
 

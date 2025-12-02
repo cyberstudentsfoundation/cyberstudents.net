@@ -1,6 +1,6 @@
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
-// import { redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import Challenges from "./challenges";
 import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
 
@@ -11,12 +11,12 @@ export default async function Register() {
   // 11/29/25: honestly, let logged out people preview challenges & even download links
   // just no instanced challenges ofc, and no hints so we encourage them to sign up
 
-  // if (!session?.user) redirect("/advent/2024/register?showError=true");
+  if (!session?.user) redirect("/advent/2025/register?showError=true");
 
-  // const { events } = await api.user.me();
-  // if (!events.includes("aoc2024")) redirect("/advent/2024/register?showError=true");
+  const { events } = await api.user.me();
+  if (!events.includes("aoc2025")) redirect("/advent/2025/register?showError=true");
 
-  const eventChallenges = await api.challenge.fetch({ event: "aoc2024", fetchExtended: true }); // change back to !!session?.user for next event
+  const eventChallenges = await api.challenge.fetch({ event: "aoc2025", fetchExtended: !!session?.user }); // change back to  for next event
 
   // let user = null;
   // if (session?.user) {
@@ -24,7 +24,7 @@ export default async function Register() {
   // }
 
   return (
-    <main className="mx-4 flex justify-center">
+    <main className="mx-8 flex justify-center">
       <div className="mt-4 flex w-full max-w-[112rem] flex-col justify-center">
         {/* <div className="absolute top-20 hidden md:block">
           <p className="text-base font-bold text-gray-200">CyberStudents&rsquo;</p>

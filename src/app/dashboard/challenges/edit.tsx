@@ -336,7 +336,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                     <Input
                       id="event"
                       className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
-                      defaultValue={row?.original.eventName ?? "aoc2024"}
+                      defaultValue={row?.original.eventName ?? "aoc2025"}
                       disabled
                     />
                   </div>

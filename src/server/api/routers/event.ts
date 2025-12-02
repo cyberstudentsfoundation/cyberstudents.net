@@ -67,11 +67,13 @@ export const eventRouter = createTRPCRouter({
         `- Country: \`${input.country}\``,
         `- Schooling status: \`${input.schoolingStatus}\``,
         `- How did you hear about us: \`${input.howDidYouHearAboutUs}\``,
-        input.displayName !== ctx.session.user.name ? `- Display name: \`${input.displayName}\`` : "",
+        input.displayName ? `- Display name: \`${input.displayName}\`` : "",
         input.linkedin ? `- LinkedIn: <https://linkedin.com/in/${input.linkedin}>\`` : "",
         `- Allow sponsor contact: ${input.allowSponsorContact}`,
         input.accessCode ? `- Access code: \`${input.accessCode}\`` : "",
-      ].join("\n"),
+      ]
+        .filter(Boolean)
+        .join("\n"),
     );
 
     return;
@@ -142,7 +144,7 @@ export const eventRouter = createTRPCRouter({
     // Checks for logged in users but no user found in db
     if (user === null) throw new TRPCError({ message: "User not found.", code: "INTERNAL_SERVER_ERROR" });
 
-    if (input.event !== "aoc2024") {
+    if (input.event !== "aoc2025") {
       throw new TRPCError({ message: "Event not found.", code: "INTERNAL_SERVER_ERROR" });
     }
 
@@ -155,7 +157,13 @@ export const eventRouter = createTRPCRouter({
       include: {
         challengeAttempts: {
           where: { challenge: { eventName: input.event } },
-          include: { challenge: true },
+          include: {
+            challenge: {
+              include: {
+                challengeAttempts: true,
+              },
+            },
+          },
         },
       },
     });
@@ -167,7 +175,12 @@ export const eventRouter = createTRPCRouter({
     function calculatePointsAndLastSolve(user: (typeof users)[0]) {
       return {
         points: user.challengeAttempts.reduce((points, attempt) => {
-          if (attempt.solvedAt) return points + attempt.challenge.points + (attempt.pointsAdjustment ?? 0);
+          const solves = attempt.challenge.challengeAttempts.filter((a) => a.solvedAt).length;
+          const k = 162;
+          const factor = Math.min(1, k / (solves + (k - 1)));
+          const value = Math.max(50, Math.floor(500 * Math.pow(factor, 1.5)));
+
+          if (attempt.solvedAt) return points + value + (attempt.pointsAdjustment ?? 0);
           return points;
         }, 0),
         lastSolve: user.challengeAttempts
@@ -183,7 +196,9 @@ export const eventRouter = createTRPCRouter({
       const { points: bPoints, lastSolve: bLastSolve } = userPointsAndLastSolveMap.get(b.id)!;
 
       if (aPoints === bPoints) {
-        return (aLastSolve?.getTime() ?? Infinity) - (bLastSolve?.getTime() ?? Infinity);
+        const aTime = aLastSolve?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        const bTime = bLastSolve?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        return aTime - bTime;
       }
 
       return bPoints - aPoints;
@@ -200,23 +215,28 @@ export const eventRouter = createTRPCRouter({
         .filter((a) => a.solvedAt)
         .map((a) => ({ id: a.challenge.id, publishDate: a.challenge.publishDate })),
       totalPublishedChallenges: challenges.filter((c) => c.publishDate.getTime() <= Date.now()).length,
-      publishedChallengesCompletion:
-        user.challengeAttempts.filter((a) => a.solvedAt).length /
-        challenges.filter((c) => c.publishDate.getTime() <= Date.now()).length,
-      accuracy:
-        user.challengeAttempts.filter((a) => a.solvedAt).length /
-        user.challengeAttempts.reduce((totalAttempts, attempt) => totalAttempts + attempt.attempts, 0),
+      publishedChallengesCompletion: (() => {
+        const totalPublished = challenges.filter((c) => c.publishDate.getTime() <= Date.now()).length;
+        if (totalPublished === 0) return 0;
+        return user.challengeAttempts.filter((a) => a.solvedAt).length / totalPublished;
+      })(),
+      accuracy: (() => {
+        const totalAttempts = user.challengeAttempts.reduce((acc, attempt) => acc + (attempt.attempts ?? 0), 0);
+        if (totalAttempts === 0) return 0;
+        return user.challengeAttempts.filter((a) => a.solvedAt).length / totalAttempts;
+      })(),
     }));
 
     return {
       userPoints: user ? leaderboard.find((u) => u.id === user.id)?.points : null,
-      userCompletion: user ? leaderboard.find((u) => u.id === user.id)?.points : null,
+      userCompletion: user ? leaderboard.find((u) => u.id === user.id)?.publishedChallengesCompletion : null,
       userPlace: user ? leaderboard.indexOf(leaderboard.find((u) => u.id === user.id)!) + 1 : null,
-      userMsHsCollegePlace: user?.flags.includes("ms_hs_college_eligible")
-        ? leaderboard
-            .filter((u) => u.flags.includes("ms_hs_college_eligible"))
-            .indexOf(leaderboard.find((u) => u.id === user.id)!) + 1
-        : null,
+      userMsHsCollegePlace: (() => {
+        if (!user?.flags.includes("ms_hs_college_eligible")) return null;
+        const msList = leaderboard.filter((u) => u.flags.includes("ms_hs_college_eligible"));
+        const idx = msList.findIndex((u) => u.id === user.id);
+        return idx === -1 ? null : idx + 1;
+      })(),
       leaderboard: !input.onlyShowCurrentUser ? leaderboard : [],
       msHsCollegeLeaderboard: leaderboard.filter((u) => u.flags.includes("ms_hs_college_eligible")),
     };

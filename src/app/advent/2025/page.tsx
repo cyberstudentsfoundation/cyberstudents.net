@@ -20,7 +20,18 @@ import { Table } from "~/components/ui/table";
 import DailyCTFImages from "~/app/daily-ctf-images";
 import { MdCalendarMonth, MdSwipe } from "react-icons/md";
 import { TbChristmasTree } from "react-icons/tb";
-import { Award, BadgeIcon, CircleQuestionMark, Earth, FileText, Medal, Ribbon, School, Trophy } from "lucide-react";
+import {
+  Award,
+  BadgeIcon,
+  CircleQuestionMark,
+  Earth,
+  FileText,
+  Medal,
+  Ribbon,
+  School,
+  Trophy,
+  University,
+} from "lucide-react";
 import { TableBody, TableRow, TableCell } from "~/components/ui/table";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
@@ -454,21 +465,21 @@ export default async function Advent2025() {
                         <Image
                           src={verialabsLogo}
                           alt="Veria Labs"
-                          className="h-14 w-auto opacity-70 invert transition-all hover:opacity-100 sm:h-16"
+                          className="h-9 w-auto opacity-70 transition-all hover:opacity-100 sm:h-11"
                         />
                       </a>
                       <a href="https://ctfguide.com/" target="_blank" rel="noopener noreferrer" className="mr-5">
                         <Image
                           src={ctfguideLogo}
                           alt="CTFGuide"
-                          className="h-5 w-auto opacity-70 transition-all hover:opacity-100 sm:h-7"
+                          className="h-4 w-auto opacity-70 transition-all hover:opacity-100 sm:h-6"
                         />
                       </a>
                       <a href="https://www.apisecuniversity.com/" target="_blank" rel="noopener noreferrer">
                         <Image
                           src={apisecLogo}
                           alt="APIsec"
-                          className="h-9 w-auto opacity-100 transition-all hover:opacity-80 sm:h-11"
+                          className="h-8 w-auto opacity-100 transition-all hover:opacity-80 sm:h-10"
                         />
                       </a>
                     </div>
@@ -596,10 +607,13 @@ export default async function Advent2025() {
                 students, along with an Open Division and Write-up Division for everyone.
               </p>
               <p className="mb-2 text-lg">
-                We will also award a variety of non-competitive badges and awards, such as for first bloods and creative
-                solves.
+                We also have a raffle for all participants who solve at least one challenge to win up to{" "}
+                <strong>$5,000</strong> worth of APIsec certifications!
               </p>
-              <p className="text-sm text-gray-400">Prizes are subject to change.</p>
+              <p className="text-sm text-gray-400">
+                Prizes are subject to change. Players may not claim prizes from multiple divisions. See the registration
+                page for full details. ASCP, CASA, and ACP are certifications offered by APIsec University.
+              </p>
               {/* <div className="mt-8 flex h-full w-full items-center justify-center rounded-xl border-2 border-dashed border-gray-700 px-2 py-4 text-gray-400">
                 Interested in&nbsp;
                 <a
@@ -611,17 +625,17 @@ export default async function Advent2025() {
               </div> */}
             </div>
             <div className="h-full w-full">
-              <div className="flex h-full w-full grid-cols-2 flex-col gap-4 sm:grid">
-                <Card className="col-span-1 row-span-2 grid grid-cols-2 flex-col justify-between border border-gray-700! bg-gray-800/50! py-0 transition-shadow hover:shadow-lg sm:flex sm:h-full">
+              <div className="flex h-full w-full grid-cols-20 flex-col gap-4 sm:grid">
+                <Card className="col-span-11! row-span-1 grid grid-cols-1 flex-col justify-between overflow-hidden border border-gray-700! bg-gray-800/50! py-0 transition-shadow hover:shadow-lg sm:flex sm:h-full">
                   <div className="sm:p-auto pt-6 pl-6 sm:pr-6">
                     <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg border-sky-300/20 bg-sky-300/10 text-sky-300 sm:mb-2 sm:hidden">
                       <School className="h-6 w-6" />
                     </div>
                     <CardTitle className="flex justify-between gap-3 text-lg sm:mb-0 sm:text-xl">
                       <div>
-                        <span>High School and College Division</span>
+                        <span>Student Division</span>
                         <CardDescription className="mt-1 text-sm font-normal sm:text-base">
-                          Individual; $10,000+ USD
+                          HS/College &ndash; Individual; $3,200+ USD
                         </CardDescription>
                       </div>
                       <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-lg border-sky-300/20 bg-sky-300/10 text-sky-300 sm:flex">
@@ -630,69 +644,107 @@ export default async function Advent2025() {
                     </CardTitle>
                   </div>
                   <CardContent className="px-0">
-                    <Table className="table-fixed overflow-hidden rounded-r-xl text-gray-200 sm:rounded-r-none sm:rounded-b-xl">
+                    <Table className="table-fixed overflow-hidden text-gray-200 sm:rounded-r-none sm:rounded-b-xl">
                       <TableBody className="rounded-md text-base">
                         <TableRow className="bg-yellow-300/25 hover:bg-yellow-300/35!">
-                          <TableCell className="w-full py-3!">
+                          <TableCell className="w-fit py-3!">
                             <div className="flex items-center gap-3">
-                              <Trophy className="h-6 w-6 text-yellow-300" />
-                              <span>
-                                1st <span className="hidden sm:inline">Place</span>
-                              </span>
+                              <Trophy className="hidden h-6 w-6 shrink-0 text-yellow-300 2xl:block" />
+                              <span>1st</span>
                             </div>
                           </TableCell>
-                          <TableCell className="w-18 py-3! text-right">TBD</TableCell>
+                          <TableCell className="w-full py-3! text-right">
+                            <strong>$225</strong>{" "}
+                            <span className="text-sm 2xl:text-base">+ ASCP, CASA, ACP + CTFGuide Pro</span>
+                          </TableCell>
                         </TableRow>
                         <TableRow className="bg-gray-300/25 hover:bg-gray-300/35!">
-                          <TableCell className="w-full py-3!">
+                          <TableCell className="w-fit py-3!">
                             <div className="flex items-center gap-3">
-                              <Medal className="h-6 w-6 text-gray-300" />
-                              <span>
-                                2nd <span className="hidden sm:inline">Place</span>
-                              </span>
+                              <Medal className="hidden h-6 w-6 shrink-0 text-gray-300 2xl:block" />
+                              <span>2nd</span>
                             </div>
                           </TableCell>
-                          <TableCell className="w-18 py-3! text-right">TBD</TableCell>
+                          <TableCell className="w-full py-3! text-right">
+                            <strong>$125</strong>{" "}
+                            <span className="text-sm 2xl:text-base">+ ASCP, CASA, ACP + CTFGuide Pro</span>
+                          </TableCell>
                         </TableRow>
                         <TableRow className="bg-yellow-800/25 hover:bg-yellow-800/35!">
-                          <TableCell className="w-full py-3!">
+                          <TableCell className="w-fit py-3!">
                             <div className="flex items-center gap-3">
-                              <Award className="h-6 w-6 text-yellow-800" />
-                              <span>
-                                3rd <span className="hidden sm:inline">Place</span>
-                              </span>
+                              <Award className="hidden h-6 w-6 shrink-0 text-yellow-800 2xl:block" />
+                              <span>3rd</span>
                             </div>
                           </TableCell>
-                          <TableCell className="w-18 py-3! text-right">TBD</TableCell>
-                        </TableRow>
-                        <TableRow className="bg-gray-800/50 hover:bg-gray-800!">
-                          <TableCell className="w-full py-3!">
-                            <div className="flex items-center gap-3">
-                              <Ribbon className="h-6 w-6 text-gray-400" />
-                              <span>
-                                4th <span className="hidden sm:inline">Place</span>
-                              </span>
-                            </div>
+                          <TableCell className="w-full py-3! text-right">
+                            <strong>$75</strong>{" "}
+                            <span className="text-sm 2xl:text-base">+ ASCP, CASA, ACP + CTFGuide Pro</span>
                           </TableCell>
-                          <TableCell className="w-18 py-3! text-right">TBD</TableCell>
-                        </TableRow>
-                        <TableRow className="bg-gray-800/50 hover:bg-gray-800!">
-                          <TableCell className="w-full py-3!">
-                            <div className="flex items-center gap-3">
-                              <BadgeIcon className="h-6 w-6 text-gray-400" />
-                              <span>
-                                5th <span className="hidden sm:inline">Place</span>
-                              </span>
-                            </div>
-                          </TableCell>
-                          <TableCell className="w-18 py-3! text-right">TBD</TableCell>
                         </TableRow>
                       </TableBody>
                     </Table>
                   </CardContent>
                 </Card>
-                <Card className="col-span-1 grid grid-cols-2 flex-col justify-between border border-gray-700! bg-gray-800/50! py-0 transition-shadow hover:shadow-lg sm:flex sm:h-full">
-                  <div className="sm:p-auto pt-6 pb-6 pl-6 sm:pr-6 sm:pb-0">
+                <Card className="col-span-9! row-span-1 grid grid-cols-1 flex-col justify-between overflow-hidden border border-gray-700! bg-gray-800/50! py-0 transition-shadow hover:shadow-lg sm:flex sm:h-full">
+                  <div className="sm:p-auto pt-6 pl-6 sm:pr-6">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg border-yellow-300/20 bg-yellow-300/10 text-yellow-300 sm:mb-2 sm:hidden">
+                      <School className="h-6 w-6" />
+                    </div>
+                    <CardTitle className="flex justify-between gap-3 text-lg sm:mb-0 sm:text-xl">
+                      <div>
+                        <span>High School Division</span>
+                        <CardDescription className="mt-1 text-sm font-normal sm:text-base">
+                          Individual; $2,700+ USD
+                        </CardDescription>
+                      </div>
+                      <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-lg border-yellow-300/20 bg-yellow-300/10 text-yellow-300 sm:flex">
+                        <School className="h-6 w-6" />
+                      </div>
+                    </CardTitle>
+                  </div>
+                  <CardContent className="px-0">
+                    <Table className="table-fixed overflow-hidden text-gray-200 sm:rounded-r-none sm:rounded-b-xl">
+                      <TableBody className="rounded-md text-base">
+                        <TableRow className="bg-yellow-300/25 hover:bg-yellow-300/35!">
+                          <TableCell className="w-fit py-3!">
+                            <div className="flex items-center gap-3">
+                              <Trophy className="hidden h-6 w-6 shrink-0 text-yellow-300 2xl:block" />
+                              <span>1st</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="w-full py-3! text-right text-sm 2xl:text-base">
+                            ASCP, CASA, ACP + CTFGuide Pro
+                          </TableCell>
+                        </TableRow>
+                        <TableRow className="bg-gray-300/25 hover:bg-gray-300/35!">
+                          <TableCell className="w-fit py-3!">
+                            <div className="flex items-center gap-3">
+                              <Medal className="hidden h-6 w-6 shrink-0 text-gray-300 2xl:block" />
+                              <span>2nd</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="w-full py-3! text-right text-sm 2xl:text-base">
+                            ASCP, CASA, ACP + CTFGuide Pro
+                          </TableCell>
+                        </TableRow>
+                        <TableRow className="bg-yellow-800/25 hover:bg-yellow-800/35!">
+                          <TableCell className="w-fit py-3!">
+                            <div className="flex items-center gap-3">
+                              <Award className="hidden h-6 w-6 shrink-0 text-yellow-800 2xl:block" />
+                              <span>3rd</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="w-full py-3! text-right text-sm 2xl:text-base">
+                            ASCP, CASA, ACP + CTFGuide Pro
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                </Card>
+                {/* <Card className="col-span-1 grid grid-cols-2 flex-col justify-between border border-gray-700! bg-gray-800/50! py-0 transition-shadow hover:shadow-lg sm:flex sm:h-full">
+                  <div className="sm:p-auto pt-6 pb-6 pl-6 sm:pr-6">
                     <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg border-indigo-300/20 bg-indigo-300/10 text-indigo-300 sm:mb-2 sm:hidden">
                       <Earth className="h-6 w-6" />
                     </div>
@@ -706,9 +758,143 @@ export default async function Advent2025() {
                       </div>
                     </CardTitle>
                   </div>
+                </Card> */}
+
+                {/* MOBILE */}
+                <Card className="col-span-9! row-span-1 grid grid-cols-1 flex-col justify-between overflow-hidden border border-gray-700! bg-gray-800/50! py-0 transition-shadow hover:shadow-lg sm:hidden sm:h-full">
+                  <div className="sm:p-auto pt-6 pl-6 sm:pr-6">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg border-purple-300/20 bg-purple-300/10 text-purple-300 sm:mb-2 sm:hidden">
+                      <FileText className="h-6 w-6" />
+                    </div>
+                    <CardTitle className="flex justify-between gap-3 text-lg sm:mb-0 sm:text-xl">
+                      <div>
+                        <span>Write-Up Division</span>
+                        <CardDescription className="mt-1 text-sm font-normal sm:text-base">
+                          Individual; $1,400+ USD
+                        </CardDescription>
+                      </div>
+                      <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-lg border-purple-300/20 bg-purple-300/10 text-purple-300 sm:flex">
+                        <FileText className="h-6 w-6" />
+                      </div>
+                    </CardTitle>
+                  </div>
+                  <CardContent className="px-0">
+                    <Table className="table-fixed overflow-hidden text-gray-200 sm:rounded-r-none sm:rounded-b-xl">
+                      <TableBody className="rounded-md text-base">
+                        <TableRow className="bg-gray-300/25 hover:bg-gray-300/35!">
+                          <TableCell className="py-3!">
+                            <div className="flex items-center gap-3">
+                              {/* <Trophy className="h-6 w-6 shrink-0 text-yellow-300" /> */}
+                              <span>Best well-written</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="py-3! text-right">
+                            <strong>$25</strong> + CASA, ACP
+                          </TableCell>
+                        </TableRow>
+                        <TableRow className="bg-gray-300/25 hover:bg-gray-300/35!">
+                          <TableCell className="py-3!">
+                            <div className="flex items-center gap-3">
+                              {/* <Medal className="h-6 w-6 shrink-0 text-gray-300" /> */}
+                              <span>Best technical</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="py-3! text-right">
+                            <strong>$25</strong> + CASA, ACP
+                          </TableCell>
+                        </TableRow>
+                        <TableRow className="bg-gray-300/25 hover:bg-gray-300/35!">
+                          <TableCell className="py-3!">
+                            <div className="flex items-center gap-3">
+                              {/* <Award className="h-6 w-6 shrink-0 text-yellow-800" /> */}
+                              <span>Best unintended</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="py-3! text-right">
+                            <strong>$25</strong> + CASA, ACP
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </CardContent>
                 </Card>
+
+                {/* DESKTOP */}
+                <Card className="col-span-20 row-span-1 hidden h-full grid-cols-20 flex-col justify-between overflow-hidden border border-gray-700! bg-gray-800/50! py-0 transition-shadow hover:shadow-lg sm:grid sm:h-auto">
+                  <div className="col-span-7 my-auto pr-6 pl-6 sm:pr-0">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg border-purple-300/20 bg-purple-300/10 text-purple-300">
+                      <FileText className="h-6 w-6" />
+                    </div>
+                    <CardTitle className="flex justify-between gap-3 text-lg sm:mb-0 sm:text-xl">
+                      <div>
+                        <span>Write-Up Division</span>
+                        <CardDescription className="mt-1 text-sm font-normal sm:text-base">
+                          Individual; $1,425+ USD
+                        </CardDescription>
+                      </div>
+                      {/* <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-lg border-purple-300/20 bg-purple-300/10 text-purple-300 sm:flex">
+                        <FileText className="h-6 w-6" />
+                      </div> */}
+                    </CardTitle>
+                  </div>
+                  <CardContent className="col-span-13 px-0">
+                    <Table className="table-fixed overflow-hidden text-gray-200 sm:rounded-r-none">
+                      <TableBody className="rounded-md text-base">
+                        <TableRow className="bg-gray-300/25 hover:bg-gray-300/35!">
+                          <TableCell className="w-[55%] py-3!">
+                            <div className="flex items-center gap-3">
+                              {/* <Trophy className="h-6 w-6 shrink-0 text-yellow-300" /> */}
+                              <span>Best well-written solution</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="py-3! text-right">
+                            <strong>$25</strong> + CASA, ACP
+                          </TableCell>
+                        </TableRow>
+                        <TableRow className="bg-gray-300/25 hover:bg-gray-300/35!">
+                          <TableCell className="py-3!">
+                            <div className="flex items-center gap-3">
+                              {/* <Medal className="h-6 w-6 shrink-0 text-gray-300" /> */}
+                              <span>Best technical solution</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="py-3! text-right">
+                            <strong>$25</strong> + CASA, ACP
+                          </TableCell>
+                        </TableRow>
+                        <TableRow className="bg-gray-300/25 hover:bg-gray-300/35!">
+                          <TableCell className="py-3!">
+                            <div className="flex items-center gap-3">
+                              {/* <Award className="h-6 w-6 shrink-0 text-yellow-800" /> */}
+                              <span>Best unintended solution</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="py-3! text-right">
+                            <strong>$25</strong> + CASA, ACP
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                </Card>
+                {/* <Card className="col-span-1 grid grid-cols-2 flex-col justify-between border border-gray-700! bg-gray-800/50! py-0 transition-shadow hover:shadow-lg sm:flex sm:h-full">
+                  <div className="sm:p-auto pt-6 pb-6 pl-6 sm:pr-6">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg border-purple-300/20 bg-purple-300/10 text-purple-300 sm:mb-2 sm:hidden">
+                      <FileText className="h-6 w-6" />
+                    </div>
+                    <CardTitle className="flex justify-between gap-3 text-lg sm:mb-0 sm:text-xl">
+                      <div>
+                        <span>Write-Up Division</span>
+                        <CardDescription className="mt-1 text-sm font-normal sm:text-base">Individual</CardDescription>
+                      </div>
+                      <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-lg border-purple-300/20 bg-purple-300/10 text-purple-300 sm:flex">
+                        <FileText className="h-6 w-6" />
+                      </div>
+                    </CardTitle>
+                  </div>
+                </Card> */}
                 {/* Add back grid-cols-2 and remove pr-6 if rankings are present */}
-                <Card className="col-span-1 grid grid-cols-1 flex-col justify-between border border-gray-700! bg-gray-800/50! py-0 transition-shadow hover:shadow-lg sm:flex sm:h-full">
+                {/* <Card className="col-span-1 grid grid-cols-1 flex-col justify-between border border-gray-700! bg-gray-800/50! py-0 transition-shadow hover:shadow-lg sm:flex sm:h-full">
                   <div className="right-0 w-full py-6 pr-6 pl-6">
                     <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg border-purple-300/20 bg-purple-300/10 text-purple-300">
                       <FileText className="h-6 w-6" />
@@ -716,16 +902,10 @@ export default async function Advent2025() {
                     <CardTitle className="flex w-full justify-between gap-3 text-lg sm:mb-0 sm:text-xl">
                       <div className="w-full">
                         <span>Write-Up Division</span>
-                        <CardDescription className="mt-1 w-full text-sm font-normal sm:text-base">
-                          <div>
-                            Submit write-ups for challenges after the event; best submissions are recognized and shown
-                            here.
-                          </div>
-                        </CardDescription>
                       </div>
                     </CardTitle>
                   </div>
-                </Card>
+                </Card> */}
               </div>
             </div>
           </div>
