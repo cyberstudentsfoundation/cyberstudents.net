@@ -56,7 +56,10 @@ export const challengeRouter = createTRPCRouter({
       where: { eventName: input.event },
       select: {
         challengeAttempts: {
-          select: { solvedAt: true, user: { select: { id: true, image: true, name: true, flags: true } } },
+          select: {
+            solvedAt: true,
+            user: { select: { id: true, image: true, name: true, displayName: true, linkedin: true, flags: true } },
+          },
         },
         id: true,
       },
@@ -116,6 +119,8 @@ export const challengeRouter = createTRPCRouter({
                 id: a.user.id,
                 image: a.user.image,
                 name: a.user.name,
+                displayName: a.user.displayName,
+                linkedin: a.user.linkedin,
                 flags: a.user.flags.filter((f) => f === "ms_hs_college_eligible"), // only return ms_hs_college_eligible flag, if any
               },
               solvedAt: a.solvedAt!,
@@ -249,6 +254,15 @@ export const challengeRouter = createTRPCRouter({
 
     if (!user?.events.some((event) => event.name === "aoc2025")) {
       throw new TRPCError({ message: "You are not registered for this challenge's event.", code: "FORBIDDEN" });
+    }
+
+    // whoops i forgot to add this in 2025
+    if (challenge.eventName === "aoc2024") {
+      throw new TRPCError({
+        message:
+          "This event has ended and is no longer accepting flag submissions. Thank you for playing in Advent of CTF 2024!",
+        code: "FORBIDDEN",
+      });
     }
 
     if (Date.now() > (user.events.find((event) => event.name === "aoc2025")?.eventEnd.getTime() ?? 0)) {

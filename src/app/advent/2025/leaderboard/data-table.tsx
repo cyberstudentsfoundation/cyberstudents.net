@@ -56,7 +56,7 @@ export function DataTable<TData, TValue>({
           />
         </div>
         {session?.user && (
-          <Link href={`/advent/leaderboard#${session.user.name}`}>
+          <Link href={`/advent/2025/leaderboard#${session.user.name}`}>
             <Button className="" variant="ghost" tabIndex={-1}>
               Jump to me
             </Button>

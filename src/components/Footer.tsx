@@ -18,7 +18,7 @@ import pfp_kolmus from "../../public/staff-pfps/kolmus.png";
 // import pfp_logix from "../../public/staff-pfps/logix.png";
 import pfp_lordskeletonman from "../../public/staff-pfps/lordskeletonman.png";
 import pfp_mathlegend from "../../public/staff-pfps/mathlegend.png";
-import pfp_vipin from "../../public/staff-pfps/vipin.png";
+import pfp_vipin from "../../public/staff-pfps/vipin_atl.png";
 
 const STAFF: { name: string; position: string; pfp: StaticImageData; link?: string }[] = [
   { name: "Vipin", position: "CyberStudents Foundation Co-Chair", pfp: pfp_vipin, link: "https://www.vipin.xyz/" },

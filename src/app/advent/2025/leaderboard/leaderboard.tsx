@@ -24,20 +24,28 @@ export default function Leaderboard({ session }: { session: Session | null }) {
           <Tabs value={division} onValueChange={(d) => setDivision(d)}>
             <TabsList className="bg-gray-800">
               <TabsTrigger value="open">Open</TabsTrigger>
-              <TabsTrigger value="ms_hs_college">High School & College</TabsTrigger>
+              <TabsTrigger value="ms_hs_college">Student</TabsTrigger>
+              <TabsTrigger value="hs">High School</TabsTrigger>
             </TabsList>
           </Tabs>
           <DataTable
             columns={columns}
             data={
-              division === "ms_hs_college"
-                ? getLeaderboardQuery.data!.msHsCollegeLeaderboard
-                : getLeaderboardQuery.data!.leaderboard
+              // division === "ms_hs_college"
+              //   ? getLeaderboardQuery.data!.msHsCollegeLeaderboard
+              //   : getLeaderboardQuery.data!.leaderboard
+              {
+                open: getLeaderboardQuery.data!.leaderboard,
+                ms_hs_college: getLeaderboardQuery.data!.msHsCollegeLeaderboard,
+                hs: getLeaderboardQuery.data!.hsLeaderboard,
+              }[division] ?? [] // if this somehow fails, uh that shouldn't happen
             }
             session={session}
           />
           <p className="mt-2 text-sm text-gray-400">
             Only players with at least one challenge solved appear on the leaderboard.
+            <br />
+            Accuracy is not considered for rankings.
           </p>
         </div>
       ) : (

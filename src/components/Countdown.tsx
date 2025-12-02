@@ -17,11 +17,17 @@ export default function Countdown({
   if (date === "next-challenge") {
     if (pastLastChallenge) {
       date = new Date("2026-01-01T04:59:00Z");
-    } else if (now.getUTCHours() >= 20) {
-      // Today or tomorrow's date at 8 pm UTC (3 pm EST)
-      date = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 20, 0, 0, 0));
+      // } else if (now.getUTCHours() >= 1) {
+      //   // Today or tomorrow's date at 8 pm UTC (3 pm EST)
+      //   date = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 1, 0, 0, 0));
+      // } else {
+      //   date = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 1, 0, 0, 0));
+      // }
+      // Today or tomorrow's date at 8 pm EST (1 am UTC) - updated for 2025
+    } else if (now.getHours() >= 20) {
+      date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 20, 0, 0, 0);
     } else {
-      date = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 20, 0, 0, 0));
+      date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 20, 0, 0, 0);
     }
   }
 

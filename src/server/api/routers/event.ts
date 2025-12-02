@@ -128,6 +128,35 @@ export const eventRouter = createTRPCRouter({
       },
     });
 
+    // send notification on changed fields (only included modified ones)
+    sendNotification(
+      [
+        `User \`${user.id}\` updated their registration for event \`aoc2025\`.`,
+        input.preferredEmail !== user.preferredEmail
+          ? `- Preferred email: \`${input.preferredEmail}\` (was: \`${user.preferredEmail}\`)`
+          : "",
+        input.country !== user.country ? `- Country: \`${input.country}\` (was: \`${user.country}\`)` : "",
+        input.schoolingStatus !== user.schoolingStatus
+          ? `- Schooling status: \`${input.schoolingStatus}\` (was: \`${user.schoolingStatus}\`)`
+          : "",
+        input.howDidYouHearAboutUs !== user.howDidYouHearAboutUs
+          ? `- How did you hear about us: \`${input.howDidYouHearAboutUs}\` (was: \`${user.howDidYouHearAboutUs}\`)`
+          : "",
+        input.displayName !== user.displayName
+          ? `- Display name: \`${input.displayName}\` (was:
+  \`${user.displayName}\`)`
+          : "",
+        input.linkedin !== user.linkedin
+          ? `- LinkedIn: <https://linkedin.com/in/${input.linkedin}> (was: <https://linkedin.com/in/${user.linkedin}>)`
+          : "",
+        input.allowSponsorContact !== user.allowSponsorContact
+          ? `- Allow sponsor contact: ${input.allowSponsorContact} (was: ${user.allowSponsorContact})`
+          : "",
+      ]
+        .filter(Boolean)
+        .join("\n"),
+    );
+
     return;
   }),
 
@@ -150,6 +179,7 @@ export const eventRouter = createTRPCRouter({
 
     const users = await ctx.db.user.findMany({
       where: {
+        NOT: { flags: { has: "suspended" } },
         events: { some: { name: input.event } },
         // Only filter for users that have solved at least one challenge in the event
         challengeAttempts: { some: { challenge: { eventName: input.event }, solvedAt: { not: null } } },
@@ -207,8 +237,10 @@ export const eventRouter = createTRPCRouter({
     const leaderboard = sorted.map((user) => ({
       id: user.id,
       name: user.name,
+      displayName: user.displayName,
+      linkedin: user.linkedin,
       image: user.image,
-      flags: user.flags.filter((flag) => flag === "ms_hs_college_eligible"),
+      flags: user.flags.filter((flag) => ["ms_hs_college_eligible", "hs_eligible"].includes(flag)),
       points: userPointsAndLastSolveMap.get(user.id)!.points,
       lastSolve: userPointsAndLastSolveMap.get(user.id)!.lastSolve,
       completedChallenges: user.challengeAttempts
@@ -237,8 +269,15 @@ export const eventRouter = createTRPCRouter({
         const idx = msList.findIndex((u) => u.id === user.id);
         return idx === -1 ? null : idx + 1;
       })(),
+      userHsPlace: (() => {
+        if (!user?.flags.includes("hs_eligible")) return null;
+        const hsList = leaderboard.filter((u) => u.flags.includes("hs_eligible"));
+        const idx = hsList.findIndex((u) => u.id === user.id);
+        return idx === -1 ? null : idx + 1;
+      })(),
       leaderboard: !input.onlyShowCurrentUser ? leaderboard : [],
       msHsCollegeLeaderboard: leaderboard.filter((u) => u.flags.includes("ms_hs_college_eligible")),
+      hsLeaderboard: leaderboard.filter((u) => u.flags.includes("hs_eligible")),
     };
   }),
 });

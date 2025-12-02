@@ -97,7 +97,11 @@ export default function Edit({ row }: { row: Row<VerificationPreview> }) {
                   />
                   <span className="text-lg">{row.original.user.name}</span>
                 </div>
-                <a href={`/advent/leaderboard#${row.original.user.name}`} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={`/advent/2025/leaderboard#${row.original.user.name}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Button className="flex w-fit items-center gap-2">
                     <span>See place on leaderboard</span>
                     <HiArrowUpRight className="mb-0.5 h-4 w-4" />

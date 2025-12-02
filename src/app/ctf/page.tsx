@@ -42,7 +42,7 @@ import pfp_kolmus from "~/../public/staff-pfps/kolmus.png";
 import pfp_logix from "~/../public/staff-pfps/logix.png";
 import pfp_mathlegend from "~/../public/staff-pfps/mathlegend.png";
 import pfp_mr_mph from "~/../public/staff-pfps/mr_mph.png";
-import pfp_vipin from "~/../public/staff-pfps/vipin.png";
+import pfp_vipin from "~/../public/staff-pfps/vipin_atl.png";
 import pfp_vy from "~/../public/staff-pfps/vy.png";
 import pfp_wjaaaaaaat from "~/../public/staff-pfps/wjaaaaaaat.png";
 

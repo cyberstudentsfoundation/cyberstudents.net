@@ -62,7 +62,7 @@ import pfp_godder from "~/../public/staff-pfps/decidueye.png";
 // import pfp_logix from "~/../public/staff-pfps/logix.png";
 // import pfp_mathlegend from "~/../public/staff-pfps/mathlegend.png";
 // import pfp_mr_mph from "~/../public/staff-pfps/mr_mph.png";
-import pfp_vipin from "~/../public/staff-pfps/vipin.png";
+import pfp_vipin from "~/../public/staff-pfps/vipin_atl.png";
 import pfp_vy from "~/../public/staff-pfps/vy.png";
 import pfp_wjaaaaaaat from "~/../public/staff-pfps/wjaaaaaaat.png";
 
@@ -603,8 +603,8 @@ export default async function Advent2025() {
               </h2>
               <h1 className="mb-4 text-3xl font-bold">Compete in three divisions</h1>
               <p className="mb-4 text-lg">
-                Advent of CTF will feature a competitive High School and College Division with prizes exclusive for
-                students, along with an Open Division and Write-up Division for everyone.
+                Advent of CTF will feature a Student Division and a High School Division with prizes exclusive for
+                students, along with an Open Division and Write-Up Division for everyone.
               </p>
               <p className="mb-2 text-lg">
                 We also have a raffle for all participants who solve at least one challenge to win up to{" "}

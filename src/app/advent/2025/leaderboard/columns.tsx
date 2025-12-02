@@ -9,6 +9,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { HiArrowsUpDown } from "react-icons/hi2";
 import { Button } from "~/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "~/components/ui/hover-card";
+import { FaLinkedin } from "react-icons/fa6";
 
 dayjs.extend(relativeTime);
 
@@ -30,7 +31,11 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
       );
     },
     cell: ({ row }) => {
-      const { name, image } = row.original;
+      const { id, name, displayName, linkedin, image } = row.original;
+
+      if (linkedin?.includes("/")) {
+        console.warn(`Invalid linkedin username for user ${displayName} (${id}): ${linkedin}`);
+      }
 
       return (
         <div className="flex items-center gap-2 py-1">
@@ -38,10 +43,21 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
             src={image?.replace(".gif", ".png") ?? "https://cdn.discordapp.com/embed/avatars/5.png"}
             width={64}
             height={64}
-            alt={`Profile Picture for ${name}`}
+            alt={`Profile Picture for ${displayName || name}`}
             className="h-6 w-6 rounded-full"
           />
-          <span className="max-w-52 truncate text-gray-200">{name}</span>
+          <span className="max-w-52 truncate text-gray-200">{displayName || name}</span>
+          {linkedin && (
+            <a
+              href={`https://linkedin.com/in/${linkedin}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#0b65c3] transition-all hover:opacity-80"
+              title="LinkedIn profiles are self-provided and not verified by CyberStudents."
+            >
+              <FaLinkedin className="h-5 w-5" />
+            </a>
+          )}
         </div>
       );
     },
@@ -97,7 +113,10 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
       const challengesByDay: ((typeof completedChallenges)[0] | null)[] = [];
 
       for (let i = 0; i < 25; i++) {
-        const challenge = completedChallenges.find((c) => c.publishDate.getUTCDate() === i + 1);
+        const challenge = completedChallenges.find(
+          (c) =>
+            parseInt(c.publishDate.toLocaleString("en-US", { timeZone: "America/New_York", day: "numeric" })) === i + 1,
+        );
 
         if (challenge) {
           challengesByDay.push(challenge);
@@ -136,7 +155,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
     header: ({ column }) => {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Accuracy (not considered)
+          Accuracy
           <HiArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -162,7 +181,15 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
     cell: ({ row }) => {
       const { flags } = row.original;
 
-      return <span>{flags.includes("ms_hs_college_eligible") ? "HS/College, Open" : "Open"}</span>;
+      return (
+        <span>
+          {flags.includes("ms_hs_college_eligible")
+            ? flags.includes("hs_eligible")
+              ? "High School, Student, Open"
+              : "Student, Open"
+            : "Open"}
+        </span>
+      );
     },
   },
 ];

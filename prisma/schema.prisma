@@ -48,7 +48,7 @@ model User {
   sessions      Session[]
 
   preferredEmail String?  @map("preferred_email")
-  flags          String[] // these are NOT ctf flags; "ms_hs_college_eligible" | "admin" | "suspended"
+  flags          String[] // these are NOT ctf flags; "ms_hs_college_eligible" | "hs_eligible" | "admin" | "suspended"
   note           String   @default("")
 
   schoolingStatus      String?   @map("schooling_status")

@@ -111,10 +111,18 @@ export default function Challenges({
           <div className="">
             <span>{getLeaderboardQuery.data.userPoints ?? 0} points</span>{" "}
             {getLeaderboardQuery.data.userMsHsCollegePlace ? (
-              <span className="text-gray-400">
-                (Open: #{getLeaderboardQuery.data.userPlace ?? "--"}; HS/College: #
-                {getLeaderboardQuery.data.userMsHsCollegePlace ?? "--"})
-              </span>
+              getLeaderboardQuery.data.userHsPlace ? (
+                <span className="text-gray-400">
+                  (Open: #{getLeaderboardQuery.data.userPlace ?? "--"}; Student: #
+                  {getLeaderboardQuery.data.userMsHsCollegePlace ?? "--"}; HS: #
+                  {getLeaderboardQuery.data.userHsPlace ?? "--"})
+                </span>
+              ) : (
+                <span className="text-gray-400">
+                  (Open: #{getLeaderboardQuery.data.userPlace ?? "--"}; HS/College: #
+                  {getLeaderboardQuery.data.userMsHsCollegePlace ?? "--"})
+                </span>
+              )
             ) : (
               <span className="text-gray-400">(Open: #{getLeaderboardQuery.data.userPlace ?? "--"})</span>
             )}
@@ -245,9 +253,11 @@ export default function Challenges({
                                         alt={`Profile Picture for ${attempt.user.name}`}
                                         className="h-5 w-5 rounded-full"
                                       />
-                                      <span className="max-w-32 truncate text-gray-200">{attempt.user.name}</span>
+                                      <span className="truncate text-gray-200">
+                                        {attempt.user.displayName || attempt.user.name}
+                                      </span>
                                     </td>
-                                    <td className="pr-4 text-gray-400">
+                                    <td className="w-32 pr-2 text-gray-400">
                                       {dayjs(attempt.solvedAt.getTime()).format("M/DD h:mm a")}
                                     </td>
                                   </tr>
