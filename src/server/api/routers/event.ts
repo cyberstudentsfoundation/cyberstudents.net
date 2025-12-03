@@ -167,123 +167,250 @@ export const eventRouter = createTRPCRouter({
   }),
 
   getLeaderboard: publicProcedure.input(getLeaderboardSchema).query(async ({ ctx, input }) => {
-    const user = ctx.session?.user
-      ? await ctx.db.user.findUnique({ where: { id: ctx.session.user.id }, include: { events: true } })
+    const { db, session } = ctx;
+
+    const authUserId = session?.user?.id ?? null;
+
+    const user = authUserId
+      ? await db.user.findUnique({
+          where: { id: authUserId },
+          include: { events: true },
+        })
       : undefined;
 
     // Checks for logged in users but no user found in db
-    if (user === null) throw new TRPCError({ message: "User not found.", code: "INTERNAL_SERVER_ERROR" });
+    if (user === null) {
+      throw new TRPCError({
+        message: "User not found.",
+        code: "INTERNAL_SERVER_ERROR",
+      });
+    }
 
-    // if (input.event !== "aoc2025") {
-    //   throw new TRPCError({ message: "Event not found.", code: "INTERNAL_SERVER_ERROR" });
-    // }
+    // --- 1) Get all users eligible for this event & with at least one solve ---
 
-    const users = await ctx.db.user.findMany({
+    const users = await db.user.findMany({
       where: {
         NOT: { flags: { has: "suspended" } },
         events: { some: { name: input.event } },
-        // Only filter for users that have solved at least one challenge in the event
-        challengeAttempts: { some: { challenge: { eventName: input.event }, solvedAt: { not: null } } },
-      },
-      include: {
         challengeAttempts: {
-          where: { challenge: { eventName: input.event } },
-          include: {
-            challenge: {
-              include: {
-                challengeAttempts: true,
-              },
-            },
+          some: {
+            challenge: { eventName: input.event },
+            solvedAt: { not: null },
+          },
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        displayName: true,
+        linkedin: true,
+        image: true,
+        flags: true,
+      },
+    });
+
+    if (users.length === 0) {
+      return {
+        userPoints: null,
+        userCompletion: null,
+        userPlace: null,
+        userMsHsCollegePlace: null,
+        userHsPlace: null,
+        leaderboard: [],
+        msHsCollegeLeaderboard: [],
+        hsLeaderboard: [],
+      };
+    }
+
+    const userIds = users.map((u) => u.id);
+
+    // --- 2) Get all attempts for these users for this event ---
+
+    const challengeAttempts = await db.challengeAttempt.findMany({
+      where: {
+        userId: { in: userIds },
+        challenge: { eventName: input.event },
+      },
+      select: {
+        id: true,
+        userId: true,
+        solvedAt: true,
+        attempts: true,
+        pointsAdjustment: true,
+        challengeId: true,
+        challenge: {
+          select: {
+            id: true,
+            publishDate: true,
+            points: true,
           },
         },
       },
     });
 
-    const challenges = await ctx.db.challenge.findMany({
-      where: { eventName: input.event },
+    // Group attempts by user for quick lookup
+    const attemptsByUser = new Map<string, typeof challengeAttempts>();
+
+    for (const attempt of challengeAttempts) {
+      let arr = attemptsByUser.get(attempt.userId);
+      if (!arr) {
+        arr = [];
+        attemptsByUser.set(attempt.userId, arr);
+      }
+      arr.push(attempt);
+    }
+
+    // --- 3) Precompute solver counts per challenge (for dynamic scoring) ---
+
+    const solverCounts = await db.challengeAttempt.groupBy({
+      by: ["challengeId"],
+      where: {
+        solvedAt: { not: null },
+        challenge: { eventName: input.event },
+      },
+      _count: { _all: true },
     });
 
-    function calculatePointsAndLastSolve(user: (typeof users)[0]) {
-      return {
-        points: user.challengeAttempts.reduce((points, attempt) => {
-          // For aoc2024, points were static (backwards compatibility)
-          if (input.event === "aoc2024") {
-            return points + (attempt.solvedAt ? attempt.challenge.points : 0) + (attempt.pointsAdjustment ?? 0);
+    const solveCountMap = new Map<string, number>(solverCounts.map((row) => [row.challengeId, row._count._all]));
+
+    // --- 4) Get all challenges for this event ---
+
+    const challenges = await db.challenge.findMany({
+      where: { eventName: input.event },
+      select: {
+        id: true,
+        publishDate: true,
+      },
+    });
+
+    const now = Date.now();
+    const totalPublishedChallenges = challenges.filter((c) => c.publishDate.getTime() <= now).length;
+
+    // --- 5) Helper: compute points + lastSolve for a single user ---
+
+    const calculatePointsAndLastSolve = (userAttempts: typeof challengeAttempts) => {
+      let points = 0;
+      let lastSolve: Date | null = null;
+
+      for (const attempt of userAttempts) {
+        if (attempt.solvedAt) {
+          // Track last solve time
+          if (!lastSolve || attempt.solvedAt > lastSolve) {
+            lastSolve = attempt.solvedAt;
           }
 
-          const solves = attempt.challenge.challengeAttempts.filter((a) => a.solvedAt).length;
+          // For aoc2024, points are static (backwards compatibility)
+          if (input.event === "aoc2024") {
+            points += (attempt.challenge.points ?? 0) + (attempt.pointsAdjustment ?? 0);
+            continue;
+          }
+
+          // Dynamic scoring for other events
+          const solves = solveCountMap.get(attempt.challengeId) ?? 0;
           const k = 162;
           const factor = Math.min(1, k / (solves + (k - 1)));
           const value = Math.max(50, Math.floor(500 * Math.pow(factor, 1.5)));
 
-          if (attempt.solvedAt) return points + value + (attempt.pointsAdjustment ?? 0);
-          return points;
-        }, 0),
-        lastSolve: user.challengeAttempts
-          .filter((a) => a.solvedAt)
-          .sort((a, b) => b.solvedAt!.getTime() - a.solvedAt!.getTime())[0]?.solvedAt,
-      };
-    }
-
-    const userPointsAndLastSolveMap = new Map(users.map((user) => [user.id, calculatePointsAndLastSolve(user)]));
-
-    const sorted = users.sort((a, b) => {
-      const { points: aPoints, lastSolve: aLastSolve } = userPointsAndLastSolveMap.get(a.id)!;
-      const { points: bPoints, lastSolve: bLastSolve } = userPointsAndLastSolveMap.get(b.id)!;
-
-      if (aPoints === bPoints) {
-        const aTime = aLastSolve?.getTime() ?? Number.MAX_SAFE_INTEGER;
-        const bTime = bLastSolve?.getTime() ?? Number.MAX_SAFE_INTEGER;
-        return aTime - bTime;
+          points += value + (attempt.pointsAdjustment ?? 0);
+        }
       }
 
-      return bPoints - aPoints;
+      return { points, lastSolve };
+    };
+
+    // --- 6) Build per-user leaderboard objects (unsorted) ---
+
+    const baseLeaderboard = users.map((u) => {
+      const userAttempts = attemptsByUser.get(u.id) ?? [];
+      const { points, lastSolve } = calculatePointsAndLastSolve(userAttempts);
+
+      const solvedAttempts = userAttempts.filter((a) => a.solvedAt);
+      const totalAttempts = userAttempts.reduce((acc, a) => acc + (a.attempts ?? 0), 0);
+
+      const completedChallenges = solvedAttempts.map((a) => ({
+        id: a.challenge.id,
+        publishDate: a.challenge.publishDate,
+      }));
+
+      const publishedChallengesCompletion =
+        totalPublishedChallenges === 0 ? 0 : solvedAttempts.length / totalPublishedChallenges;
+
+      const accuracy = totalAttempts === 0 ? 0 : solvedAttempts.length / totalAttempts;
+
+      return {
+        id: u.id,
+        name: u.name,
+        displayName: u.displayName,
+        linkedin: u.linkedin,
+        image: u.image,
+        flags: u.flags.filter((flag) => ["ms_hs_college_eligible", "hs_eligible"].includes(flag)),
+        // metrics
+        points,
+        lastSolve,
+        completedChallenges,
+        totalPublishedChallenges,
+        publishedChallengesCompletion,
+        accuracy,
+      };
     });
 
-    const leaderboard = sorted.map((user) => ({
-      id: user.id,
-      name: user.name,
-      displayName: user.displayName,
-      linkedin: user.linkedin,
-      image: user.image,
-      flags: user.flags.filter((flag) => ["ms_hs_college_eligible", "hs_eligible"].includes(flag)),
-      points: userPointsAndLastSolveMap.get(user.id)!.points,
-      lastSolve: userPointsAndLastSolveMap.get(user.id)!.lastSolve,
-      completedChallenges: user.challengeAttempts
-        .filter((a) => a.solvedAt)
-        .map((a) => ({ id: a.challenge.id, publishDate: a.challenge.publishDate })),
-      totalPublishedChallenges: challenges.filter((c) => c.publishDate.getTime() <= Date.now()).length,
-      publishedChallengesCompletion: (() => {
-        const totalPublished = challenges.filter((c) => c.publishDate.getTime() <= Date.now()).length;
-        if (totalPublished === 0) return 0;
-        return user.challengeAttempts.filter((a) => a.solvedAt).length / totalPublished;
-      })(),
-      accuracy: (() => {
-        const totalAttempts = user.challengeAttempts.reduce((acc, attempt) => acc + (attempt.attempts ?? 0), 0);
-        if (totalAttempts === 0) return 0;
-        return user.challengeAttempts.filter((a) => a.solvedAt).length / totalAttempts;
-      })(),
-    }));
+    // --- 7) Sort by points desc, then lastSolve asc (same logic as before) ---
+
+    const sorted = baseLeaderboard.sort((a, b) => {
+      if (a.points === b.points) {
+        const aTime = a.lastSolve?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        const bTime = b.lastSolve?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        return aTime - bTime;
+      }
+      return b.points - a.points;
+    });
+
+    const leaderboard = sorted;
+
+    // Current user entry (if logged in & in leaderboard)
+    const currentUserEntry = user && authUserId ? (leaderboard.find((u) => u.id === authUserId) ?? null) : null;
+
+    // --- 8) Places & filtered leaderboards ---
+
+    const userPoints = currentUserEntry?.points ?? null;
+    const userCompletion = currentUserEntry?.publishedChallengesCompletion ?? null;
+
+    const userPlace =
+      user && authUserId
+        ? (() => {
+            const idx = leaderboard.findIndex((u) => u.id === authUserId);
+            return idx === -1 ? null : idx + 1;
+          })()
+        : null;
+
+    const msHsCollegeLeaderboard = leaderboard.filter((u) => u.flags.includes("ms_hs_college_eligible"));
+    const hsLeaderboard = leaderboard.filter((u) => u.flags.includes("hs_eligible"));
+
+    const userMsHsCollegePlace =
+      user && user.flags.includes("ms_hs_college_eligible")
+        ? (() => {
+            const idx = msHsCollegeLeaderboard.findIndex((u) => u.id === authUserId);
+            return idx === -1 ? null : idx + 1;
+          })()
+        : null;
+
+    const userHsPlace =
+      user && user.flags.includes("hs_eligible")
+        ? (() => {
+            const idx = hsLeaderboard.findIndex((u) => u.id === authUserId);
+            return idx === -1 ? null : idx + 1;
+          })()
+        : null;
 
     return {
-      userPoints: user ? leaderboard.find((u) => u.id === user.id)?.points : null,
-      userCompletion: user ? leaderboard.find((u) => u.id === user.id)?.publishedChallengesCompletion : null,
-      userPlace: user ? leaderboard.indexOf(leaderboard.find((u) => u.id === user.id)!) + 1 : null,
-      userMsHsCollegePlace: (() => {
-        if (!user?.flags.includes("ms_hs_college_eligible")) return null;
-        const msList = leaderboard.filter((u) => u.flags.includes("ms_hs_college_eligible"));
-        const idx = msList.findIndex((u) => u.id === user.id);
-        return idx === -1 ? null : idx + 1;
-      })(),
-      userHsPlace: (() => {
-        if (!user?.flags.includes("hs_eligible")) return null;
-        const hsList = leaderboard.filter((u) => u.flags.includes("hs_eligible"));
-        const idx = hsList.findIndex((u) => u.id === user.id);
-        return idx === -1 ? null : idx + 1;
-      })(),
+      userPoints,
+      userCompletion,
+      userPlace,
+      userMsHsCollegePlace,
+      userHsPlace,
       leaderboard: !input.onlyShowCurrentUser ? leaderboard : [],
-      msHsCollegeLeaderboard: leaderboard.filter((u) => u.flags.includes("ms_hs_college_eligible")),
-      hsLeaderboard: leaderboard.filter((u) => u.flags.includes("hs_eligible")),
+      msHsCollegeLeaderboard,
+      hsLeaderboard,
     };
   }),
 });

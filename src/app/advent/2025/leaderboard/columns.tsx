@@ -33,9 +33,11 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
     cell: ({ row }) => {
       const { id, name, displayName, linkedin, image } = row.original;
 
-      if (linkedin?.includes("/")) {
-        console.warn(`Invalid linkedin username for user ${displayName} (${id}): ${linkedin}`);
+      if (!linkedin?.startsWith("/") && !linkedin?.endsWith("/") && linkedin?.includes("/")) {
+        console.warn(`Invalid LinkedIn username for user ${displayName} (${id}): ${linkedin}`);
       }
+
+      const cleanedLinkedin = linkedin?.replaceAll("/", "").trim() ?? null;
 
       return (
         <div className="flex items-center gap-2 py-1">
@@ -47,9 +49,9 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
             className="h-6 w-6 rounded-full"
           />
           <span className="max-w-52 truncate text-gray-200">{displayName || name}</span>
-          {linkedin && (
+          {cleanedLinkedin && (
             <a
-              href={`https://linkedin.com/in/${linkedin}`}
+              href={`https://linkedin.com/in/${cleanedLinkedin}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#0b65c3] transition-all hover:opacity-80"
