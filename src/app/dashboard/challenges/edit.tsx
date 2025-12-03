@@ -398,10 +398,13 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                       id="points"
                       type="number"
                       className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
-                      defaultValue={row?.original.points}
+                      defaultValue={row?.original.points ?? 500}
                       ref={pointsRef}
                       required
                     />
+                    <span className="text-xs text-gray-400">
+                      Points are ignored when the event is using dynamic scoring.
+                    </span>
                   </div>
                   <div className="grid w-full max-w-xl items-center gap-1.5">
                     <Label htmlFor="description">Description</Label>

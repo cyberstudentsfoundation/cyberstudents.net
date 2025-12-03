@@ -10,43 +10,144 @@ export default function Countdown({
   variant?: "small" | "normal";
 }) {
   const [timeLeft, setTimeLeft] = useState(0);
-  const now = new Date();
-  const pastLastChallenge = now.getTime() >= new Date("2025-12-25T20:00:00Z").getTime();
-  const daysNeedToBeShown = date instanceof Date && date.getTime() - now.getTime() >= 8.64e7;
+  const timeZone = "America/New_York";
+  const nowUtc = new Date();
 
-  if (date === "next-challenge") {
-    if (pastLastChallenge) {
-      date = new Date("2026-01-01T04:59:00Z");
-      // } else if (now.getUTCHours() >= 1) {
-      //   // Today or tomorrow's date at 8 pm UTC (3 pm EST)
-      //   date = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 1, 0, 0, 0));
-      // } else {
-      //   date = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 1, 0, 0, 0));
-      // }
-      // Today or tomorrow's date at 8 pm EST (1 am UTC) - updated for 2025
-    } else if (now.getHours() >= 20) {
-      date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 20, 0, 0, 0);
-    } else {
-      date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 20, 0, 0, 0);
-    }
+  function getPartsForTZ(
+    d: Date,
+    tz = timeZone,
+  ): { year: number; month: number; day: number; hour: number; minute: number; second: number } {
+    const dtf = new Intl.DateTimeFormat("en-US", {
+      timeZone: tz,
+      hour12: false,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+
+    type Parts = {
+      year: string;
+      month: string;
+      day: string;
+      hour: string;
+      minute: string;
+      second: string;
+    };
+
+    const allowed: Array<keyof Parts> = ["year", "month", "day", "hour", "minute", "second"];
+
+    const parts = dtf.formatToParts(d).reduce((acc: Partial<Parts>, p: Intl.DateTimeFormatPart) => {
+      const key = p.type as keyof Parts;
+      if (allowed.includes(key)) acc[key] = p.value;
+      return acc;
+    }, {} as Partial<Parts>);
+
+    return {
+      year: Number(parts.year ?? "0"),
+      month: Number(parts.month ?? "0"),
+      day: Number(parts.day ?? "0"),
+      hour: Number(parts.hour ?? "0"),
+      minute: Number(parts.minute ?? "0"),
+      second: Number(parts.second ?? "0"),
+    };
   }
 
+  function getOffsetMinutes(d: Date, tz = timeZone): number {
+    const dtf = new Intl.DateTimeFormat("en-US", {
+      timeZone: tz,
+      hour12: false,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+    type Parts = {
+      year: string;
+      month: string;
+      day: string;
+      hour: string;
+      minute: string;
+      second: string;
+    };
+
+    const allowed: Array<keyof Parts> = ["year", "month", "day", "hour", "minute", "second"];
+
+    const parts = dtf.formatToParts(d).reduce((acc: Partial<Parts>, p: Intl.DateTimeFormatPart) => {
+      const key = p.type as keyof Parts;
+      if (allowed.includes(key)) acc[key] = p.value;
+      return acc;
+    }, {} as Partial<Parts>);
+
+    const asUTC = Date.UTC(
+      Number(parts.year ?? "0"),
+      Number(parts.month ?? "1") - 1,
+      Number(parts.day ?? "1"),
+      Number(parts.hour ?? "0"),
+      Number(parts.minute ?? "0"),
+      Number(parts.second ?? "0"),
+    );
+
+    return (asUTC - d.getTime()) / 60000;
+  }
+
+  function getEpochForZoned(
+    year: number,
+    month: number,
+    day: number,
+    hour: number,
+    minute = 0,
+    second = 0,
+    tz = timeZone,
+  ) {
+    const naiveUTC = Date.UTC(year, month - 1, day, hour, minute, second);
+    const offset = getOffsetMinutes(new Date(naiveUTC), tz);
+    return naiveUTC - offset * 60_000;
+  }
+
+  // Compute a stable numeric target timestamp (ms since epoch). Do not mutate the `date` prop.
+  const dateKey = date === "next-challenge" ? "next-challenge" : date instanceof Date ? date.getTime() : String(date);
+
+  const targetTimestamp = (() => {
+    // compute once per render call but only depend on `dateKey` via useMemo-like behavior below
+    // For clarity we compute here but avoid mutating props and avoid using values that change each render
+    return ((): number => {
+      if (date === "next-challenge") {
+        const nowForCalc = new Date();
+        const nowPartsLocal = getPartsForTZ(nowForCalc, timeZone);
+        const pastLastChallengeLocal = nowForCalc.getTime() >= getEpochForZoned(2025, 12, 25, 20, 0, 0, timeZone);
+        if (pastLastChallengeLocal) {
+          return new Date("2026-01-01T04:59:00Z").getTime();
+        }
+        if (nowPartsLocal.hour >= 20) {
+          return getEpochForZoned(nowPartsLocal.year, nowPartsLocal.month, nowPartsLocal.day + 1, 20, 0, 0, timeZone);
+        }
+        return getEpochForZoned(nowPartsLocal.year, nowPartsLocal.month, nowPartsLocal.day, 20, 0, 0, timeZone);
+      }
+
+      // If `date` is a Date instance, return its epoch; otherwise treat as invalid and return 0.
+      return date instanceof Date ? date.getTime() : 0;
+    })();
+  })();
+
+  const daysNeedToBeShown = targetTimestamp - Date.now() >= 8.64e7;
+
   useEffect(() => {
-    const now = new Date();
-    setTimeLeft(date.getTime() - now.getTime());
+    // Initialize and update every second, computing remaining time from `targetTimestamp`.
+    setTimeLeft(Math.max(0, targetTimestamp - Date.now()));
 
     const interval = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 0) {
-          clearInterval(interval);
-          return 0;
-        }
-        return prev - 1000;
-      });
+      const remaining = Math.max(0, targetTimestamp - Date.now());
+      setTimeLeft(remaining);
+      if (remaining <= 0) clearInterval(interval);
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [date]);
+  }, [targetTimestamp]);
 
   return (
     <div

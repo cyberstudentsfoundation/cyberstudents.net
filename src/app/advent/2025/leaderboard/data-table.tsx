@@ -85,7 +85,7 @@ export function DataTable<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   id={row.getValue("name")}
-                  className="scroll-mt-12"
+                  className="scroll-mt-28"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell

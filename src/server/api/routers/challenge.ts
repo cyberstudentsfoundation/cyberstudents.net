@@ -105,7 +105,7 @@ export const challengeRouter = createTRPCRouter({
 
           title: isChallengePublished(challenge) ? challenge.title : null,
           category: challenge.category,
-          points: calculatedPoints,
+          points: event.name === "aoc2024" ? challenge.points : calculatedPoints,
           hints: [] as { id: string; number: number; title: string; content: string }[], // assigned below
           description: isChallengePublished(challenge) && input.fetchExtended ? challenge.description : null,
           files: isChallengePublished(challenge) && input.fetchExtended ? challenge.files : null,
@@ -216,7 +216,7 @@ export const challengeRouter = createTRPCRouter({
           publishDate: challenge.publishDate,
           title: challenge.publishDate.getTime() <= Date.now() ? challenge.title : null,
           category: challenge.category as string | null,
-          points: calculatedPoints as number | null,
+          points: (event.name === "aoc2024" ? challenge.points : calculatedPoints) as number | null,
         };
       }),
     };

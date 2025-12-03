@@ -202,8 +202,8 @@ export default function Challenges({
                   </div>
                   <div className="z-20 flex h-full flex-col justify-between p-8">
                     <div className="mb-8">
-                      <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row lg:gap-0">
-                        <div className="grow-0 basis-3/5">
+                      <div className="mb-10 flex flex-col justify-between gap-4 lg:gap-0 xl:flex-row">
+                        <div className="">
                           <h1
                             className={`mb-4 flex items-center gap-3 text-2xl ${!challenge.title ? "font-mono font-medium" : "font-bold"}`}
                           >
@@ -229,11 +229,11 @@ export default function Challenges({
                             </div>
                           </div>
                         </div>
-                        <div className="grow-0 basis-2/5">
+                        <div className="xl:ml-4">
                           <h2 className="mb-1 text-xl font-bold text-gray-400">
                             Solves ({challenge.solvedPlayers?.length ?? 0})
                           </h2>
-                          <div className="max-h-36 max-w-md overflow-y-auto rounded-md">
+                          <div className="max-h-36 w-full max-w-md overflow-y-auto rounded-md">
                             <table className="w-full rounded-lg">
                               <tbody>
                                 {challenge.solvedPlayers?.map((attempt, index) => (
@@ -241,8 +241,8 @@ export default function Challenges({
                                     key={attempt.user.id + Math.random()}
                                     className="odd:bg-gray-600 even:bg-gray-700"
                                   >
-                                    <td className="pl-4 text-gray-400">{index + 1}</td>
-                                    <td className="flex items-center gap-2 py-1">
+                                    <td className="pr-2 pl-4 text-gray-400">{index + 1}</td>
+                                    <td className="flex w-fit items-center gap-2 py-1 pr-2">
                                       <Image
                                         src={
                                           attempt.user.image?.replace(".gif", ".png") ??
@@ -253,11 +253,11 @@ export default function Challenges({
                                         alt={`Profile Picture for ${attempt.user.name}`}
                                         className="h-5 w-5 rounded-full"
                                       />
-                                      <span className="truncate text-gray-200">
+                                      <span className="w-52 truncate text-gray-200 xl:w-40 2xl:w-60">
                                         {attempt.user.displayName || attempt.user.name}
                                       </span>
                                     </td>
-                                    <td className="w-32 pr-2 text-gray-400">
+                                    <td className="min-w-28 pr-2 text-gray-400">
                                       {dayjs(attempt.solvedAt.getTime()).format("M/DD h:mm a")}
                                     </td>
                                   </tr>

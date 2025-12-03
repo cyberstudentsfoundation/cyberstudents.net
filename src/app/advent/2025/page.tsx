@@ -526,14 +526,23 @@ export default async function Advent2025() {
                         </div>
                         <div className="mb-1 block font-bold sm:hidden">{index + 1}</div>
                         <div
-                          className={`mb-0.5 hidden text-sm text-gray-300 sm:block ${!title ? "font-mono" : ""} truncate`}
+                          className={`mb-0.5 hidden h-full overflow-hidden text-sm text-gray-300 sm:block ${!title ? "font-mono" : ""} `}
                         >
                           {title ?? "???"}
                         </div>
                       </div>
                       <div className="hidden sm:block">
                         <div className={`mb-0.5 text-xs text-gray-400 ${!category ? "font-mono" : ""}`}>
-                          {category ?? "???"}
+                          {category
+                            ? {
+                                "Web exploitation": "web",
+                                "Binary exploitation": "pwn",
+                                "Reverse engineering": "rev",
+                                Forensics: "forensics",
+                                Cryptography: "crypto",
+                                Miscellaneous: "misc",
+                              }[category]
+                            : "???"}
                         </div>
                         <div className={`text-xs text-gray-400 opacity-80 ${!points ? "hidden font-mono" : ""}`}>
                           {points ?? "???"} pts

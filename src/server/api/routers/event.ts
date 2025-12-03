@@ -69,7 +69,7 @@ export const eventRouter = createTRPCRouter({
         `- Schooling status: \`${input.schoolingStatus}\``,
         `- How did you hear about us: \`${input.howDidYouHearAboutUs}\``,
         input.displayName ? `- Display name: \`${input.displayName}\`` : "",
-        input.linkedin ? `- LinkedIn: <https://linkedin.com/in/${input.linkedin}>\`` : "",
+        input.linkedin ? `- LinkedIn: <https://linkedin.com/in/${input.linkedin}>` : "",
         `- Allow sponsor contact: ${input.allowSponsorContact}`,
         input.accessCode ? `- Access code: \`${input.accessCode}\`` : "",
       ]
@@ -174,9 +174,9 @@ export const eventRouter = createTRPCRouter({
     // Checks for logged in users but no user found in db
     if (user === null) throw new TRPCError({ message: "User not found.", code: "INTERNAL_SERVER_ERROR" });
 
-    if (input.event !== "aoc2025") {
-      throw new TRPCError({ message: "Event not found.", code: "INTERNAL_SERVER_ERROR" });
-    }
+    // if (input.event !== "aoc2025") {
+    //   throw new TRPCError({ message: "Event not found.", code: "INTERNAL_SERVER_ERROR" });
+    // }
 
     const users = await ctx.db.user.findMany({
       where: {
@@ -206,6 +206,11 @@ export const eventRouter = createTRPCRouter({
     function calculatePointsAndLastSolve(user: (typeof users)[0]) {
       return {
         points: user.challengeAttempts.reduce((points, attempt) => {
+          // For aoc2024, points were static (backwards compatibility)
+          if (input.event === "aoc2024") {
+            return points + (attempt.solvedAt ? attempt.challenge.points : 0) + (attempt.pointsAdjustment ?? 0);
+          }
+
           const solves = attempt.challenge.challengeAttempts.filter((a) => a.solvedAt).length;
           const k = 162;
           const factor = Math.min(1, k / (solves + (k - 1)));
