@@ -536,7 +536,7 @@ export default async function Advent2025() {
                           {category
                             ? {
                                 "Web exploitation": "web",
-                                "Binary exploitation": "pwn",
+                                "Binary exploitation": "binex",
                                 "Reverse engineering": "rev",
                                 Forensics: "forensics",
                                 Cryptography: "crypto",

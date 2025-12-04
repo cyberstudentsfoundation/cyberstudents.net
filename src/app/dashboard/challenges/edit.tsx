@@ -388,6 +388,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                           <SelectItem value="Binary exploitation">Binary exploitation</SelectItem>
                           <SelectItem value="Reverse engineering">Reverse engineering</SelectItem>
                           <SelectItem value="OSINT">OSINT</SelectItem>
+                          <SelectItem value="Miscellaneous">Miscellaneous</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>

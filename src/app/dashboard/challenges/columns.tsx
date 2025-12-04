@@ -72,6 +72,7 @@ export const columns: ColumnDef<Challenge>[] = [
           "Binary exploitation",
           "Reverse engineering",
           "OSINT",
+          "Miscellaneous",
         ].includes(category)
       )
         return <span className="text-pink-400">Invalid category</span>;

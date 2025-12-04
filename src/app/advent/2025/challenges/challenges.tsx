@@ -39,6 +39,7 @@ const CATEGORY_COLOR_MAP: Record<string, string> = {
   "Binary exploitation": "red",
   "Reverse engineering": "pink",
   OSINT: "fuchsia",
+  Miscellaneous: "fuchsia",
 };
 
 const CATEGORY_ICON_MAP: Record<string, JSX.Element> = {
@@ -48,6 +49,7 @@ const CATEGORY_ICON_MAP: Record<string, JSX.Element> = {
   "Binary exploitation": <LuBinary className="h-full w-full" />,
   "Reverse engineering": <FaGear className="h-full w-full" />,
   OSINT: <BiNetworkChart className="h-full w-full" />,
+  Miscellaneous: <BiNetworkChart className="h-full w-full" />,
 };
 
 // Ensure all colors are defined by Tailwind's compiler
