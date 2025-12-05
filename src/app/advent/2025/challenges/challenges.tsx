@@ -13,8 +13,9 @@ import dayjs from "dayjs";
 import { toast } from "sonner";
 import { Prose } from "~/lib/renderMarkdoc";
 import Countdown from "~/components/Countdown";
+import GlitchedText from "~/components/GlitchedText";
 import { CgBrowser } from "react-icons/cg";
-import { FaTableCellsRowLock, FaMagnifyingGlassChart, FaGear, FaCheck, FaClock } from "react-icons/fa6";
+import { FaTableCellsRowLock, FaMagnifyingGlassChart, FaGear, FaCheck, FaClock, FaDiscord } from "react-icons/fa6";
 import { LuBinary } from "react-icons/lu";
 import { BiNetworkChart } from "react-icons/bi";
 import {
@@ -31,6 +32,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Badge } from "~/components/ui/badge";
+import { FileText } from "lucide-react";
 
 const CATEGORY_COLOR_MAP: Record<string, string> = {
   "Web exploitation": "blue",
@@ -70,7 +72,10 @@ export default function Challenges({
 
   let initialChallengeId = searchParams.get("challenge");
 
-  if (!eventChallenges?.challenges.some((c) => c.id === searchParams.get("challenge"))) {
+  if (
+    initialChallengeId !== "briefing" &&
+    !eventChallenges?.challenges.some((c) => c.id === searchParams.get("challenge"))
+  ) {
     initialChallengeId = null;
   }
 
@@ -134,6 +139,30 @@ export default function Challenges({
       <div className="flex flex-col lg:flex-row">
         <div className="flex w-full max-w-full lg:max-w-sm xl:max-w-md">
           <div className="flex h-[75vh] w-full max-w-full flex-col overflow-y-scroll shadow-sm lg:max-w-sm xl:max-w-md">
+            <button
+              id="briefing"
+              className="flex items-center bg-gray-900 text-left"
+              onClick={() => {
+                router.push("/advent/2025/challenges?challenge=briefing", { scroll: false });
+                setFocusedChallenge("briefing");
+              }}
+            >
+              {/* <div
+                  className={`flex h-full w-9 items-center bg-zinc-950/50 px-2`}
+                >
+                  {challenge.published ? (
+                    challenge.challengeAttempt?.solvedAt && <FaCheck className="h-4 w-4 text-gray-200 lg:h-5 lg:w-5" />
+                  ) : (
+                    <FaClock className="h-4 w-4 text-gray-400 lg:h-5 lg:w-5" />
+                  )}
+                </div> */}
+              <div className={`flex-1 cursor-pointer bg-zinc-900/50 px-2.5 py-3 transition-all hover:bg-zinc-800/80`}>
+                <h1 className={`flex items-center gap-7 font-mono text-sm font-medium tracking-widest uppercase`}>
+                  <FileText className="h-4 w-4" />
+                  <span>Mission Briefing</span>
+                </h1>
+              </div>
+            </button>
             {eventChallenges.challenges.map((challenge, index) => (
               <button
                 key={challenge.id}
@@ -197,302 +226,369 @@ export default function Challenges({
         <div className="z-10 w-full rounded-lg rounded-tl-none bg-gray-800">
           <div className="h-full">
             {focusedChallenge ? (
-              challengeCallback(focusedChallenge, (challenge) => (
+              focusedChallenge === "briefing" ? (
                 <div className="h-full">
-                  <div className="absolute -z-10 mt-4 ml-4 flex h-32 w-32 text-gray-400 opacity-10">
-                    {CATEGORY_ICON_MAP[challenge.category]}
+                  <div className="absolute -z-10 mt-4 ml-4 flex h-24 w-24 text-gray-400 opacity-10">
+                    <FileText className="h-full w-full" />
                   </div>
                   <div className="z-20 flex h-full flex-col justify-between p-8">
-                    <div className="mb-8">
-                      <div className="mb-10 flex flex-col justify-between gap-4 lg:gap-0 xl:flex-row">
+                    <div className="mb-4">
+                      <div className="mb-2 flex flex-col justify-between gap-4 lg:gap-0 xl:flex-row">
                         <div className="">
-                          <h1
-                            className={`mb-4 flex items-center gap-3 text-2xl ${!challenge.title ? "font-mono font-medium" : "font-bold"}`}
-                          >
-                            <span>{challenge.title ?? "???"}</span>
-                            {challenge.challengeAttempt?.solvedAt && (
-                              <Badge className="bg-green-400! text-sm hover:bg-green-500!">Solved</Badge>
-                            )}
+                          <h1 className="mb-4 flex items-center gap-3 font-mono text-2xl font-bold tracking-widest uppercase">
+                            <GlitchedText text="Mission Briefing" duration={2000} />
                           </h1>
                           <div className="grid w-fit grid-flow-col grid-rows-3 items-center gap-x-20">
-                            <p className="font-bold tracking-wide text-gray-400">Category</p>
-                            <p className="font-bold tracking-wide text-gray-400">Points</p>
-                            <p className="font-bold tracking-wide text-gray-400">Author</p>
-                            <p className="text-gray-200">{challenge.category}</p>
-                            <p className="text-gray-200">{challenge.points}</p>
+                            <p className="font-bold tracking-wide text-gray-400">Challenge Developers</p>
                             <div className="flex items-center gap-2 text-gray-200">
-                              <Avatar className="h-8 w-8">
+                              {/* <Avatar className="h-8 w-8">
                                 <AvatarImage src={challenge.author.image?.replace(".gif", ".png") ?? undefined} />
                                 <AvatarFallback className="bg-gray-900 text-sm">
                                   {challenge.author.name?.slice(0, 1)}
                                 </AvatarFallback>
-                              </Avatar>
-                              <p>{challenge.author.name}</p>
+                              </Avatar> */}
+                              <p>Vipin, GodderE2D, a_person, flocto, wjaaaaaaat, and vy</p>
                             </div>
-                          </div>
-                        </div>
-                        <div className="xl:ml-4">
-                          <h2 className="mb-1 text-xl font-bold text-gray-400">
-                            Solves ({challenge.solvedPlayers?.length ?? 0})
-                          </h2>
-                          <div className="max-h-36 w-full max-w-md overflow-y-auto rounded-md">
-                            <table className="w-full rounded-lg">
-                              <tbody>
-                                {challenge.solvedPlayers?.map((attempt, index) => (
-                                  <tr
-                                    key={attempt.user.id + Math.random()}
-                                    className="odd:bg-gray-600 even:bg-gray-700"
-                                  >
-                                    <td className="pr-2 pl-4 text-gray-400">{index + 1}</td>
-                                    <td className="flex w-fit items-center gap-2 py-1 pr-2">
-                                      <Image
-                                        src={
-                                          attempt.user.image?.replace(".gif", ".png") ??
-                                          "https://cdn.discordapp.com/embed/avatars/5.png"
-                                        }
-                                        width={128}
-                                        height={128}
-                                        alt={`Profile Picture for ${attempt.user.name}`}
-                                        className="h-5 w-5 rounded-full"
-                                      />
-                                      <span className="w-52 truncate text-gray-200 xl:w-40 2xl:w-60">
-                                        {attempt.user.displayName || attempt.user.name}
-                                      </span>
-                                    </td>
-                                    <td className="min-w-30 pr-2 text-gray-400">
-                                      {dayjs(attempt.solvedAt.getTime()).format("M/DD h:mm a")}
-                                    </td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
                           </div>
                         </div>
                       </div>
-                      {challenge.published ? (
-                        <div className="flex flex-col justify-between gap-12 md:flex-row">
-                          <div className="grow-0 basis-2/3">
-                            <h2 className="mb-1 text-xl font-bold text-gray-400">Description</h2>
-                            <Prose>{challenge.description ?? ""}</Prose>
-                            {challenge.files?.length ? (
-                              <h2 className="mb-2 text-xl font-bold text-gray-400">Attachments</h2>
-                            ) : (
-                              ""
-                            )}
-                            <div className="flex flex-col gap-2">
-                              {challenge.files?.map((file) => (
-                                <a
-                                  key={file}
-                                  href={file}
-                                  download
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="w-fit"
-                                >
-                                  <Button
-                                    size="sm"
-                                    tabIndex={-1}
-                                    className="flex w-72 items-center justify-start gap-2 bg-gray-300 text-gray-800 hover:bg-gray-300/80"
-                                  >
-                                    <HiLink className="h-5 w-5 shrink-0" />
-                                    <span>{file.replace(/\/$/, "").split("/").at(-1)}</span>
-                                  </Button>
-                                </a>
-                              ))}
-                            </div>
+                      <div className="flex flex-col justify-between gap-12 md:flex-row">
+                        <div className="grow-0 basis-2/3">
+                          <div className="font-mono leading-7">
+                            Ever since K.U.N.A.L. was taken down last year, the North Pole Logistics Directorate (NPLD)
+                            has become noticeably careless with system maintenance, patching schedules, access controls,
+                            and monitoring. That drop in discipline created an opening for a newly identified Advanced
+                            Persistent Threat (APT). This group calls itself the KRAMPUS SYNDICATE and has begun
+                            targeting the NPLD at a time when many elves are cyclically unemployed between holiday
+                            seasons. Santa first attempted to solve the problem by kidnapping high school CTF players
+                            for emergency help, a decision that led to a brief cancellation on X before the teenagers
+                            were returned safely. Now Santa is properly recruiting cybersecurity students and
+                            practitioners of all experience levels to uncover what the Syndicate is planning, determine
+                            how far they have reached into North Pole systems, and restore the security posture of the
+                            NPLD before December 24th. There is a lot to uncover about this threat and the mission will
+                            take shape as more clues appear. Are you ready for the mission of a lifetime?
                           </div>
-                          <div className="grow-0 basis-1/3">
-                            <h2 className="mb-1 text-xl font-bold text-gray-400">Hint</h2>
-                            <p className="mb-2 text-sm text-gray-400">
-                              There are no penalties for viewing hints. Hints are released 12 hours and 24 hours after
-                              the challenge releases.
-                            </p>
-                            <Tabs key={challenge.id}>
-                              <TabsList className="bg-gray-900!">
-                                <TabsTrigger value="1" className="hover:bg-gray-800">
-                                  1
-                                </TabsTrigger>
-                                <TabsTrigger value="2" className="hover:bg-gray-800">
-                                  2
-                                </TabsTrigger>
-                              </TabsList>
-                              <TabsContent value="1">
-                                {challenge.hints.find((h) => h.number === 1)?.content ? (
-                                  <Prose>{challenge.hints.find((h) => h.number === 1)?.content ?? ""}</Prose>
-                                ) : (
-                                  <div>
-                                    <span>This hint will be released in:</span>
-                                    <Countdown
-                                      variant="small"
-                                      date={new Date(challenge.publishDate.getTime() + 4.32e7) /* 12 hours */}
-                                    />
-                                  </div>
-                                )}
-                              </TabsContent>
-                              <TabsContent value="2">
-                                {challenge.hints.find((h) => h.number === 2)?.content ? (
-                                  <Prose>{challenge.hints.find((h) => h.number === 2)?.content ?? ""}</Prose>
-                                ) : (
-                                  <div>
-                                    <span>This hint will be released in:</span>
-                                    <Countdown
-                                      variant="small"
-                                      date={new Date(challenge.publishDate.getTime() + 8.64e7) /* 24 hours */}
-                                    />
-                                  </div>
-                                )}
-                              </TabsContent>
-                            </Tabs>
+                          <div className="mt-4 h-px w-full bg-gray-600"></div>
+                          <div className="mt-5">
+                            <div className="mb-2 text-gray-400">
+                              To get started, join our Discord server to receive important announcements, get help, and
+                              talk with with fellow players:
+                            </div>
+                            <a href="https://discord.com/invite/cyberstudents-916144903686336513" target="_blank">
+                              <Button
+                                tabIndex={-1}
+                                className="flex items-center bg-[#5865f2]! font-bold text-gray-200! hover:bg-[#5865f2]/70!"
+                              >
+                                <FaDiscord className="h-6! w-6!" />
+                                <span>Discord</span>
+                              </Button>
+                            </a>
                           </div>
                         </div>
-                      ) : (
-                        <div className="text-gray-200">
-                          <p className="text-xl font-bold text-gray-400">This challenge will release in:</p>
-                          <Countdown variant="normal" date={challenge.publishDate} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                challengeCallback(focusedChallenge, (challenge) => (
+                  <div className="h-full">
+                    <div className="absolute -z-10 mt-4 ml-4 flex h-32 w-32 text-gray-400 opacity-10">
+                      {CATEGORY_ICON_MAP[challenge.category]}
+                    </div>
+                    <div className="z-20 flex h-full flex-col justify-between p-8">
+                      <div className="mb-8">
+                        <div className="mb-10 flex flex-col justify-between gap-4 lg:gap-0 xl:flex-row">
+                          <div className="">
+                            <h1
+                              className={`mb-4 flex items-center gap-3 text-2xl ${!challenge.title ? "font-mono font-medium" : "font-bold"}`}
+                            >
+                              <span>{challenge.title ?? "???"}</span>
+                              {challenge.challengeAttempt?.solvedAt && (
+                                <Badge className="bg-green-400! text-sm hover:bg-green-500!">Solved</Badge>
+                              )}
+                            </h1>
+                            <div className="grid w-fit grid-flow-col grid-rows-3 items-center gap-x-20">
+                              <p className="font-bold tracking-wide text-gray-400">Category</p>
+                              <p className="font-bold tracking-wide text-gray-400">Points</p>
+                              <p className="font-bold tracking-wide text-gray-400">Author</p>
+                              <p className="text-gray-200">{challenge.category}</p>
+                              <p className="text-gray-200">{challenge.points}</p>
+                              <div className="flex items-center gap-2 text-gray-200">
+                                <Avatar className="h-8 w-8">
+                                  <AvatarImage src={challenge.author.image?.replace(".gif", ".png") ?? undefined} />
+                                  <AvatarFallback className="bg-gray-900 text-sm">
+                                    {challenge.author.name?.slice(0, 1)}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <p>{challenge.author.name}</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="xl:ml-4">
+                            <h2 className="mb-1 text-xl font-bold text-gray-400">
+                              Solves ({challenge.solvedPlayers?.length ?? 0})
+                            </h2>
+                            <div className="max-h-36 w-full max-w-md overflow-y-auto rounded-md">
+                              <table className="w-full rounded-lg">
+                                <tbody>
+                                  {challenge.solvedPlayers?.map((attempt, index) => (
+                                    <tr
+                                      key={attempt.user.id + Math.random()}
+                                      className="odd:bg-gray-600 even:bg-gray-700"
+                                    >
+                                      <td className="pr-2 pl-4 text-gray-400">{index + 1}</td>
+                                      <td className="flex w-fit items-center gap-2 py-1 pr-2">
+                                        <Image
+                                          src={
+                                            attempt.user.image?.replace(".gif", ".png") ??
+                                            "https://cdn.discordapp.com/embed/avatars/5.png"
+                                          }
+                                          width={128}
+                                          height={128}
+                                          alt={`Profile Picture for ${attempt.user.name}`}
+                                          className="h-5 w-5 rounded-full"
+                                        />
+                                        <span className="w-52 truncate text-gray-200 xl:w-40 2xl:w-60">
+                                          {attempt.user.displayName || attempt.user.name}
+                                        </span>
+                                      </td>
+                                      <td className="min-w-30 pr-2 text-gray-400">
+                                        {dayjs(attempt.solvedAt.getTime()).format("M/DD h:mm a")}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                        {challenge.published ? (
+                          <div className="flex flex-col justify-between gap-12 md:flex-row">
+                            <div className="grow-0 basis-2/3">
+                              <h2 className="mb-1 text-xl font-bold text-gray-400">Description</h2>
+                              <Prose>{challenge.description ?? ""}</Prose>
+                              {challenge.files?.length ? (
+                                <h2 className="mb-2 text-xl font-bold text-gray-400">Attachments</h2>
+                              ) : (
+                                ""
+                              )}
+                              <div className="flex flex-col gap-2">
+                                {challenge.files?.map((file) => (
+                                  <a
+                                    key={file}
+                                    href={file}
+                                    download
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-fit"
+                                  >
+                                    <Button
+                                      size="sm"
+                                      tabIndex={-1}
+                                      className="flex w-72 items-center justify-start gap-2 bg-gray-300 text-gray-800 hover:bg-gray-300/80"
+                                    >
+                                      <HiLink className="h-5 w-5 shrink-0" />
+                                      <span>{file.replace(/\/$/, "").split("/").at(-1)}</span>
+                                    </Button>
+                                  </a>
+                                ))}
+                              </div>
+                            </div>
+                            <div className="grow-0 basis-1/3">
+                              <h2 className="mb-1 text-xl font-bold text-gray-400">Hint</h2>
+                              <p className="mb-2 text-sm text-gray-400">
+                                There are no penalties for viewing hints. Hints are released 12 hours and 24 hours after
+                                the challenge releases.
+                              </p>
+                              <Tabs key={challenge.id}>
+                                <TabsList className="bg-gray-900!">
+                                  <TabsTrigger value="1" className="hover:bg-gray-800">
+                                    1
+                                  </TabsTrigger>
+                                  <TabsTrigger value="2" className="hover:bg-gray-800">
+                                    2
+                                  </TabsTrigger>
+                                </TabsList>
+                                <TabsContent value="1">
+                                  {challenge.hints.find((h) => h.number === 1)?.content ? (
+                                    <Prose>{challenge.hints.find((h) => h.number === 1)?.content ?? ""}</Prose>
+                                  ) : (
+                                    <div>
+                                      <span>This hint will be released in:</span>
+                                      <Countdown
+                                        variant="small"
+                                        date={new Date(challenge.publishDate.getTime() + 4.32e7) /* 12 hours */}
+                                      />
+                                    </div>
+                                  )}
+                                </TabsContent>
+                                <TabsContent value="2">
+                                  {challenge.hints.find((h) => h.number === 2)?.content ? (
+                                    <Prose>{challenge.hints.find((h) => h.number === 2)?.content ?? ""}</Prose>
+                                  ) : (
+                                    <div>
+                                      <span>This hint will be released in:</span>
+                                      <Countdown
+                                        variant="small"
+                                        date={new Date(challenge.publishDate.getTime() + 8.64e7) /* 24 hours */}
+                                      />
+                                    </div>
+                                  )}
+                                </TabsContent>
+                              </Tabs>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-gray-200">
+                            <p className="text-xl font-bold text-gray-400">This challenge will release in:</p>
+                            <Countdown variant="normal" date={challenge.publishDate} />
+                          </div>
+                        )}
+                      </div>
+                      {challenge.published && (
+                        <div className="mt-8 text-gray-400 lg:mt-0">
+                          <h2 className="mb-1.5 flex items-center gap-1.5 text-lg font-bold text-gray-400">
+                            <HiFlag className="h-5 w-5" />
+                            <span>{challenge.challengeAttempt?.solvedAt ? "Re-check flag" : "Submit flag"}</span>
+                          </h2>
+                          <form
+                            className="flex w-full gap-3 rounded-md bg-gray-700 px-3 py-2"
+                            onSubmit={async (e) => {
+                              e.preventDefault();
+
+                              const input = document.getElementById(`submit-flag-${challenge.id}`) as HTMLInputElement;
+
+                              if (!input.value?.trim()) return;
+                              const oldIsSolved = !!challenge.challengeAttempt?.solvedAt;
+
+                              const result = await submitFlagMutation.mutateAsync(
+                                {
+                                  challenge: challenge.id,
+                                  flag: input.value,
+                                },
+                                {
+                                  onError: (error) => {
+                                    toast.error(error.message, { position: "top-center" });
+                                  },
+                                },
+                              );
+
+                              const solves = 1 + (challenge.solvedPlayers?.length ?? 0);
+                              const k = 162;
+                              const factor = Math.min(1, k / (solves + (k - 1)));
+                              const calculatedPoints = Math.max(50, Math.floor(500 * Math.pow(factor, 1.5)));
+
+                              if (result === true) {
+                                if (oldIsSolved) {
+                                  toast.success(`That flag is correct.`, {
+                                    position: "top-center",
+                                  });
+                                } else {
+                                  toast.success(`Congratulations! You gained ${calculatedPoints} points.`, {
+                                    position: "top-center",
+                                  });
+
+                                  router.refresh();
+                                }
+                              } else {
+                                toast.error("Sorry, that flag is incorrect.", { position: "top-center" });
+                              }
+                            }}
+                          >
+                            <Input
+                              key={challenge.id}
+                              id={`submit-flag-${challenge.id}`}
+                              required
+                              disabled={!challenge.submissionsEnabled}
+                              placeholder={
+                                challenge.submissionsEnabled
+                                  ? "csd{FLAG}"
+                                  : "Flag submissions are temporarily disabled."
+                              }
+                              className="border-0 bg-gray-700 font-mono text-gray-200"
+                            />
+                            <Button
+                              type="submit"
+                              disabled={!challenge.submissionsEnabled || !session?.user}
+                              className="min-w-20 bg-gray-200 text-gray-800 hover:bg-gray-200/80"
+                            >
+                              {challenge.challengeAttempt?.solvedAt ? "Check" : "Submit"}
+                            </Button>
+                          </form>
+                          <div className="mt-4 flex items-center gap-1.5 text-sm">
+                            <HiOutlineChatBubbleLeftRight className="h-5 w-5 shrink-0 text-gray-400" />
+                            <span>
+                              Discuss this challenge with others in{" "}
+                              <a
+                                href="https://discord.com/channels/916144903686336513/1313285716666748990"
+                                target="_blank"
+                                className="rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-nowrap text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
+                              >
+                                #🎄丨advent-of-ctf
+                              </a>{" "}
+                              on our{" "}
+                              <a
+                                href="https://discord.com/invite/cyberstudents-916144903686336513"
+                                target="_blank"
+                                className="underline transition-colors hover:text-gray-300"
+                              >
+                                Discord server.
+                              </a>
+                            </span>
+                          </div>
+                          <div className="max-w-prose">
+                            {/* add back when write-ups are released, also below */}
+                            {/* <h2 className="mt-8 mb-2 text-xl font-bold text-gray-400">Write-up</h2> */}
+                            {challenge.writeUps?.length ? (
+                              <>
+                                <p className="text-gray-300">
+                                  <strong>{challenge.writeUps[0]!.authorPreferredName}</strong>&apos;s write-up was
+                                  selected as the best write-up submitted for this challenge.
+                                </p>
+                                {challenge.writeUps[0]!.originalURL ? (
+                                  <a
+                                    href={challenge.writeUps![0]!.originalURL}
+                                    target="_blank"
+                                    className="mt-2 flex items-center gap-1 text-gray-300 underline decoration-gray-500 underline-offset-2 transition-colors hover:text-gray-200 hover:decoration-gray-400"
+                                  >
+                                    <span>View this write-up on GitHub</span>
+                                    <HiArrowUpRight className="h-3 w-3 stroke-1" />
+                                  </a>
+                                ) : null}
+                                <div className="relative">
+                                  <div
+                                    className={`overflow-y-hidden text-gray-300 ${!writeUpsShown.includes(challenge.id) ? "h-32 select-none" : ""}`}
+                                  >
+                                    <Prose>{challenge.writeUps![0]!.content}</Prose>
+                                  </div>
+                                  <div
+                                    className={`absolute bottom-0 flex w-full justify-center bg-gradient-to-t from-gray-800 to-gray-800/60 pt-12 ${writeUpsShown.includes(challenge.id) ? "pointer-events-none h-full opacity-0" : "h-32 opacity-100"} transition-opacity duration-300`}
+                                  >
+                                    <Button
+                                      className="bg-white/80 text-gray-950 backdrop-blur-[1px] hover:bg-white/70! hover:text-gray-950!"
+                                      variant="ghost"
+                                      onClick={() => setWriteUpsShown((prev) => [...prev, challenge.id])}
+                                    >
+                                      Reveal write-up
+                                    </Button>
+                                  </div>
+                                </div>
+                              </>
+                            ) : (
+                              // add back when write-ups are released
+                              // <p className="text-gray-300">
+                              //   No write-up has been submitted for this challenge, nor did the challenge author provide an
+                              //   official solution.
+                              // </p>
+                              ""
+                            )}
+                          </div>
                         </div>
                       )}
                     </div>
-                    {challenge.published && (
-                      <div className="mt-8 text-gray-400 lg:mt-0">
-                        <h2 className="mb-1.5 flex items-center gap-1.5 text-lg font-bold text-gray-400">
-                          <HiFlag className="h-5 w-5" />
-                          <span>{challenge.challengeAttempt?.solvedAt ? "Re-check flag" : "Submit flag"}</span>
-                        </h2>
-                        <form
-                          className="flex w-full gap-3 rounded-md bg-gray-700 px-3 py-2"
-                          onSubmit={async (e) => {
-                            e.preventDefault();
-
-                            const input = document.getElementById(`submit-flag-${challenge.id}`) as HTMLInputElement;
-
-                            if (!input.value?.trim()) return;
-                            const oldIsSolved = !!challenge.challengeAttempt?.solvedAt;
-
-                            const result = await submitFlagMutation.mutateAsync(
-                              {
-                                challenge: challenge.id,
-                                flag: input.value,
-                              },
-                              {
-                                onError: (error) => {
-                                  toast.error(error.message, { position: "top-center" });
-                                },
-                              },
-                            );
-
-                            const solves = 1 + (challenge.solvedPlayers?.length ?? 0);
-                            const k = 162;
-                            const factor = Math.min(1, k / (solves + (k - 1)));
-                            const calculatedPoints = Math.max(50, Math.floor(500 * Math.pow(factor, 1.5)));
-
-                            if (result === true) {
-                              if (oldIsSolved) {
-                                toast.success(`That flag is correct.`, {
-                                  position: "top-center",
-                                });
-                              } else {
-                                toast.success(`Congratulations! You gained ${calculatedPoints} points.`, {
-                                  position: "top-center",
-                                });
-
-                                router.refresh();
-                              }
-                            } else {
-                              toast.error("Sorry, that flag is incorrect.", { position: "top-center" });
-                            }
-                          }}
-                        >
-                          <Input
-                            key={challenge.id}
-                            id={`submit-flag-${challenge.id}`}
-                            required
-                            disabled={!challenge.submissionsEnabled}
-                            placeholder={
-                              challenge.submissionsEnabled ? "csd{FLAG}" : "Flag submissions are temporarily disabled."
-                            }
-                            className="border-0 bg-gray-700 font-mono text-gray-200"
-                          />
-                          <Button
-                            type="submit"
-                            disabled={!challenge.submissionsEnabled || !session?.user}
-                            className="min-w-20 bg-gray-200 text-gray-800 hover:bg-gray-200/80"
-                          >
-                            {challenge.challengeAttempt?.solvedAt ? "Check" : "Submit"}
-                          </Button>
-                        </form>
-                        <div className="mt-4 flex items-center gap-1.5 text-sm">
-                          <HiOutlineChatBubbleLeftRight className="h-5 w-5 shrink-0 text-gray-400" />
-                          <span>
-                            Discuss this challenge with others in{" "}
-                            <a
-                              href="https://discord.com/channels/916144903686336513/1313285716666748990"
-                              target="_blank"
-                              className="rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-nowrap text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
-                            >
-                              #🎄丨advent-of-ctf
-                            </a>{" "}
-                            on our{" "}
-                            <a
-                              href="https://discord.com/invite/cyberstudents-916144903686336513"
-                              target="_blank"
-                              className="underline transition-colors hover:text-gray-300"
-                            >
-                              Discord server.
-                            </a>
-                          </span>
-                        </div>
-                        <div className="max-w-prose">
-                          {/* add back when write-ups are released, also below */}
-                          {/* <h2 className="mt-8 mb-2 text-xl font-bold text-gray-400">Write-up</h2> */}
-                          {challenge.writeUps?.length ? (
-                            <>
-                              <p className="text-gray-300">
-                                <strong>{challenge.writeUps[0]!.authorPreferredName}</strong>&apos;s write-up was
-                                selected as the best write-up submitted for this challenge.
-                              </p>
-                              {challenge.writeUps[0]!.originalURL ? (
-                                <a
-                                  href={challenge.writeUps![0]!.originalURL}
-                                  target="_blank"
-                                  className="mt-2 flex items-center gap-1 text-gray-300 underline decoration-gray-500 underline-offset-2 transition-colors hover:text-gray-200 hover:decoration-gray-400"
-                                >
-                                  <span>View this write-up on GitHub</span>
-                                  <HiArrowUpRight className="h-3 w-3 stroke-1" />
-                                </a>
-                              ) : null}
-                              <div className="relative">
-                                <div
-                                  className={`overflow-y-hidden text-gray-300 ${!writeUpsShown.includes(challenge.id) ? "h-32 select-none" : ""}`}
-                                >
-                                  <Prose>{challenge.writeUps![0]!.content}</Prose>
-                                </div>
-                                <div
-                                  className={`absolute bottom-0 flex w-full justify-center bg-gradient-to-t from-gray-800 to-gray-800/60 pt-12 ${writeUpsShown.includes(challenge.id) ? "pointer-events-none h-full opacity-0" : "h-32 opacity-100"} transition-opacity duration-300`}
-                                >
-                                  <Button
-                                    className="bg-white/80 text-gray-950 backdrop-blur-[1px] hover:bg-white/70! hover:text-gray-950!"
-                                    variant="ghost"
-                                    onClick={() => setWriteUpsShown((prev) => [...prev, challenge.id])}
-                                  >
-                                    Reveal write-up
-                                  </Button>
-                                </div>
-                              </div>
-                            </>
-                          ) : (
-                            // add back when write-ups are released
-                            // <p className="text-gray-300">
-                            //   No write-up has been submitted for this challenge, nor did the challenge author provide an
-                            //   official solution.
-                            // </p>
-                            ""
-                          )}
-                        </div>
-                      </div>
-                    )}
                   </div>
-                </div>
-              ))
+                ))
+              )
             ) : (
               <div className="flex h-full flex-col items-center justify-center px-4 py-16 text-gray-400 lg:py-0">
                 <HiOutlineCubeTransparent className="mb-4 h-20 w-20 stroke-1" />
