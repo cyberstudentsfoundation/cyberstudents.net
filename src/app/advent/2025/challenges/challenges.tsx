@@ -259,7 +259,7 @@ export default function Challenges({
                                         {attempt.user.displayName || attempt.user.name}
                                       </span>
                                     </td>
-                                    <td className="min-w-28 pr-2 text-gray-400">
+                                    <td className="min-w-30 pr-2 text-gray-400">
                                       {dayjs(attempt.solvedAt.getTime()).format("M/DD h:mm a")}
                                     </td>
                                   </tr>

@@ -40,7 +40,7 @@ export default function NavbarStatus({ className }: { className?: string }) {
         Advent of CTF &rsquo;25{" "}
         {isDelayed
           ? "is delayed"
-          : timeDiff < -1.728e8
+          : timeDiff < -2606340000 // 30 days, 3 hours, 59 minutes in ms - change per event
             ? "has ended"
             : timeDiff < 0
               ? "is live"
