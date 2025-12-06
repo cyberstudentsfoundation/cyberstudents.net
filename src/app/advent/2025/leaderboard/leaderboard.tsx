@@ -57,7 +57,6 @@ export default function Leaderboard({ session }: { session: Session | null }) {
         </div>
       ) : (
         <div className="flex items-center justify-center text-gray-400">
-          {/* Skeleton */}
           <div className="mx-auto w-full py-10">
             <Skeleton className="mb-4 h-10 w-[15.159rem]" />
             <div className="mb-8 flex items-center justify-between">
@@ -65,7 +64,7 @@ export default function Leaderboard({ session }: { session: Session | null }) {
               <Skeleton className="h-10 w-[6.842rem]" />
             </div>
             <div className="mb-4 flex items-center justify-between">
-              <Skeleton className="h-5 w-42" />
+              <Skeleton className="hidden h-5 w-42 sm:block" />
               <Skeleton className="h-9 w-100" />
             </div>
             <Skeleton className="h-[104.656rem] w-full" />
