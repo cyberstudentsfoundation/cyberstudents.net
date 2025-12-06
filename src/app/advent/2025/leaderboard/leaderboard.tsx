@@ -12,7 +12,11 @@ export default function Leaderboard({ session }: { session: Session | null }) {
 
   const getLeaderboardQuery = api.event.getLeaderboard.useQuery(
     { event: "aoc2025", onlyShowCurrentUser: false },
-    { refetchInterval: 10_000 },
+    {
+      refetchInterval: 30000, // 30s instead of 10s
+      refetchOnWindowFocus: true,
+      staleTime: 15000, // don't immediately re-refetch on every little thing
+    },
   );
 
   return (
@@ -36,8 +40,10 @@ export default function Leaderboard({ session }: { session: Session | null }) {
               //   : getLeaderboardQuery.data!.leaderboard
               {
                 open: getLeaderboardQuery.data!.leaderboard,
-                ms_hs_college: getLeaderboardQuery.data!.msHsCollegeLeaderboard,
-                hs: getLeaderboardQuery.data!.hsLeaderboard,
+                ms_hs_college: getLeaderboardQuery.data!.leaderboard.filter((u) =>
+                  u.flags.includes("ms_hs_college_eligible"),
+                ),
+                hs: getLeaderboardQuery.data!.leaderboard.filter((u) => u.flags.includes("hs_eligible")),
               }[division] ?? [] // if this somehow fails, uh that shouldn't happen
             }
             session={session}

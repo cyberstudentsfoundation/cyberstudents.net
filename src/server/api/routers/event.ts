@@ -439,8 +439,8 @@ export const eventRouter = createTRPCRouter({
       userMsHsCollegePlace,
       userHsPlace,
       leaderboard: !input.onlyShowCurrentUser ? leaderboard : [],
-      msHsCollegeLeaderboard,
-      hsLeaderboard,
+      // msHsCollegeLeaderboard,
+      // hsLeaderboard,
     };
   }),
 });
