@@ -167,6 +167,10 @@ export const eventRouter = createTRPCRouter({
   }),
 
   getLeaderboard: publicProcedure.input(getLeaderboardSchema).query(async ({ ctx, input }) => {
+    const inDev = true; // env.NODE_ENV === "development";
+
+    if (inDev) console.time("Leaderboard: Total time");
+
     const { db, session } = ctx;
 
     const authUserId = session?.user?.id ?? null;
@@ -188,9 +192,12 @@ export const eventRouter = createTRPCRouter({
 
     // --- 1) Get all users eligible for this event & with at least one solve ---
 
+    if (inDev) console.time("Leaderboard: Fetch users");
+
     const users = await db.user.findMany({
       where: {
-        NOT: { flags: { has: "suspended" } },
+        // this has been moved to server-side and not db for performance (hopefully)
+        // NOT: { flags: { has: "suspended" } },
         events: { some: { name: input.event } },
         challengeAttempts: {
           some: {
@@ -209,6 +216,8 @@ export const eventRouter = createTRPCRouter({
       },
     });
 
+    if (inDev) console.timeEnd("Leaderboard: Fetch users");
+
     if (users.length === 0) {
       return {
         userPoints: null,
@@ -222,9 +231,11 @@ export const eventRouter = createTRPCRouter({
       };
     }
 
-    const userIds = users.map((u) => u.id);
+    const userIds = users.filter((u) => !u.flags.includes("suspended")).map((u) => u.id);
 
     // --- 2) Get all attempts for these users for this event ---
+
+    if (inDev) console.time("Leaderboard: Fetch challenge attempts");
 
     const challengeAttempts = await db.challengeAttempt.findMany({
       where: {
@@ -248,6 +259,8 @@ export const eventRouter = createTRPCRouter({
       },
     });
 
+    if (inDev) console.timeEnd("Leaderboard: Fetch challenge attempts");
+
     // Group attempts by user for quick lookup
     const attemptsByUser = new Map<string, typeof challengeAttempts>();
 
@@ -262,6 +275,8 @@ export const eventRouter = createTRPCRouter({
 
     // --- 3) Precompute solver counts per challenge (for dynamic scoring) ---
 
+    if (inDev) console.time("Leaderboard: Fetch solver counts (groupBy)");
+
     const solverCounts = await db.challengeAttempt.groupBy({
       by: ["challengeId"],
       where: {
@@ -271,9 +286,26 @@ export const eventRouter = createTRPCRouter({
       _count: { _all: true },
     });
 
-    const solveCountMap = new Map<string, number>(solverCounts.map((row) => [row.challengeId, row._count._all]));
+    if (inDev) console.timeEnd("Leaderboard: Fetch solver counts (groupBy)");
+
+    const dynamicPointsByChallengeId = new Map<string, number>();
+
+    if (input.event !== "aoc2024") {
+      for (const row of solverCounts) {
+        const solves = row._count._all;
+        const k = 162;
+        const factor = Math.min(1, k / (solves + (k - 1)));
+        const value = Math.max(50, Math.floor(500 * Math.pow(factor, 1.5)));
+
+        dynamicPointsByChallengeId.set(row.challengeId, value);
+      }
+    }
+
+    // const solveCountMap = new Map<string, number>(solverCounts.map((row) => [row.challengeId, row._count._all]));
 
     // --- 4) Get all challenges for this event ---
+
+    if (inDev) console.time("Leaderboard: Fetch challenges --> sorted");
 
     const challenges = await db.challenge.findMany({
       where: { eventName: input.event },
@@ -293,26 +325,21 @@ export const eventRouter = createTRPCRouter({
       let lastSolve: Date | null = null;
 
       for (const attempt of userAttempts) {
-        if (attempt.solvedAt) {
-          // Track last solve time
-          if (!lastSolve || attempt.solvedAt > lastSolve) {
-            lastSolve = attempt.solvedAt;
-          }
+        if (!attempt.solvedAt) continue;
 
-          // For aoc2024, points are static (backwards compatibility)
-          if (input.event === "aoc2024") {
-            points += (attempt.challenge.points ?? 0) + (attempt.pointsAdjustment ?? 0);
-            continue;
-          }
-
-          // Dynamic scoring for other events
-          const solves = solveCountMap.get(attempt.challengeId) ?? 0;
-          const k = 162;
-          const factor = Math.min(1, k / (solves + (k - 1)));
-          const value = Math.max(50, Math.floor(500 * Math.pow(factor, 1.5)));
-
-          points += value + (attempt.pointsAdjustment ?? 0);
+        if (!lastSolve || attempt.solvedAt > lastSolve) {
+          lastSolve = attempt.solvedAt;
         }
+
+        let basePoints = 0;
+
+        if (input.event === "aoc2024") {
+          basePoints = attempt.challenge.points ?? 0;
+        } else {
+          basePoints = dynamicPointsByChallengeId.get(attempt.challengeId) ?? 0;
+        }
+
+        points += basePoints + (attempt.pointsAdjustment ?? 0);
       }
 
       return { points, lastSolve };
@@ -401,6 +428,9 @@ export const eventRouter = createTRPCRouter({
             return idx === -1 ? null : idx + 1;
           })()
         : null;
+
+    if (inDev) console.timeEnd("Leaderboard: Fetch challenges --> sorted");
+    if (inDev) console.timeEnd("Leaderboard: Total time");
 
     return {
       userPoints,

@@ -348,6 +348,7 @@ export default function Edit({ row, textButton }: { row?: Row<User>; textButton:
                       id="flags"
                       options={[
                         { value: "ms_hs_college_eligible", label: "ms_hs_college_eligible" },
+                        { value: "hs_eligible", label: "hs_eligible" },
                         { value: "admin", label: "admin" },
                         { value: "suspended", label: "suspended" },
                       ]}

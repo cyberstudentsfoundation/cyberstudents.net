@@ -109,6 +109,8 @@ model Challenge {
 
   challengeAttempts ChallengeAttempt[]
   writeUps          WriteUp[]
+
+  @@index([eventName]) // <--- NEW: faster "where eventName = 'aoc2025'"
 }
 
 model ChallengeHint {

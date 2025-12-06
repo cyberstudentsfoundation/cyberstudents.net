@@ -432,7 +432,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                       </TabsContent>
                     </Tabs>
                     <span className="text-xs text-gray-400">
-                      Markdown is supported. Using headings are not recommended due to space constraints.
+                      Markdown is supported. Using headings is not recommended due to space constraints.
                     </span>
                   </div>
                   <hr className="my-3" />
@@ -463,7 +463,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                       </TabsContent>
                     </Tabs>
                     <span className="text-xs text-gray-400">
-                      Markdown is supported. Using headings are not recommended due to space constraints.
+                      Markdown is supported. Using headings is not recommended due to space constraints.
                     </span>
                   </div>
                   <div className="grid w-full max-w-xl items-center gap-1.5">
@@ -493,7 +493,7 @@ export default function Edit({ row, textButton }: { row?: Row<Challenge>; textBu
                       </TabsContent>
                     </Tabs>
                     <span className="text-xs text-gray-400">
-                      Markdown is supported. Using headings are not recommended due to space constraints.
+                      Markdown is supported. Using headings is not recommended due to space constraints.
                     </span>
                   </div>
                   <hr className="my-3" />
