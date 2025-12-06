@@ -34,6 +34,7 @@ export default function Leaderboard({ session }: { session: Session | null }) {
             </TabsList>
           </Tabs>
           <DataTable
+            key={division}
             columns={columns}
             data={
               // division === "ms_hs_college"
