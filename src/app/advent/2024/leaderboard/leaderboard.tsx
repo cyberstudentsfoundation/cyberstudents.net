@@ -31,7 +31,7 @@ export default function Leaderboard({ session }: { session: Session | null }) {
             columns={columns}
             data={
               division === "ms_hs_college"
-                ? getLeaderboardQuery.data!.msHsCollegeLeaderboard
+                ? getLeaderboardQuery.data!.leaderboard.filter((u) => u.flags.includes("ms_hs_college_eligible"))
                 : getLeaderboardQuery.data!.leaderboard
             }
             session={session}
