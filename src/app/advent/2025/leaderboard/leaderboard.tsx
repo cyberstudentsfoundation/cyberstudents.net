@@ -6,6 +6,7 @@ import { api } from "~/trpc/react";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { Skeleton } from "~/components/ui/skeleton";
 
 export default function Leaderboard({ session }: { session: Session | null }) {
   const [division, setDivision] = useState("open");
@@ -13,9 +14,9 @@ export default function Leaderboard({ session }: { session: Session | null }) {
   const getLeaderboardQuery = api.event.getLeaderboard.useQuery(
     { event: "aoc2025", onlyShowCurrentUser: false },
     {
-      refetchInterval: 30000, // 30s instead of 10s
-      refetchOnWindowFocus: true,
-      staleTime: 15000, // don't immediately re-refetch on every little thing
+      // refetchInterval: 30000, // 30s instead of 10s
+      // refetchOnWindowFocus: true,
+      // staleTime: 15000, // don't immediately re-refetch on every little thing
     },
   );
 
@@ -55,7 +56,21 @@ export default function Leaderboard({ session }: { session: Session | null }) {
           </p>
         </div>
       ) : (
-        <div className="my-10 flex items-center justify-center text-gray-400">Loading...</div>
+        <div className="flex items-center justify-center text-gray-400">
+          {/* Skeleton */}
+          <div className="mx-auto w-full py-10">
+            <Skeleton className="mb-4 h-10 w-[15.159rem]" />
+            <div className="mb-8 flex items-center justify-between">
+              <Skeleton className="h-10 w-[11.063rem]" />
+              <Skeleton className="h-10 w-[6.842rem]" />
+            </div>
+            <div className="mb-4 flex items-center justify-between">
+              <Skeleton className="h-5 w-42" />
+              <Skeleton className="h-9 w-100" />
+            </div>
+            <Skeleton className="h-[104.656rem] w-full" />
+          </div>
+        </div>
       )}
     </div>
   );

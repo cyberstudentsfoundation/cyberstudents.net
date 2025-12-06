@@ -42,6 +42,7 @@ export function DataTable<TData, TValue>({
   });
 
   const [pendingScrollId, setPendingScrollId] = useState<string | null>(null);
+  const [displayedPageNumber, setDisplayedPageNumber] = useState<number>(1);
 
   const table = useReactTable({
     data,
@@ -96,6 +97,7 @@ export function DataTable<TData, TValue>({
 
     // Set the target page, and record which row we want to scroll to
     table.setPageIndex(targetPageIndex);
+    setDisplayedPageNumber(targetPageIndex + 1);
     setPendingScrollId(session.user.id);
   }
 
@@ -121,7 +123,12 @@ export function DataTable<TData, TValue>({
         )}
       </div>
 
-      <PaginationControls table={table} className="my-4" />
+      <PaginationControls
+        table={table}
+        displayedPageNumber={displayedPageNumber}
+        setDisplayedPageNumber={setDisplayedPageNumber}
+        className="my-4"
+      />
 
       <div className="rounded-md border border-gray-800">
         <Table>
@@ -168,7 +175,12 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      <PaginationControls table={table} className="mt-4 mb-2" />
+      <PaginationControls
+        table={table}
+        displayedPageNumber={displayedPageNumber}
+        setDisplayedPageNumber={setDisplayedPageNumber}
+        className="mt-4 mb-2"
+      />
     </div>
   );
 
@@ -241,9 +253,13 @@ export function DataTable<TData, TValue>({
 
 function PaginationControls<TData>({
   table,
+  displayedPageNumber,
+  setDisplayedPageNumber,
   className,
 }: {
   table: ReturnType<typeof useReactTable<TData>>;
+  displayedPageNumber: number;
+  setDisplayedPageNumber: React.Dispatch<React.SetStateAction<number>>;
   className?: string;
 }) {
   return (
@@ -253,15 +269,46 @@ function PaginationControls<TData>({
         <span className="font-semibold">{table.getFilteredRowModel().rows.length}</span> entries
       </div>
       <div className="flex items-center gap-3">
-        <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            table.previousPage();
+            setDisplayedPageNumber(table.getState().pagination.pageIndex);
+          }}
+          disabled={!table.getCanPreviousPage()}
+        >
           <ChevronLeft />
           <span className="hidden md:inline">Previous</span>
         </Button>
         <span>
-          Page <span className="font-semibold">{table.getState().pagination.pageIndex + 1}</span> of{" "}
-          <span className="font-semibold">{table.getPageCount() || 1}</span>
+          Page{" "}
+          <Input
+            className="mx-1.5 inline w-[5ch] border-gray-800 bg-gray-950 text-center text-sm font-semibold"
+            value={isNaN(displayedPageNumber) ? "" : displayedPageNumber}
+            onChange={(e) => setDisplayedPageNumber(Number(e.target.value))}
+            onBlur={(e) => {
+              const original = table.getState().pagination.pageIndex;
+              let page = e.target.value ? Number(e.target.value) - 1 : original;
+
+              if (!page || page < 0) page = 0;
+              if (page > table.getPageCount()) page = table.getPageCount() - 1;
+
+              table.setPageIndex(page);
+              setDisplayedPageNumber(page + 1);
+            }}
+          />{" "}
+          of <span className="font-semibold">{table.getPageCount() || 1}</span>
         </span>
-        <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            table.nextPage();
+            setDisplayedPageNumber(table.getState().pagination.pageIndex + 2);
+          }}
+          disabled={!table.getCanNextPage()}
+        >
           <span className="hidden md:inline">Next</span>
           <ChevronRight />
         </Button>
@@ -272,7 +319,7 @@ function PaginationControls<TData>({
           value={table.getState().pagination.pageSize}
           onChange={(e) => table.setPageSize(Number(e.target.value))}
         >
-          {[1, 25, 50, 100].map((size) => (
+          {[25, 50, 100].map((size) => (
             <option key={size} value={size}>
               Show {size}
             </option>
