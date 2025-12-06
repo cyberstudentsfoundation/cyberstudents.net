@@ -24,7 +24,7 @@ export default function Leaderboard({ session }: { session: Session | null }) {
       <h1 className="text-center text-2xl font-bold text-gray-200">Leaderboard</h1>
       {/* <p className="text-center text-gray-400">Official 2024 results</p> */}
       {getLeaderboardQuery.data ? (
-        <div className="container mx-auto py-10">
+        <div className="mx-auto py-10">
           <Tabs value={division} onValueChange={(d) => setDivision(d)}>
             <TabsList className="bg-gray-800">
               <TabsTrigger value="open">Open</TabsTrigger>

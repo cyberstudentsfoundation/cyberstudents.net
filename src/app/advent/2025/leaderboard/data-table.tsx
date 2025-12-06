@@ -115,7 +115,7 @@ export function DataTable<TData, TValue>({
           />
         </div>
         {session?.user && (
-          <Button className="" variant="ghost" type="button" onClick={() => handleJumpToMe()}>
+          <Button className="" variant="outline" type="button" onClick={() => handleJumpToMe()}>
             Jump to me
           </Button>
         )}
@@ -247,22 +247,22 @@ function PaginationControls<TData>({
   className?: string;
 }) {
   return (
-    <div className={cn("flex items-center justify-between text-sm text-gray-400", className)}>
-      <div>
+    <div className={cn("flex items-center justify-end text-sm text-gray-400 sm:justify-between", className)}>
+      <div className="hidden sm:block">
         Showing <span className="font-semibold">{table.getRowModel().rows.length}</span> of{" "}
         <span className="font-semibold">{table.getFilteredRowModel().rows.length}</span> entries
       </div>
       <div className="flex items-center gap-3">
         <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
           <ChevronLeft />
-          Previous
+          <span className="hidden md:inline">Previous</span>
         </Button>
         <span>
           Page <span className="font-semibold">{table.getState().pagination.pageIndex + 1}</span> of{" "}
           <span className="font-semibold">{table.getPageCount() || 1}</span>
         </span>
         <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-          Next
+          <span className="hidden md:inline">Next</span>
           <ChevronRight />
         </Button>
 

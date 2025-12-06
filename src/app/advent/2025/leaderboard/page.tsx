@@ -14,8 +14,8 @@ export default async function LeaderboardPage() {
   // }
 
   return (
-    <main className="mx-4 flex justify-center">
-      <div className="mt-8 flex w-full max-w-(--breakpoint-2xl) flex-col justify-center sm:mt-16">
+    <main className="mx-4 flex justify-center sm:mx-8 md:mx-12 lg:mx-16">
+      <div className="mt-8 flex w-full max-w-[88rem] flex-col justify-center sm:mt-16">
         {/* <div className="absolute top-20 hidden md:block">
           <p className="text-base font-bold text-gray-200">CyberStudents&rsquo;</p>
           <h1 className="mb-4 font-mono text-2xl font-bold">
