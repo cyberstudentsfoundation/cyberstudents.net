@@ -167,7 +167,7 @@ export const eventRouter = createTRPCRouter({
   }),
 
   getLeaderboard: publicProcedure.input(getLeaderboardSchema).query(async ({ ctx, input }) => {
-    const inDev = true; // env.NODE_ENV === "development";
+    const inDev = false; // env.NODE_ENV === "development";
 
     if (inDev) console.time("Leaderboard: Total time");
 
@@ -194,17 +194,17 @@ export const eventRouter = createTRPCRouter({
 
     if (inDev) console.time("Leaderboard: Fetch users");
 
-    const users = await db.user.findMany({
+    let users = await db.user.findMany({
       where: {
         // this has been moved to server-side and not db for performance (hopefully)
         // NOT: { flags: { has: "suspended" } },
         events: { some: { name: input.event } },
-        challengeAttempts: {
-          some: {
-            challenge: { eventName: input.event },
-            solvedAt: { not: null },
-          },
-        },
+        // challengeAttempts: {
+        //   some: {
+        //     challenge: { eventName: input.event },
+        //     solvedAt: { not: null },
+        //   },
+        // },
       },
       select: {
         id: true,
@@ -231,7 +231,8 @@ export const eventRouter = createTRPCRouter({
       };
     }
 
-    const userIds = users.filter((u) => !u.flags.includes("suspended")).map((u) => u.id);
+    users = users.filter((u) => !u.flags.includes("suspended") && !u.flags.includes("admin"));
+    const userIds = users.map((u) => u.id);
 
     // --- 2) Get all attempts for these users for this event ---
 

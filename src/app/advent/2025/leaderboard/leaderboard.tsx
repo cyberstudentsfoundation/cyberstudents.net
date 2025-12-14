@@ -51,8 +51,8 @@ export default function Leaderboard({ session }: { session: Session | null }) {
             session={session}
           />
           <p className="mt-2 text-sm text-gray-400">
-            Only players with at least one challenge solved appear on the leaderboard.
-            <br />
+            {/* Only players with at least one challenge solved appear on the leaderboard. */}
+            {/* <br /> */}
             Accuracy is not considered for rankings.
           </p>
         </div>

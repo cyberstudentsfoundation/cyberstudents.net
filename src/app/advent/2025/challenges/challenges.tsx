@@ -524,7 +524,7 @@ export default function Challenges({
                                 target="_blank"
                                 className="rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-nowrap text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
                               >
-                                #🎄丨advent-of-ctf
+                                #🎄丨challenges-forum
                               </a>{" "}
                               on our{" "}
                               <a
@@ -602,7 +602,7 @@ export default function Challenges({
                       // target="_blank"
                       className="rounded-sm bg-[rgba(88,101,242,0.3)] px-1 font-medium text-nowrap text-[rgb(222,224,252)] transition-colors hover:bg-[rgba(88,101,242,0.6)]"
                     >
-                      #🎄丨advent-of-ctf
+                      #🎄丨challenges-forum
                     </span>{" "}
                     on our{" "}
                     <a
