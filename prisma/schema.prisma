@@ -145,6 +145,10 @@ model ChallengeAttempt {
   pointsAdjustment Int?            @map("points_adjustment") // manual adjustments for this specific challenge & player; can be + or -
 
   @@unique([userId, challengeId])
+  // NEW indexes:
+  @@index([challengeId]) // good for groupBy challengeId, joins in leaderboard
+  @@index([solvedAt]) // helps "where solvedAt IS NOT NULL" and ordering by solvedAt
+  @@index([challengeId, solvedAt]) // particularly for "where solvedAt IS NOT NULL AND challenge.eventName = ... group by challengeId"
 }
 
 model WriteUp {

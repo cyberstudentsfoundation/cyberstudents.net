@@ -65,7 +65,7 @@ export default function NavbarInner({ session }: { session: Session | null }) {
                   </button>
                 </div>
                 <p className="mb-2 sm:mb-0">
-                  <strong>A third-party vulnerability caused temporary redirects to a spam/phishing site</strong> on Nov
+                  <strong>A third-party vulnerability caused temporary redirects to a spam/phishing site</strong> on Dec
                   13&ndash;14. Your data is still secure; no actions are required by you.
                 </p>
                 <p>
