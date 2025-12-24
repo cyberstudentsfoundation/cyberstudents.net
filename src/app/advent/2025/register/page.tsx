@@ -165,11 +165,7 @@ export default async function Register() {
                   </thead>
                   <tbody>
                     <tr>
-                      <td rowSpan={3}>
-                        Student
-                        <br />
-                        (HS & College)
-                      </td>
+                      <td rowSpan={3}>College</td>
                       <td>1st</td>
                       <td>
                         <strong>$225</strong> + ASCP, CASA, ACP (APIsec) + CTFGuide Pro (1 year)
@@ -190,15 +186,21 @@ export default async function Register() {
                     <tr>
                       <td rowSpan={3}>High School</td>
                       <td>1st</td>
-                      <td>ASCP, CASA, ACP (APIsec) + CTFGuide Pro (1 year)</td>
+                      <td>
+                        <strong>$225</strong> + ASCP, CASA, ACP (APIsec) + CTFGuide Pro (1 year)
+                      </td>
                     </tr>
                     <tr>
                       <td className="ps-[0.5714286em]">2nd</td>
-                      <td>ASCP, CASA, ACP (APIsec) + CTFGuide Pro (3 mo)</td>
+                      <td>
+                        <strong>$125</strong> + ASCP, CASA, ACP (APIsec) + CTFGuide Pro (3 mo)
+                      </td>
                     </tr>
                     <tr>
                       <td className="ps-[0.5714286em]">3rd</td>
-                      <td>ASCP, CASA, ACP (APIsec) + CTFGuide Pro (1 mo)</td>
+                      <td>
+                        <strong>$75</strong> + ASCP, CASA, ACP (APIsec) + CTFGuide Pro (1 mo)
+                      </td>
                     </tr>
                     <tr>
                       <td rowSpan={3}>Write-Up</td>
@@ -232,7 +234,7 @@ export default async function Register() {
                   <li>
                     Only full-time <strong>high school</strong> students (or the international equivalent) and full-time{" "}
                     <strong>undergraduate</strong> college/university students at an accredited institution are eligible
-                    to win prizes for the High School & College division.
+                    to win prizes for the High School and College divisions.
                   </li>
                   <li>
                     <strong>All monetary prizes will be awarded in USD.</strong> (This is a change from previous years.)
@@ -261,7 +263,7 @@ export default async function Register() {
                   </li>
                   <li>
                     Individuals who have not yet begun 9th grade (or the equivalent in their country) cannot participate
-                    in the High School and College division without first obtaining permission from an event
+                    in the High School and College divisions without first obtaining permission from an event
                     administrator. Students are <strong>not considered</strong> to be in high school during the summer
                     before they begin 9th grade.
                   </li>

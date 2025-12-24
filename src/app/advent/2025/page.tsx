@@ -48,6 +48,8 @@ import ctftimeLogo from "~/../public/ctftime-logo.png";
 import verialabsLogo from "~/../public/verialabs.png";
 import ctfguideLogo from "~/../public/ctfguide.png";
 import apisecLogo from "~/../public/apisec.png";
+import genxyzLogo from "~/../public/genxyz.svg";
+import ottersecLogo from "~/../public/ottersec.png";
 
 import austriaFlag from "~/../public/flags/austria.svg";
 import indiaFlag from "~/../public/flags/india.svg";
@@ -458,7 +460,7 @@ export default async function Advent2025() {
                     </LiquidGlassButton>
                     <div className="mt-2 w-fit text-sm text-gray-300">Registration is open through 12/31.</div>
                   </div>
-                  <div className="shrink-0">
+                  {/* <div className="shrink-0">
                     <p className="mb-1 text-center text-gray-200 sm:text-left">Sponsored by:</p>
                     <div className="flex items-center">
                       <a href="https://verialabs.com/" target="_blank" rel="noopener noreferrer" className="mr-5">
@@ -483,7 +485,7 @@ export default async function Advent2025() {
                         />
                       </a>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="mt-16 sm:mt-0">
@@ -604,7 +606,89 @@ export default async function Advent2025() {
         </div>
       </div>
       <div className="flex w-full justify-center bg-gray-900">
-        <div className="flex w-full flex-col items-center overflow-hidden pt-16">
+        <div className="flex w-full flex-col items-center overflow-hidden">
+          <div className="mb-16 flex w-full justify-center bg-gray-800">
+            <div className="flex w-full max-w-(--breakpoint-2xl) flex-col items-center px-4 py-8 sm:px-8 md:px-10 xl:px-20">
+              <div className="mb-4 w-full max-w-(--breakpoint-lg) text-center">
+                <p className="text-lg text-gray-400">
+                  Thank you to our sponsors for making Advent of CTF 2025 possible
+                </p>
+              </div>
+              <div className="mb-8 flex w-full flex-col items-center justify-center gap-8 sm:flex-row sm:gap-16">
+                <a
+                  href="https://verialabs.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mb-6 transition-all hover:opacity-80"
+                >
+                  <Image src={verialabsLogo} alt="Veria Labs" className="h-11 w-auto sm:h-14" />
+                </a>
+                <a
+                  href="https://ctfguide.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-all hover:opacity-80"
+                >
+                  <Image src={ctfguideLogo} alt="CTFGuide" className="h-6 w-auto sm:h-8" />
+                </a>
+                <a
+                  href="https://www.apisecuniversity.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-all hover:opacity-80"
+                >
+                  <Image src={apisecLogo} alt="APIsec" className="h-10 w-auto sm:h-12" />
+                </a>
+                <a
+                  href="https://gen.xyz/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-all hover:opacity-80"
+                >
+                  <Image src={genxyzLogo} alt="gen.xyz" className="h-8 w-auto sm:h-10" />
+                </a>
+              </div>
+              <div className="flex w-full flex-col items-center justify-center gap-8 sm:flex-row md:gap-16">
+                <div className="h-px w-full bg-gray-700 sm:hidden" />
+                <a
+                  href="https://osec.io/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="shrink-0 transition-all hover:opacity-80"
+                >
+                  <Image src={ottersecLogo} alt="OtterSec" className="h-10 w-auto brightness-50 invert sm:h-12" />
+                </a>
+                <div className="max-w-prose">
+                  <p className="mb-2">
+                    <a
+                      href="https://osec.io/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline decoration-gray-500 underline-offset-3 transition-all hover:text-gray-300 hover:decoration-gray-400"
+                    >
+                      OtterSec
+                    </a>{" "}
+                    is a security research and blockchain auditing firm focused on securing a wide range of critical
+                    blockchain infrastructure and strengthening real-world systems, from compilers to virtual machines
+                    and wallets.
+                  </p>
+                  <p className="">
+                    OtterSec&rsquo;s team consists largely of CTF players who enjoy solving hard problems. If that
+                    sounds like you,{" "}
+                    <a
+                      href="https://osec.io/careers"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline decoration-gray-500 underline-offset-3 transition-all hover:text-gray-300 hover:decoration-gray-400"
+                    >
+                      come work with them
+                    </a>
+                    ! No prior blockchain experience is necessary.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="mb-16 flex w-full max-w-(--breakpoint-2xl) flex-col items-center justify-between gap-10 px-4 sm:px-8 md:px-10 lg:flex-row lg:items-start lg:gap-16 xl:px-20">
             <div className="flex w-full flex-col items-start lg:max-w-sm lg:self-stretch xl:max-w-md">
               <h2 className="mb-1 font-mono font-medium tracking-wider text-cyan-300 uppercase">
@@ -635,16 +719,16 @@ export default async function Advent2025() {
             </div>
             <div className="h-full w-full">
               <div className="flex h-full w-full grid-cols-20 flex-col gap-4 sm:grid">
-                <Card className="col-span-11! row-span-1 grid grid-cols-1 flex-col justify-between overflow-hidden border border-gray-700! bg-gray-800/50! py-0 transition-shadow hover:shadow-lg sm:flex sm:h-full">
+                <Card className="col-span-10! row-span-1 grid grid-cols-1 flex-col justify-between overflow-hidden border border-gray-700! bg-gray-800/50! py-0 transition-shadow hover:shadow-lg sm:flex sm:h-full">
                   <div className="sm:p-auto pt-6 pl-6 sm:pr-6">
                     <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg border-sky-300/20 bg-sky-300/10 text-sky-300 sm:mb-2 sm:hidden">
                       <School className="h-6 w-6" />
                     </div>
                     <CardTitle className="flex justify-between gap-3 text-lg sm:mb-0 sm:text-xl">
                       <div>
-                        <span>Student Division</span>
+                        <span>College Division</span>
                         <CardDescription className="mt-1 text-sm font-normal sm:text-base">
-                          HS/College &ndash; Individual; $3,200+ USD
+                          Individual; $3,200+ USD
                         </CardDescription>
                       </div>
                       <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-lg border-sky-300/20 bg-sky-300/10 text-sky-300 sm:flex">
@@ -664,7 +748,7 @@ export default async function Advent2025() {
                           </TableCell>
                           <TableCell className="w-full py-3! text-right">
                             <strong>$225</strong>{" "}
-                            <span className="text-sm 2xl:text-base">+ ASCP, CASA, ACP + CTFGuide Pro</span>
+                            <span className="text-xs 2xl:text-base">+ ASCP, CASA, ACP, CTFGuide Pro</span>
                           </TableCell>
                         </TableRow>
                         <TableRow className="bg-gray-300/25 hover:bg-gray-300/35!">
@@ -676,7 +760,7 @@ export default async function Advent2025() {
                           </TableCell>
                           <TableCell className="w-full py-3! text-right">
                             <strong>$125</strong>{" "}
-                            <span className="text-sm 2xl:text-base">+ ASCP, CASA, ACP + CTFGuide Pro</span>
+                            <span className="text-xs 2xl:text-base">+ ASCP, CASA, ACP, CTFGuide Pro</span>
                           </TableCell>
                         </TableRow>
                         <TableRow className="bg-yellow-800/25 hover:bg-yellow-800/35!">
@@ -688,14 +772,14 @@ export default async function Advent2025() {
                           </TableCell>
                           <TableCell className="w-full py-3! text-right">
                             <strong>$75</strong>{" "}
-                            <span className="text-sm 2xl:text-base">+ ASCP, CASA, ACP + CTFGuide Pro</span>
+                            <span className="text-xs 2xl:text-base">+ ASCP, CASA, ACP, CTFGuide Pro</span>
                           </TableCell>
                         </TableRow>
                       </TableBody>
                     </Table>
                   </CardContent>
                 </Card>
-                <Card className="col-span-9! row-span-1 grid grid-cols-1 flex-col justify-between overflow-hidden border border-gray-700! bg-gray-800/50! py-0 transition-shadow hover:shadow-lg sm:flex sm:h-full">
+                <Card className="col-span-10! row-span-1 grid grid-cols-1 flex-col justify-between overflow-hidden border border-gray-700! bg-gray-800/50! py-0 transition-shadow hover:shadow-lg sm:flex sm:h-full">
                   <div className="sm:p-auto pt-6 pl-6 sm:pr-6">
                     <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg border-yellow-300/20 bg-yellow-300/10 text-yellow-300 sm:mb-2 sm:hidden">
                       <School className="h-6 w-6" />
@@ -704,7 +788,7 @@ export default async function Advent2025() {
                       <div>
                         <span>High School Division</span>
                         <CardDescription className="mt-1 text-sm font-normal sm:text-base">
-                          Individual; $2,700+ USD
+                          Individual; $3,200+ USD
                         </CardDescription>
                       </div>
                       <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-lg border-yellow-300/20 bg-yellow-300/10 text-yellow-300 sm:flex">
@@ -722,8 +806,9 @@ export default async function Advent2025() {
                               <span>1st</span>
                             </div>
                           </TableCell>
-                          <TableCell className="w-full py-3! text-right text-sm 2xl:text-base">
-                            ASCP, CASA, ACP + CTFGuide Pro
+                          <TableCell className="w-full py-3! text-right">
+                            <strong>$225</strong>{" "}
+                            <span className="text-xs 2xl:text-base">+ ASCP, CASA, ACP, CTFGuide Pro</span>
                           </TableCell>
                         </TableRow>
                         <TableRow className="bg-gray-300/25 hover:bg-gray-300/35!">
@@ -733,8 +818,9 @@ export default async function Advent2025() {
                               <span>2nd</span>
                             </div>
                           </TableCell>
-                          <TableCell className="w-full py-3! text-right text-sm 2xl:text-base">
-                            ASCP, CASA, ACP + CTFGuide Pro
+                          <TableCell className="w-full py-3! text-right">
+                            <strong>$125</strong>{" "}
+                            <span className="text-xs 2xl:text-base">+ ASCP, CASA, ACP, CTFGuide Pro</span>
                           </TableCell>
                         </TableRow>
                         <TableRow className="bg-yellow-800/25 hover:bg-yellow-800/35!">
@@ -744,8 +830,9 @@ export default async function Advent2025() {
                               <span>3rd</span>
                             </div>
                           </TableCell>
-                          <TableCell className="w-full py-3! text-right text-sm 2xl:text-base">
-                            ASCP, CASA, ACP + CTFGuide Pro
+                          <TableCell className="w-full py-3! text-right">
+                            <strong>$75</strong>{" "}
+                            <span className="text-xs 2xl:text-base">+ ASCP, CASA, ACP, CTFGuide Pro</span>
                           </TableCell>
                         </TableRow>
                       </TableBody>
@@ -779,7 +866,7 @@ export default async function Advent2025() {
                       <div>
                         <span>Write-Up Division</span>
                         <CardDescription className="mt-1 text-sm font-normal sm:text-base">
-                          Individual; $1,400+ USD
+                          Individual; $1,575+ USD
                         </CardDescription>
                       </div>
                       <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-lg border-purple-300/20 bg-purple-300/10 text-purple-300 sm:flex">
@@ -798,7 +885,7 @@ export default async function Advent2025() {
                             </div>
                           </TableCell>
                           <TableCell className="py-3! text-right">
-                            <strong>$25</strong> + CASA, ACP
+                            <strong>$75</strong> + CASA, ACP
                           </TableCell>
                         </TableRow>
                         <TableRow className="bg-gray-300/25 hover:bg-gray-300/35!">
@@ -809,7 +896,7 @@ export default async function Advent2025() {
                             </div>
                           </TableCell>
                           <TableCell className="py-3! text-right">
-                            <strong>$25</strong> + CASA, ACP
+                            <strong>$75</strong> + CASA, ACP
                           </TableCell>
                         </TableRow>
                         <TableRow className="bg-gray-300/25 hover:bg-gray-300/35!">
@@ -820,7 +907,7 @@ export default async function Advent2025() {
                             </div>
                           </TableCell>
                           <TableCell className="py-3! text-right">
-                            <strong>$25</strong> + CASA, ACP
+                            <strong>$75</strong> + CASA, ACP
                           </TableCell>
                         </TableRow>
                       </TableBody>
@@ -838,7 +925,7 @@ export default async function Advent2025() {
                       <div>
                         <span>Write-Up Division</span>
                         <CardDescription className="mt-1 text-sm font-normal sm:text-base">
-                          Individual; $1,425+ USD
+                          Individual; $1,575+ USD
                         </CardDescription>
                       </div>
                       {/* <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-lg border-purple-300/20 bg-purple-300/10 text-purple-300 sm:flex">
@@ -857,7 +944,7 @@ export default async function Advent2025() {
                             </div>
                           </TableCell>
                           <TableCell className="py-3! text-right">
-                            <strong>$25</strong> + CASA, ACP
+                            <strong>$75</strong> + CASA, ACP
                           </TableCell>
                         </TableRow>
                         <TableRow className="bg-gray-300/25 hover:bg-gray-300/35!">
@@ -868,7 +955,7 @@ export default async function Advent2025() {
                             </div>
                           </TableCell>
                           <TableCell className="py-3! text-right">
-                            <strong>$25</strong> + CASA, ACP
+                            <strong>$75</strong> + CASA, ACP
                           </TableCell>
                         </TableRow>
                         <TableRow className="bg-gray-300/25 hover:bg-gray-300/35!">
@@ -879,7 +966,7 @@ export default async function Advent2025() {
                             </div>
                           </TableCell>
                           <TableCell className="py-3! text-right">
-                            <strong>$25</strong> + CASA, ACP
+                            <strong>$75</strong> + CASA, ACP
                           </TableCell>
                         </TableRow>
                       </TableBody>

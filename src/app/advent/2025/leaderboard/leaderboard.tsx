@@ -29,7 +29,7 @@ export default function Leaderboard({ session }: { session: Session | null }) {
           <Tabs value={division} onValueChange={(d) => setDivision(d)}>
             <TabsList className="bg-gray-800">
               <TabsTrigger value="open">Open</TabsTrigger>
-              <TabsTrigger value="ms_hs_college">Student</TabsTrigger>
+              <TabsTrigger value="ms_hs_college">College</TabsTrigger>
               <TabsTrigger value="hs">High School</TabsTrigger>
             </TabsList>
           </Tabs>

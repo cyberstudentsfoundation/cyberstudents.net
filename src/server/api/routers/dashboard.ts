@@ -277,12 +277,11 @@ export const dashboardRouter = createTRPCRouter({
     for (const user of users) {
       // "other" | "none" | "hs1" | "hs2" | "hs3" | "hs4" | "college1" | "college2" | "college3" | "college4" | "college5"
       const isHighSchool = ["hs1", "hs2", "hs3", "hs4"].includes(user.schoolingStatus as string);
-      const isStudent =
-        isHighSchool || ["college1", "college2", "college3", "college4"].includes(user.schoolingStatus as string);
+      const isCollege = ["college1", "college2", "college3", "college4"].includes(user.schoolingStatus as string);
 
       const newFlags = user.flags.filter((flag) => flag !== "ms_hs_college_eligible" && flag !== "hs_eligible");
 
-      if (isStudent) newFlags.push("ms_hs_college_eligible");
+      if (isCollege) newFlags.push("ms_hs_college_eligible");
       if (isHighSchool) newFlags.push("hs_eligible");
 
       updates.push({ where: { id: user.id }, data: { flags: { set: newFlags } } });

@@ -32,19 +32,19 @@ const LINKS: { name: string; href: string; disabled?: boolean }[] = [
 export default function NavbarInner({ session }: { session: Session | null }) {
   // Use Radix Accordion (shadcn wrapper) for smooth open/close animations
   const [adventOpenValue, setAdventOpenValue] = useState<string | undefined>(undefined);
-  const [alertVisible, setAlertVisible] = useState(false);
+  // const [alertVisible, setAlertVisible] = useState(false);
 
-  useEffect(() => {
-    // localStorage alert dismissed check
-    const dismissedAlertValue = localStorage.getItem("dismissed-alert");
-    if (dismissedAlertValue !== "2025-12-14-security-notice") {
-      setAlertVisible(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   // localStorage alert dismissed check
+  //   const dismissedAlertValue = localStorage.getItem("dismissed-alert");
+  //   if (dismissedAlertValue !== "2025-12-14-security-notice") {
+  //     setAlertVisible(true);
+  //   }
+  // }, []);
 
   return (
     <>
-      {alertVisible && (
+      {/* {alertVisible && (
         <div id="alert" className="w-full bg-yellow-500/30 py-4">
           <div className="mx-auto w-full max-w-(--breakpoint-2xl) pr-4 pl-4">
             <div className="flex items-center justify-between gap-4">
@@ -90,7 +90,7 @@ export default function NavbarInner({ session }: { session: Session | null }) {
             </div>
           </div>
         </div>
-      )}
+      )} */}
       <div className="sticky top-0 z-30 flex h-14 items-center justify-center border-b border-gray-800 bg-gray-900/75 px-4 py-2 backdrop-blur-lg">
         <div className="flex w-full max-w-(--breakpoint-2xl) items-center justify-between">
           <div className="flex items-center">
