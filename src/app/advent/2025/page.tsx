@@ -788,7 +788,7 @@ export default async function Advent2025() {
                       <div>
                         <span>High School Division</span>
                         <CardDescription className="mt-1 text-sm font-normal sm:text-base">
-                          Individual; $3,200+ USD
+                          Individual; $2,750+ USD
                         </CardDescription>
                       </div>
                       <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-lg border-yellow-300/20 bg-yellow-300/10 text-yellow-300 sm:flex">
@@ -832,7 +832,7 @@ export default async function Advent2025() {
                           </TableCell>
                           <TableCell className="w-full py-3! text-right">
                             <strong>$75</strong>{" "}
-                            <span className="text-xs 2xl:text-base">+ ASCP, CASA, ACP, CTFGuide Pro</span>
+                            <span className="text-xs 2xl:text-base">+ CASA, ACP, CTFGuide Pro</span>
                           </TableCell>
                         </TableRow>
                       </TableBody>

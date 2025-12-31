@@ -199,7 +199,7 @@ export default async function Register() {
                     <tr>
                       <td className="ps-[0.5714286em]">3rd</td>
                       <td>
-                        <strong>$75</strong> + ASCP, CASA, ACP (APIsec) + CTFGuide Pro (1 mo)
+                        <strong>$75</strong> + CASA, ACP (APIsec) + CTFGuide Pro (1 mo)
                       </td>
                     </tr>
                     <tr>
