@@ -192,7 +192,14 @@ export const dashboardRouter = createTRPCRouter({
   }),
 
   getVerification: adminProcedure.input(getVerificationSchema).query(async ({ ctx, input }) => {
-    const verification = await ctx.db.verification.findUnique({ where: { id: input.id }, include: { user: true } });
+    const verification = await ctx.db.verification.findUnique({
+      where: { id: input.id },
+      include: {
+        user: {
+          include: { accounts: true },
+        },
+      },
+    });
 
     return verification;
   }),
@@ -228,6 +235,11 @@ export const dashboardRouter = createTRPCRouter({
         })),
       },
       sessions: { set: input.sessions.map((token) => ({ sessionToken: token })) },
+      displayName: input.displayName,
+      schoolingStatus: input.schoolingStatus,
+      linkedin: input.linkedin,
+      howDidYouHearAboutUs: input.howDidYouHearAboutUs,
+      allowSponsorContact: input.allowSponsorContact,
     };
 
     // Prevent custom ids from being used

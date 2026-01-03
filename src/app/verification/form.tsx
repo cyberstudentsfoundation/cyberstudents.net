@@ -21,12 +21,15 @@ import {
 import { Checkbox } from "~/components/ui/checkbox";
 import { Button } from "~/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
+import { Separator } from "~/components/ui/separator";
 import { FaDiscord } from "react-icons/fa6";
 import { z } from "zod";
 import type { verificationSubmitSchema } from "~/lib/schemas";
 import { toast } from "sonner";
 import { HiCheckCircle } from "react-icons/hi2";
+import { FcGoogle } from "react-icons/fc";
 import CountrySelect from "~/components/CountrySelect";
+import ctftimeLogo from "~/../public/ctftime-logo.png";
 
 export default function VerificationForm({ session }: { session: Session | null }) {
   const schoolName = useRef<HTMLInputElement>(null);
@@ -41,6 +44,7 @@ export default function VerificationForm({ session }: { session: Session | null 
   const [schoolYear, setSchoolYear] = useState<string>();
   const [verificationMethod, setVerificationMethod] = useState<string>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isTJHSST, setIsTJHSST] = useState<boolean>(false);
 
   useEffect(() => {
     function beforeUnloadHandler(e: BeforeUnloadEvent) {
@@ -55,17 +59,52 @@ export default function VerificationForm({ session }: { session: Session | null 
   if (!session) {
     return (
       <div>
-        <p className="mb-2">To get started, please login:</p>
-        <Button
-          type="button"
-          className="!hover:bg-[#5865f2]/70 flex items-center bg-[#5865f2]! font-bold text-gray-200!"
-          onClick={() => {
-            signIn("discord");
-          }}
-        >
-          <FaDiscord className="h-6! w-6!" />
-          <span>Login with Discord</span>
-        </Button>
+        <p className="mb-4">To get started, please login with the account you used to register:</p>
+        <div className="flex w-fit flex-col gap-2">
+          <Button
+            className="flex w-52 items-center bg-[#5865f2]! font-bold text-gray-200! hover:bg-[#5865f2]/70!"
+            onClick={() => {
+              signIn("discord", { callbackUrl: "/advent/2025/register#registration" });
+            }}
+          >
+            <FaDiscord className="h-6! w-6!" />
+            <span>Login with Discord</span>
+          </Button>
+          <div className="flex w-52 items-center gap-4">
+            <Separator className="flex-1 bg-gray-500!" />
+            <span className="text-gray-400">or</span>
+            <Separator className="flex-1 bg-gray-500!" />
+          </div>
+          <div className="flex items-center gap-3">
+            <Button
+              className="flex w-52 items-center bg-[#e3000b]! font-bold text-gray-200! hover:bg-[#e3000b]/70!"
+              onClick={() => {
+                signIn("ctftime", { callbackUrl: "/advent/2025/register#registration" });
+              }}
+            >
+              <Image src={ctftimeLogo} alt="CTFtime Logo" className="h-6! w-6!" />
+              <span>Login with CTFtime</span>
+            </Button>
+            <span className="text-gray-400">only available for team events</span>
+          </div>
+          <div className="flex w-52 items-center gap-4">
+            <Separator className="flex-1 bg-gray-500!" />
+            <span className="text-gray-400">or</span>
+            <Separator className="flex-1 bg-gray-500!" />
+          </div>
+          <div className="flex items-center gap-3">
+            <Button
+              className="flex w-52 items-center font-bold text-gray-900"
+              onClick={() => {
+                signIn("google", { callbackUrl: "/advent/2025/register#registration" });
+              }}
+            >
+              <FcGoogle className="h-6! w-6!" />
+              <span>Login with Google</span>
+            </Button>
+            <span className="text-gray-400">with or without access code</span>
+          </div>
+        </div>
       </div>
     );
   }
@@ -116,7 +155,10 @@ export default function VerificationForm({ session }: { session: Session | null 
           e.preventDefault();
 
           setIsLoading(true);
-          toast.loading("Submitting identity verification application...", { position: "top-center", duration: 5000 });
+          const loadingToast = toast.loading("Submitting identity verification application...", {
+            position: "top-center",
+            duration: 5000,
+          });
 
           const data: z.infer<typeof verificationSubmitSchema> = {
             isStudent: isStudent === "yes",
@@ -157,11 +199,89 @@ export default function VerificationForm({ session }: { session: Session | null 
             data.idFileType = file.type as "image/jpeg" | "image/png";
           }
 
+          const clientInfo: Record<string, unknown> = {
+            disclaimer:
+              "This information is collected to prevent fraudulent submissions and ensure competitive integrity. It will be kept confidential and used solely for verification purposes. Any attempts to knowingly tamper with or falsify this information may result in disqualification from CyberStudents events, as outlined in the competition guidelines.",
+          };
+
+          /* eslint-disable @typescript-eslint/no-unused-vars */
+          try {
+            clientInfo.timezoneOffset = new Date().getTimezoneOffset();
+          } catch (_e) {}
+
+          try {
+            clientInfo.navigatorLanguage = navigator.language;
+          } catch (_e) {}
+
+          try {
+            clientInfo.navigatorLanguages = navigator.languages;
+          } catch (_e) {}
+
+          try {
+            clientInfo.navigatorMaxTouchPoints = navigator.maxTouchPoints;
+          } catch (_e) {}
+
+          try {
+            clientInfo.navigatorUserAgent = navigator.userAgent;
+          } catch (_e) {}
+
+          try {
+            clientInfo.navigatorPlatform = navigator.platform;
+          } catch (_e) {}
+
+          try {
+            clientInfo.hardwareConcurrency = navigator.hardwareConcurrency;
+          } catch (_e) {}
+
+          try {
+            clientInfo.userAgent = navigator.userAgent;
+          } catch (_e) {}
+
+          try {
+            clientInfo.storage = JSON.stringify(await navigator.storage.estimate());
+          } catch (_e) {}
+
+          try {
+            clientInfo.mediaDevices = JSON.stringify(await navigator.mediaDevices.enumerateDevices());
+          } catch (_e) {}
+
+          // These are Chrome only
+          try {
+            clientInfo.navigatorConnection =
+              "connection" in navigator
+                ? JSON.stringify(
+                    {
+                      /* eslint-disable @typescript-eslint/no-explicit-any */
+                      effectiveType: (navigator as any).connection.effectiveType,
+                      downlink: (navigator as any).connection.downlink,
+                      rtt: (navigator as any).connection.rtt,
+                      saveData: (navigator as any).connection.saveData,
+                      /* eslint-enable @typescript-eslint/no-explicit-any */
+                    },
+                    null,
+                    2,
+                  )
+                : null;
+          } catch (_e) {}
+
+          try {
+            clientInfo.keyboard =
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              "keyboard" in navigator ? JSON.stringify([...(await (navigator as any).keyboard.getLayoutMap())]) : null;
+          } catch (_e) {}
+
+          try {
+            clientInfo.navigatorDeviceMemory = "deviceMemory" in navigator ? navigator.deviceMemory : null;
+          } catch (_e) {}
+          /* eslint-enable @typescript-eslint/no-unused-vars */
+
+          data.clientInfo = JSON.stringify(clientInfo, null, 2);
+
           await verificationSubmitMutation.mutateAsync(data);
 
           toast.success(
             "Identity verification application submitted successfully. We will review your responses soon.",
-            { position: "top-center" },
+            { position: "top-center", id: loadingToast },
           );
 
           setTimeout(() => location.reload(), 1000);
@@ -170,7 +290,7 @@ export default function VerificationForm({ session }: { session: Session | null 
         <div className="max-w-2xl space-y-4">
           <div className="grid w-full items-center gap-1.5">
             <Label htmlFor="is-student-select" className="text-base">
-              Are you a current high school (or equivalent) or university student?
+              Are you a current high school or university student (or equivalent)?
             </Label>
             <RadioGroup
               required
@@ -204,9 +324,51 @@ export default function VerificationForm({ session }: { session: Session | null 
                       id="school-name"
                       className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
                       ref={schoolName}
+                      onBlur={() => {
+                        const value = schoolName.current?.value.toLowerCase() || "";
+                        setIsTJHSST(
+                          (value.includes("thomas jefferson") &&
+                            (value.includes("science") || value.includes("tech"))) ||
+                            value.includes("tjhsst"),
+                        );
+                      }}
                       required
                     />
                   </div>
+                  {/* {isTJHSST ? (
+                    <div className="rounded-md border border-gray-700 bg-gray-800 p-4">
+                      <p className="mb-2">
+                        We have detected your institution as:
+                        <br />
+                        <strong>Thomas Jefferson High School for Science and Technology</strong>, Alexandria, VA, USA
+                      </p>
+                      <p className="mb-4">
+                        We support special verification options for this school. We encourage you to sign in with your
+                        school-affiliated account to expedite verification; however, this is not mandatory.
+                      </p>
+                      <Button
+                        disabled
+                        aria-disabled={true}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          // window.open(
+                          //   "https://ion.tjhsst.edu/login?next=/oauth/authorize/?scope=read&client_id=1DjY0DxqW9gZtONla0qn60mOSz5rdORXvVCadDUY&redirect_uri=https://ctf.tjcsec.club/integrations/ion/callback&state=dd7bff0097ea4e2fe098ccac4beb5c28&response_type=code",
+                          //   "newwindow",
+                          //   "",
+                          // );
+                        }}
+                      >
+                        <Image src="/ion.svg" alt="Ion logo" width={32} height={32} className="h-6 w-6" />
+                        Login with Ion
+                      </Button>
+                      <p className="mt-4 text-sm text-gray-400">
+                        <br />
+                        Not your school? Ignore this and continue with the form below.
+                        <br />
+                        Please contact GodderE2D for questions regarding this experimental feature.
+                      </p>
+                    </div>
+                  ) : null} */}
                   <div className="grid w-full items-center gap-1.5">
                     <Label htmlFor="country" className="text-base">
                       School or university year
@@ -336,6 +498,37 @@ export default function VerificationForm({ session }: { session: Session | null 
                       Use another way to verify my identity
                     </Label>
                   </div>
+                  {isTJHSST ? (
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem
+                        value="verify-ion"
+                        id="verify-ion"
+                        className="border-gray-500! bg-gray-700!"
+                        disabled
+                      />
+                      <Label htmlFor="verify-ion" className="text-base">
+                        <div className="flex items-center gap-3">
+                          <Button
+                            aria-disabled={true}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              // window.open(
+                              //   "https://ion.tjhsst.edu/login?next=/oauth/authorize/?scope=read&client_id=1DjY0DxqW9gZtONla0qn60mOSz5rdORXvVCadDUY&redirect_uri=https://ctf.tjcsec.club/integrations/ion/callback&state=dd7bff0097ea4e2fe098ccac4beb5c28&response_type=code",
+                              //   "newwindow",
+                              //   "",
+                              // );
+                            }}
+                            className="pointer-events-auto! cursor-not-allowed"
+                            disabled
+                          >
+                            <Image src="/ion.svg" alt="Ion logo" width={32} height={32} className="h-6 w-6" />
+                            Login with Ion
+                          </Button>
+                          <em className="text-gray-400">temporarily unavailable</em>
+                        </div>
+                      </Label>
+                    </div>
+                  ) : null}
                 </RadioGroup>
               </div>
               {verificationMethod ? (
@@ -364,7 +557,13 @@ export default function VerificationForm({ session }: { session: Session | null 
                         </a>{" "}
                         with the subject line &quot;CyberStudents identity verification&quot; and include your Discord
                         username in the body.
-                        <p className="mt-2">We will not contact your school or university without your consent.</p>
+                        <p className="mt-2">
+                          We will not reply to the email nor contact your school/university without your consent.
+                        </p>
+                        <p className="mt-2">
+                          If you can only receive emails from your school account but cannot send emails, please contact
+                          an administrator.
+                        </p>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Checkbox id="sent-email" required />
@@ -383,33 +582,38 @@ export default function VerificationForm({ session }: { session: Session | null 
                         <ul className="ml-4 list-disc space-y-2">
                           {isStudent === "yes" ? (
                             <li>
-                              One of the following: a school-issued student ID card, official/unofficial transcript,
-                              enrollment letter on school letterhead, class schedule for the semester, receipt from
-                              bursar, or scholarship/financial aid letter
+                              <strong>One of the following</strong>: a school-issued student ID card,
+                              official/unofficial transcript, enrollment letter on school letterhead, class schedule,
+                              receipt from bursar, or scholarship/financial aid letter
                               <ul className="mt-2 ml-10 list-disc space-y-2">
                                 <li>All documents, except for ID cards, must be dated</li>
                                 <li>All documents must contain the same name as you specified above</li>
                                 <li>
                                   If you are uploading an ID, it must show your full name and current academic year
                                 </li>
+                                <li>Effective 1/1/26: Digital IDs, digital copies, or screenshots are not accepted</li>
                               </ul>
                             </li>
                           ) : (
                             <li>
-                              A government-issued ID, such as a driver&apos;s license, state-issued ID, military ID,
+                              A government-issued ID, such as a driver&rsquo;s license, state-issued ID, military ID,
                               passport, birth certificate <strong>OR</strong> a document from a bank, insurance company,
                               or other credible business/organization such as a bank statement or utility bill.
                               <ul className="mt-2 ml-10 list-disc space-y-2">
                                 <li>This ID or document must include your full name and be dated</li>
+                                <li>Effective 1/1/26: Digital IDs, digital copies, or screenshots are not accepted</li>
                               </ul>
                             </li>
                           )}
                           <li>
-                            A piece of paper with your Discord username, today&apos;s date, and
+                            <strong>AND</strong> a piece of paper with your username, today&apos;s date, and
                             &quot;CyberStudents&quot; handwritten on it
                           </li>
                         </ul>
-                        <p>You may censor any other personal information that is not stated above.</p>
+                        <p>
+                          You may censor any other personal information that is not stated above or asked in this form,
+                          such as your address or face.
+                        </p>
                         {isStudent === "yes" && (
                           <p>We will not contact your school or university without your consent.</p>
                         )}
@@ -456,7 +660,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                     <Checkbox id="terms2" required />
                     <label htmlFor="terms2" className="peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                       I have read, agreed, and adhered to the{" "}
-                      <a href="/advent/2024/register" target="_blank" className="font-bold underline">
+                      <a href="/advent/2025/register" target="_blank" className="font-bold underline">
                         competition guidelines
                       </a>{" "}
                       throughout the competition.

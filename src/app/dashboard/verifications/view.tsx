@@ -43,6 +43,8 @@ export default function Edit({ row }: { row: Row<VerificationPreview> }) {
     college4: "College senior (4th year or equivalent)",
     college5: "Attending postgraduate school",
     other: "Other high school or college (or equivalent)",
+    none: "None",
+    undefined: "undefined",
   };
 
   const verificationMethodMap: Record<string, string> = {
@@ -52,7 +54,7 @@ export default function Edit({ row }: { row: Row<VerificationPreview> }) {
   };
 
   const studentStatusConsistent =
-    getVerificationQuery.data?.user.flags.includes("ms_hs_college_eligible") === getVerificationQuery.data?.isStudent;
+    getVerificationQuery.data?.user.schoolingStatus === getVerificationQuery.data?.schoolYear;
 
   useEffect(() => {
     if (searchParams.get("id") === row.original.id) {
@@ -95,15 +97,25 @@ export default function Edit({ row }: { row: Row<VerificationPreview> }) {
                     alt={`Profile Picture for ${row.original.user.name}`}
                     className="h-12 w-12 rounded-full"
                   />
-                  <span className="text-lg">{row.original.user.name}</span>
+                  <span className="text-lg">
+                    {row.original.user.name}
+                    <div className="text-sm leading-4 text-gray-400">
+                      {getVerificationQuery.data?.user.accounts
+                        .map(
+                          (account) =>
+                            ({
+                              discord: "Discord",
+                              google: "Google",
+                              ctftime: "CTFtime",
+                            })[account.provider],
+                        )
+                        .join(", ") ?? "Unknown login method"}
+                    </div>
+                  </span>
                 </div>
-                <a
-                  href={`/advent/2025/leaderboard#${row.original.user.name}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={`/dashboard/users?id=${row.original.user.id}`} target="_blank" rel="noopener noreferrer">
                   <Button className="flex w-fit items-center gap-2">
-                    <span>See place on leaderboard</span>
+                    <span>View user page</span>
                     <HiArrowUpRight className="mb-0.5 h-4 w-4" />
                   </Button>
                 </a>
@@ -145,8 +157,20 @@ export default function Edit({ row }: { row: Row<VerificationPreview> }) {
                   </div>
                   <h2 className="text-xl font-bold text-gray-400">Student</h2>
                   <p className={`${studentStatusConsistent ? "text-green-500" : "text-red-500"}`}>
-                    Student status (not year) {studentStatusConsistent ? "is" : "is not"} consistent from registration.
+                    Student year {studentStatusConsistent ? "is" : "is not"} consistent from registration. This check
+                    does not work prior to 11/30/25.
                   </p>
+                  <div className="grid w-full items-center gap-1.5">
+                    <Label htmlFor="full-name" className="text-base">
+                      Schooling status from registration
+                    </Label>
+                    <Input
+                      id="full-name"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
+                      value={schoolYearMap[row.original.user.schoolingStatus ?? "undefined"]}
+                      readOnly
+                    />
+                  </div>
                   {getVerificationQuery.data.isStudent ? (
                     <>
                       <div className="grid w-full items-center gap-1.5">

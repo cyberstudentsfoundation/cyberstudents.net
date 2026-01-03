@@ -5,6 +5,7 @@ import RegisterForm from "./form";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
 import { ScrollArea } from "~/components/ui/scroll-area";
+import Banner from "../banner";
 
 export default async function Register() {
   const session = await getServerAuthSession();
@@ -33,11 +34,17 @@ export default async function Register() {
                   <HiArrowUpRight className="mb-px h-4 w-4 stroke-1" />
                 </a>
               </Button>
+              <Banner className="mx-0 bg-gray-950/50! dark:bg-gray-950" rootClassName="pt-0 pb-6" />
               <p className="mb-1 text-xl font-bold text-gray-200">CyberStudents&rsquo;</p>
               <h1 className="mb-8 font-mono text-4xl font-bold">
                 advent of ctf<span className="ml-5 font-sans font-light text-cyan-300">2025</span>
               </h1>
               <div className="prose prose-gray prose-invert">
+                <p>
+                  Advent of CTF 2025 has ended. Thank you to everyone who participated! A full post detailing challenges
+                  and statistics will be published soon.
+                </p>
+                <hr />
                 <p>
                   This event will run from <strong>December 1, 2025 8:00 PM</strong> to{" "}
                   <strong>December 31, 2025 11:59 PM</strong> (EST). You can register anytime before the event ends.

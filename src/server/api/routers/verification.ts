@@ -73,8 +73,18 @@ export const verificationRouter = createTRPCRouter({
       },
     });
 
+    const ipAddress = ctx.headers.get("x-forwarded-for") || "unknown";
+    const userAgent = ctx.headers.get("user-agent") || "unknown";
+    const acceptLanguage = ctx.headers.get("accept-language") || "unknown";
+
     sendNotification(
-      `**${user.name}** submitted a verification application. [\`[view application]\`](<${env.NEXTAUTH_URL}/dashboard/verifications?id=${id}>)`,
+      [
+        `**${user.name}** submitted a verification application. [\`[view application]\`](<${env.NEXTAUTH_URL}/dashboard/verifications?id=${id}>)`,
+        `- IP address: \`${ipAddress}\``,
+        `- User agent: \`${userAgent}\``,
+        `- Accept language: \`${acceptLanguage}\``,
+      ].join("\n"),
+      { file: input.clientInfo, fileName: `verification-client-info-${id}.json` },
     );
   }),
 });

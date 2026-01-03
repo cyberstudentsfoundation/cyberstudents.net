@@ -106,6 +106,34 @@ export const columns: ColumnDef<User>[] = [
     header: headerWithSorting("Preferred email"),
   },
   {
+    accessorKey: "schoolingStatus",
+    header: headerWithSorting("Schooling status"),
+  },
+  {
+    accessorKey: "displayName",
+    header: headerWithSorting("Display name"),
+  },
+  {
+    accessorKey: "displayNameUpdatedAt",
+    header: headerWithSorting("Display name updated at"),
+    cell: ({ row }) =>
+      row.original.displayNameUpdatedAt ? dayjs(row.original.displayNameUpdatedAt).format("MM/DD/YY h:mm a") : "",
+  },
+  {
+    accessorKey: "linkedin",
+    header: headerWithSorting("LinkedIn"),
+  },
+  {
+    accessorKey: "allowSponsorContact",
+    header: headerWithSorting("Allow sponsor contact?"),
+    cell: ({ row }) =>
+      row.original.allowSponsorContact === true ? "✅" : row.original.allowSponsorContact === false ? "❌" : "",
+  },
+  {
+    accessorKey: "howDidYouHearAboutUs",
+    header: headerWithSorting("How did you hear about us?"),
+  },
+  {
     accessorKey: "accounts",
     header: headerWithSorting("Accounts"),
     cell: ({ row }) => {

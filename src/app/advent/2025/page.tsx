@@ -44,6 +44,7 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import SnowBackground from "~/app/advent/2025/snow-background";
+import Banner from "./banner";
 import ctftimeLogo from "~/../public/ctftime-logo.png";
 import verialabsLogo from "~/../public/verialabs.png";
 import ctfguideLogo from "~/../public/ctfguide.png";
@@ -390,12 +391,16 @@ export default async function Advent2025() {
 
   return (
     <main className="">
+      <div className="bg-gray-950">
+        <Banner className="max-w-(--breakpoint-2xl)" />
+      </div>
       <div className="relative w-full overflow-hidden">
         <CustomSnowfall />
         <div className="absolute inset-0 z-0">
           <SnowBackground className="h-full w-full opacity-30 hue-rotate-[270deg]" />
         </div>
-        <div className="flex justify-center bg-gray-950 px-8 pt-10 pb-4">
+        {/* switch back to pt-10 if announcement banner is removed */}
+        <div className="flex justify-center bg-gray-950 px-8 pt-6 pb-4">
           <div className="relative z-10 w-full max-w-(--breakpoint-2xl)">
             <div className="flex flex-col items-center justify-between sm:gap-16 xl:flex-row xl:gap-8">
               <div className="max-w-prose">
@@ -514,44 +519,68 @@ export default async function Advent2025() {
                       </div>
                     </div>
                   </Link>
-                  {eventChallenges.challenges.map(({ id, title, category, points }, index) => (
-                    <Link
-                      key={index}
-                      href={!id.startsWith("placeholder-") ? `/advent/2025/challenges?challenge=${id}` : ""}
-                      className="flex cursor-pointer flex-col justify-between border-r border-b border-gray-700 bg-gray-900/50 p-4 hover:bg-gray-800/50 sm:h-36 sm:w-full sm:p-3"
-                    >
-                      <div>
-                        <div className="mb-1 hidden font-bold sm:block">
-                          {index === 0 && "Dec "}
-                          {index + 1}
-                          {index === 24 && " 🎄"}
-                        </div>
-                        <div className="mb-1 block font-bold sm:hidden">{index + 1}</div>
+                  {eventChallenges.challenges.map(({ id, title, category, points }, index) => {
+                    if (index === 21) {
+                      return (
                         <div
-                          className={`mb-0.5 hidden h-full overflow-hidden text-sm text-gray-300 sm:block ${!title ? "font-mono" : ""} `}
+                          key={index}
+                          className="relative flex flex-col justify-between overflow-hidden border-r border-b border-gray-700 bg-gray-900/50 p-4 sm:h-36 sm:w-full sm:p-3"
                         >
-                          {title ?? "???"}
+                          <svg
+                            className="pointer-events-none absolute inset-0 h-full w-full"
+                            viewBox="0 0 100 100"
+                            preserveAspectRatio="none"
+                          >
+                            <line x1="0" y1="0" x2="100" y2="100" stroke="rgba(75, 85, 99, 0.6)" strokeWidth="2" />
+                            <line x1="100" y1="0" x2="0" y2="100" stroke="rgba(75, 85, 99, 0.6)" strokeWidth="2" />
+                          </svg>
+                          <div className="relative">
+                            <div className="mb-1 hidden font-bold sm:block">{index + 1}</div>
+                            <div className="mb-1 block font-bold sm:hidden">{index + 1}</div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="hidden sm:block">
-                        <div className={`mb-0.5 text-xs text-gray-400 ${!category ? "font-mono" : ""}`}>
-                          {category
-                            ? {
-                                "Web exploitation": "web",
-                                "Binary exploitation": "binex",
-                                "Reverse engineering": "rev",
-                                Forensics: "forensics",
-                                Cryptography: "crypto",
-                                Miscellaneous: "misc",
-                              }[category]
-                            : "???"}
+                      );
+                    }
+
+                    return (
+                      <Link
+                        key={index}
+                        href={!id.startsWith("placeholder-") ? `/advent/2025/challenges?challenge=${id}` : ""}
+                        className="flex cursor-pointer flex-col justify-between border-r border-b border-gray-700 bg-gray-900/50 p-4 hover:bg-gray-800/50 sm:h-36 sm:w-full sm:p-3"
+                      >
+                        <div>
+                          <div className="mb-1 hidden font-bold sm:block">
+                            {index === 0 && "Dec "}
+                            {index + 1}
+                            {index === 24 && " 🎄"}
+                          </div>
+                          <div className="mb-1 block font-bold sm:hidden">{index + 1}</div>
+                          <div
+                            className={`mb-0.5 hidden h-full overflow-hidden text-sm text-gray-300 sm:block ${!title ? "font-mono" : ""} `}
+                          >
+                            {title ?? "???"}
+                          </div>
                         </div>
-                        <div className={`text-xs text-gray-400 opacity-80 ${!points ? "hidden font-mono" : ""}`}>
-                          {points ?? "???"} pts
+                        <div className="hidden sm:block">
+                          <div className={`mb-0.5 text-xs text-gray-400 ${!category ? "font-mono" : ""}`}>
+                            {category
+                              ? {
+                                  "Web exploitation": "web",
+                                  "Binary exploitation": "binex",
+                                  "Reverse engineering": "rev",
+                                  Forensics: "forensics",
+                                  Cryptography: "crypto",
+                                  Miscellaneous: "misc",
+                                }[category]
+                              : "???"}
+                          </div>
+                          <div className={`text-xs text-gray-400 opacity-80 ${!points ? "hidden font-mono" : ""}`}>
+                            {points ?? "???"} pts
+                          </div>
                         </div>
-                      </div>
-                    </Link>
-                  ))}
+                      </Link>
+                    );
+                  })}
                   <div className="col-span-2 hidden flex-col items-center justify-center sm:flex sm:items-start">
                     <div className="mb-2 flex w-full flex-col items-center">
                       {Date.now() < new Date("2026-01-01T04:59:00Z").getTime() ? (

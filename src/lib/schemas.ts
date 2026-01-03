@@ -102,6 +102,7 @@ export const verificationSubmitSchema = z.object({
   idFile: z.string().optional(),
   idFileType: z.enum(["image/jpeg", "image/png"]).optional(),
   comments: z.string().optional(),
+  clientInfo: z.string().optional(),
 });
 
 export const getVerificationSchema = z.object({
@@ -120,6 +121,11 @@ export const editUserSchema = z.object({
   events: z.array(z.string()),
   sessions: z.array(z.string()),
   accounts: z.array(z.object({ provider: z.string(), providerAccountId: z.string() })),
+  displayName: z.string().optional(),
+  schoolingStatus: z.string().optional(),
+  linkedin: z.string().max(100).optional(),
+  howDidYouHearAboutUs: z.string().optional(),
+  allowSponsorContact: z.boolean().optional(),
 });
 
 export const deleteUserSchema = z.object({

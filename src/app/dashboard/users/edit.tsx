@@ -35,6 +35,7 @@ import {
 } from "~/components/ui/alert-dialog";
 import { Prose } from "~/lib/renderMarkdoc";
 import { MultiSelect } from "~/components/ui/multi-select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 
 export default function Edit({ row, textButton }: { row?: Row<User>; textButton: boolean }) {
   const router = useRouter();
@@ -62,7 +63,18 @@ export default function Edit({ row, textButton }: { row?: Row<User>; textButton:
   const emailVerifiedRef = useRef<HTMLInputElement>(null);
   const preferredEmailRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLInputElement>(null);
+  const displayNameRef = useRef<HTMLInputElement>(null);
+  const schoolingStatusRef = useRef<HTMLInputElement>(null);
+  const linkedinRef = useRef<HTMLInputElement>(null);
+  const howDidYouHearAboutUsRef = useRef<HTMLInputElement>(null);
 
+  const [allowSponsorContact, setAllowSponsorContact] = useState<"true" | "false" | "indeterminate">(
+    row?.original.allowSponsorContact === true
+      ? "true"
+      : row?.original.allowSponsorContact === false
+        ? "false"
+        : "indeterminate",
+  );
   const [note, setNote] = useState(row?.original.note ?? "");
   const [flags, setFlags] = useState<string[]>(row?.original.flags ?? []);
   const [events, setEvents] = useState<string[]>(row?.original.events.map((e) => e.name) ?? []);
@@ -280,6 +292,12 @@ export default function Edit({ row, textButton }: { row?: Row<User>; textButton:
 
                     return { provider, providerAccountId };
                   }),
+                  displayName: displayNameRef.current?.value || undefined,
+                  schoolingStatus: schoolingStatusRef.current?.value || undefined,
+                  linkedin: linkedinRef.current?.value || undefined,
+                  howDidYouHearAboutUs: howDidYouHearAboutUsRef.current?.value || undefined,
+                  allowSponsorContact:
+                    allowSponsorContact === "true" ? true : allowSponsorContact === "false" ? false : undefined,
                 });
 
                 toast.success("User updated successfully.", { position: "top-center" });
@@ -341,7 +359,63 @@ export default function Edit({ row, textButton }: { row?: Row<User>; textButton:
                       ref={imageRef}
                     />
                   </div>
-
+                  <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <Label htmlFor="displayName">Display name (optional)</Label>
+                    <Input
+                      id="displayName"
+                      type="text"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
+                      defaultValue={row?.original.displayName ?? ""}
+                      ref={displayNameRef}
+                    />
+                  </div>
+                  <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <Label htmlFor="schoolingStatus">Schooling status (optional)</Label>
+                    <Input
+                      id="schoolingStatus"
+                      type="text"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
+                      defaultValue={row?.original.schoolingStatus ?? ""}
+                      ref={schoolingStatusRef}
+                    />
+                  </div>
+                  <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <Label htmlFor="linkedin">LinkedIn (optional)</Label>
+                    <Input
+                      id="linkedin"
+                      type="text"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
+                      defaultValue={row?.original.linkedin ?? ""}
+                      ref={linkedinRef}
+                    />
+                  </div>
+                  <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <Label>Allow sponsor contact? (optional)</Label>
+                    <Select
+                      value={allowSponsorContact}
+                      onValueChange={(c: "true" | "false" | "indeterminate") => setAllowSponsorContact(c)}
+                      required
+                    >
+                      <SelectTrigger className="w-full border-gray-900! bg-gray-200! text-gray-900 ring-gray-200! ring-offset-gray-900">
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="true">Yes</SelectItem>
+                        <SelectItem value="false">No</SelectItem>
+                        <SelectItem value="indeterminate">Indeterminate/unknown</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <Label htmlFor="howDidYouHearAboutUs">How did you hear about us? (optional)</Label>
+                    <Input
+                      id="howDidYouHearAboutUs"
+                      type="text"
+                      className="border-gray-900! bg-gray-200 text-gray-900 ring-gray-200! ring-offset-gray-900"
+                      defaultValue={row?.original.howDidYouHearAboutUs ?? ""}
+                      ref={howDidYouHearAboutUsRef}
+                    />
+                  </div>
                   <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label htmlFor="flags">Flags</Label>
                     <MultiSelect
