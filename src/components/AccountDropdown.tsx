@@ -15,7 +15,13 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { HiAdjustmentsHorizontal, HiArrowRightStartOnRectangle, HiOutlineIdentification } from "react-icons/hi2";
 
-export default function AccountDropdown({ session }: { session?: Session | null }) {
+export default function AccountDropdown({
+  session,
+  tone = "dark",
+}: {
+  session?: Session | null;
+  tone?: "light" | "dark";
+}) {
   const userMeQuery = session?.user ? api.user.me.useQuery() : null;
 
   if (typeof window !== "undefined" && session?.user && !posthog._isIdentified()) {
@@ -30,7 +36,9 @@ export default function AccountDropdown({ session }: { session?: Session | null 
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="mr-1 flex h-full items-center gap-1.5 px-3 py-2 text-base text-gray-300 sm:mr-3"
+          className={`mr-1 flex h-full items-center gap-1.5 px-3 py-2 text-base ${
+            tone === "light" ? "text-gray-800 hover:bg-slate-200! hover:text-gray-900!" : "text-gray-300"
+          } sm:mr-3`}
         >
           <Image
             src={session.user.image?.replace(".gif", ".png") ?? "https://cdn.discordapp.com/embed/avatars/5.png"}
@@ -64,7 +72,11 @@ export default function AccountDropdown({ session }: { session?: Session | null 
       </DropdownMenuContent>
     </DropdownMenu>
   ) : (
-    <Button variant="ghost" className="mr-3 hidden text-base text-gray-300 sm:flex" onClick={() => signIn("discord")}>
+    <Button
+      variant="ghost"
+      className={`mr-3 hidden text-base ${tone === "light" ? "text-gray-800 hover:text-gray-900" : "text-gray-300"} sm:flex`}
+      onClick={() => signIn("discord")}
+    >
       Sign in
     </Button>
   );

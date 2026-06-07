@@ -132,20 +132,7 @@ export default async function Home() {
                     </LiquidGlassButton>
                   </div>
                   <div className="flex flex-col items-center justify-center gap-2">
-                    <div className="text-lg">
-                      {Date.now() < new Date("2025-12-02T01:00:00Z").getTime()
-                        ? "First challenge in:"
-                        : Date.now() < new Date("2025-12-26T01:00:00Z").getTime()
-                          ? "Next challenge in:"
-                          : "Event ends in:"}
-                    </div>
-                    <Countdown
-                      date={
-                        Date.now() < new Date("2025-12-02T01:00:00Z").getTime()
-                          ? new Date("2025-12-02T01:00:00Z")
-                          : "next-challenge"
-                      }
-                    />
+                    <p className="text-gray-400">Event has ended</p>
                   </div>
                 </div>
               </div>

@@ -9,15 +9,15 @@ import { cn } from "~/lib/utils";
 
 const NavigationMenu = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Root>
->(({ className, children, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Root> & { navigationMenuViewportClassName?: string }
+>(({ className, navigationMenuViewportClassName, children, ...props }, ref) => (
   <NavigationMenuPrimitive.Root
     ref={ref}
     className={cn("relative z-10 flex max-w-max flex-1 items-center justify-center", className)}
     {...props}
   >
     {children}
-    <NavigationMenuViewport />
+    <NavigationMenuViewport className={navigationMenuViewportClassName} />
   </NavigationMenuPrimitive.Root>
 ));
 NavigationMenu.displayName = NavigationMenuPrimitive.Root.displayName;
