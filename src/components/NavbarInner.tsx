@@ -4,9 +4,7 @@ import React, { useState } from "react";
 import type { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import wordmark from "../../public/wordmark.svg";
-import wordmarkDark from "../../public/wordmark-dark.svg";
 import NavbarStatus from "~/components/NavbarStatus";
 import { FaDiscord } from "react-icons/fa";
 import AccountDropdown from "~/components/AccountDropdown";
@@ -23,7 +21,6 @@ import {
   NavigationMenuTrigger,
 } from "~/components/ui/navigation-menu";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "~/components/ui/accordion";
-import { XIcon } from "lucide-react";
 
 const LINKS: { name: string; href: string; disabled?: boolean }[] = [
   { name: "Foundation", href: "/foundation" },
@@ -35,16 +32,13 @@ export default function NavbarInner({ session }: { session: Session | null }) {
   // Use Radix Accordion (shadcn wrapper) for smooth open/close animations
   const [adventOpenValue, setAdventOpenValue] = useState<string | undefined>(undefined);
 
-  const pathname = usePathname();
-  const isFoundation = pathname?.startsWith("/foundation");
-  const navTextColor = isFoundation ? "text-gray-900!" : "text-white";
-  const navMutedText = isFoundation ? "text-gray-600" : "text-gray-400";
-  const navHoverText = isFoundation ? "hover:text-cyan-800" : "hover:text-cyan-300";
-  const navHoverBg = isFoundation ? "hover:bg-slate-200" : "hover:bg-gray-800";
-  const navBorderColor = isFoundation ? "border-slate-200" : "border-gray-800";
-  const navDividerColor = isFoundation ? "bg-gray-300" : "bg-white/20";
-  const navAccentBorder = isFoundation ? "border-slate-300" : "border-gray-600";
-  const navTriggerHoverText = isFoundation ? "hover:text-cyan-800" : "hover:text-white";
+  const navTextColor = "text-white";
+  const navMutedText = "text-gray-400";
+  const navHoverText = "hover:text-cyan-300";
+  const navHoverBg = "hover:bg-gray-800";
+  const navBorderColor = "border-gray-800";
+  const navDividerColor = "bg-white/20";
+  const navAccentBorder = "border-gray-600";
 
   // const [alertVisible, setAlertVisible] = useState(false);
 
@@ -106,19 +100,12 @@ export default function NavbarInner({ session }: { session: Session | null }) {
         </div>
       )} */}
       <div
-        className={`sticky top-0 z-30 flex h-14 items-center justify-center border-b px-4 py-2 backdrop-blur-lg ${navBorderColor} ${
-          isFoundation ? "bg-white" : "bg-gray-900/75"
-        } ${navTextColor}`}
+        className={`sticky top-0 z-30 flex h-14 items-center justify-center border-b bg-gray-900/75 px-4 py-2 backdrop-blur-lg ${navBorderColor} ${navTextColor}`}
       >
         <div className="flex w-full max-w-(--breakpoint-2xl) items-center justify-between">
           <div className="flex items-center">
             <Link href="/">
-              <Image
-                src={isFoundation ? wordmarkDark : wordmark}
-                alt="CyberStudents Wordmark"
-                priority
-                className={`h-6 w-auto sm:h-6.5 ${isFoundation ? "" : ""}`}
-              />
+              <Image src={wordmark} alt="CyberStudents Wordmark" priority className="h-6 w-auto sm:h-6.5" />
             </Link>
             <div className="ml-4 hidden items-center xl:flex">
               {LINKS.map(({ name, href, disabled }) =>
@@ -131,7 +118,7 @@ export default function NavbarInner({ session }: { session: Session | null }) {
                           variant="link"
                           asChild
                           className={`text-base hover:no-underline ${navTextColor} ${
-                            !disabled ? navHoverText : isFoundation ? "text-gray-400!" : "text-gray-500!"
+                            !disabled ? navHoverText : "text-gray-500!"
                           }`}
                         >
                           {disabled ? <span>{name}</span> : <Link href={href}>{name}</Link>}
@@ -147,28 +134,22 @@ export default function NavbarInner({ session }: { session: Session | null }) {
                     key={name}
                     variant="link"
                     asChild
-                    className={`text-base hover:no-underline ${isFoundation ? "hover:text-cyan-500!" : "hover:text-cyan-300!"} ${navTextColor}`}
+                    className={`text-base hover:text-cyan-300! hover:no-underline ${navTextColor}`}
                   >
                     {disabled ? <span>{name}</span> : <Link href={href}>{name}</Link>}
                   </Button>
                 ),
               )}
-              <NavigationMenu navigationMenuViewportClassName={isFoundation ? "border-slate-200!" : "border-gray-800!"}>
+              <NavigationMenu navigationMenuViewportClassName="border-gray-800!">
                 <NavigationMenuList>
                   <NavigationMenuItem>
                     <NavigationMenuTrigger
                       triggerMode="click"
-                      className={`bg-transparent! text-base ring-offset-white focus-visible:ring-0 focus-visible:ring-offset-2 focus-visible:outline-hidden ${navTextColor} ${
-                        isFoundation
-                          ? "hover:bg-slate-200! focus-visible:ring-cyan-700"
-                          : "hover:bg-gray-800! focus-visible:ring-gray-300"
-                      }`}
+                      className={`bg-transparent! text-base ring-offset-white hover:bg-gray-800! focus-visible:ring-0 focus-visible:ring-gray-300 focus-visible:ring-offset-2 focus-visible:outline-hidden ${navTextColor}`}
                     >
                       Competitions
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent
-                      className={`${isFoundation ? "bg-white! text-gray-900!" : "border-gray-800! bg-gray-900! text-gray-50!"}`}
-                    >
+                    <NavigationMenuContent className="border-gray-800! bg-gray-900! text-gray-50!">
                       <ul className="flex w-[400px] flex-col gap-1 p-4 md:w-[500px] lg:w-[600px]">
                         <li className="relative">
                           <Accordion
@@ -255,18 +236,14 @@ export default function NavbarInner({ session }: { session: Session | null }) {
             </div>
           </div>
           <div className="flex items-center">
-            <AccountDropdown session={session} tone={isFoundation ? "light" : "dark"} />
+            <AccountDropdown session={session} tone="dark" />
             <div className={`mr-5 hidden h-6 w-px xl:block ${navDividerColor}`} />
             <a
               href="https://discord.com/invite/cyberstudents-916144903686336513"
               target="_blank"
               className="hidden xl:block"
             >
-              <div
-                className={`mr-2 flex items-center font-semibold transition-colors ${
-                  isFoundation ? "text-gray-700 hover:text-gray-900" : "text-gray-300 hover:text-white"
-                }`}
-              >
+              <div className="mr-2 flex items-center font-semibold text-gray-300 transition-colors hover:text-white">
                 <FaDiscord className="mr-2 mb-px h-6 w-6" />
                 <span className="hidden 2xl:block">Join our Discord community</span>
                 <span className="block 2xl:hidden">Discord</span>

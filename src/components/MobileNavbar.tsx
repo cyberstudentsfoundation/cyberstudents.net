@@ -14,7 +14,7 @@ import { signIn } from "next-auth/react";
 
 const LINKS: { name: string; href: string; disabled?: boolean }[] = [
   { name: "Home", href: "/" },
-  { name: "Foundation – Coming Soon", href: "/foundation", disabled: true },
+  { name: "Foundation", href: "/foundation" },
   { name: "Practice – Coming Soon", href: "/practice", disabled: true },
   { name: "Learn – Coming Soon", href: "/learn", disabled: true },
   // { name: "Census", href: "/census", disabled: true },
@@ -107,10 +107,10 @@ export default function MobileNavbar({ session }: { session?: Session | null }) 
               </a>
             </div>
             {!session && (
-              <div className="flex items-center py-2 text-xl" role="button" onClick={() => signIn("discord")}>
+              <button type="button" className="flex items-center py-2 text-xl" onClick={() => signIn("discord")}>
                 <HiUserCircle className="mr-2 h-6! w-6!" />
                 <span>Sign in</span>
-              </div>
+              </button>
             )}
             <div className="mt-2 -ml-2 w-fit">
               <NavbarStatus className="flex" />

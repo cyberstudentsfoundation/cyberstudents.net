@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Card, CardContent } from "~/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "~/components/ui/carousel";
 import { HiArrowUpRight } from "react-icons/hi2";
+import { cn } from "~/lib/utils";
 
 import imgLogicalExclusivity from "~/../public/curated-challenges/logical-exclusivity.png";
 import imgLoneGone from "~/../public/curated-challenges/long-gone.png";
@@ -120,37 +121,71 @@ const challenges = [
   },
 ];
 
-export default function ChallengesCarousel() {
+export default function ChallengesCarousel({ variant = "default" }: { variant?: "default" | "foundation" }) {
+  const isFoundation = variant === "foundation";
+
   return (
-    <Carousel className="w-full">
+    <Carousel className="w-full" opts={{ align: "start" }} aria-label="Past challenge highlights">
       <CarouselContent>
-        {challenges.map((challenge) => (
-          <CarouselItem key={challenge.title} className="w-full basis-auto md:basis-1/2 xl:basis-1/3">
+        {challenges.map((challenge, index) => (
+          <CarouselItem
+            key={challenge.title}
+            className="w-full basis-full md:basis-1/2 xl:basis-1/3"
+            aria-label={`${index + 1} of ${challenges.length}`}
+          >
             <div className="h-full w-full p-1">
-              <Card className="h-full w-full overflow-hidden py-0">
-                <CardContent className="px-0">
-                  <div className="h-52 overflow-hidden">
+              <Card
+                className={cn(
+                  "group h-full w-full overflow-hidden py-0",
+                  isFoundation &&
+                    "gap-0 border-white/10 bg-[#0a101a] text-gray-50 shadow-xl shadow-black/15 transition-colors hover:border-cyan-300/20",
+                )}
+              >
+                <CardContent className="flex h-full flex-col px-0">
+                  <div className={cn("h-52 overflow-hidden", isFoundation && "h-44 sm:h-48")}>
                     <Image
                       src={challenge.image}
                       alt={challenge.alt}
-                      className="h-full w-full object-cover object-top"
+                      className={cn(
+                        "h-full w-full object-cover object-top",
+                        isFoundation && "transition-transform duration-500 motion-safe:group-hover:scale-[1.02]",
+                      )}
                     />
                   </div>
-                  <div className="px-4 py-3">
+                  <div className={cn("px-4 py-3", isFoundation && "flex flex-1 flex-col p-5")}>
                     <div className="group">
-                      <a href={challenge.url} target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={challenge.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="rounded-sm focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-4 focus-visible:ring-offset-[#0a101a] focus-visible:outline-none"
+                      >
                         <div className="float-right h-fit">
-                          <HiArrowUpRight className="mt-1 h-4 w-4 stroke-1 text-gray-400 transition-colors group-hover:text-gray-200" />
+                          <HiArrowUpRight
+                            className={cn(
+                              "mt-1 h-4 w-4 stroke-1 text-gray-400 transition-colors group-hover:text-gray-200",
+                              isFoundation && "text-gray-500 group-hover:text-cyan-200",
+                            )}
+                          />
                         </div>
                         <div className="w-fit">
-                          <h4 className="font-mono text-xs text-gray-400 uppercase">{challenge.source}</h4>
+                          <p
+                            className={cn(
+                              "font-mono text-xs text-gray-400 uppercase",
+                              isFoundation && "tracking-wide text-cyan-300/75",
+                            )}
+                          >
+                            {challenge.source}
+                          </p>
                           <h3 className="mb-2 text-lg font-semibold decoration-gray-400 underline-offset-3 transition-all group-hover:text-gray-200 group-hover:underline">
                             {challenge.title}
                           </h3>
                         </div>
                       </a>
                     </div>
-                    <p className="text-sm text-gray-300">{challenge.description}</p>
+                    <p className={cn("text-sm text-gray-300", isFoundation && "line-clamp-4 leading-6 text-gray-400")}>
+                      {challenge.description}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -158,8 +193,18 @@ export default function ChallengesCarousel() {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious
+        className={cn(
+          isFoundation &&
+            "size-10 border-white/15 bg-[#0a101a] text-gray-200 hover:bg-cyan-200 hover:text-gray-950 disabled:border-white/5 disabled:bg-white/[0.025]",
+        )}
+      />
+      <CarouselNext
+        className={cn(
+          isFoundation &&
+            "size-10 border-white/15 bg-[#0a101a] text-gray-200 hover:bg-cyan-200 hover:text-gray-950 disabled:border-white/5 disabled:bg-white/[0.025]",
+        )}
+      />
     </Carousel>
   );
 }
