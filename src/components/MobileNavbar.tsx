@@ -4,7 +4,6 @@ import { useState } from "react";
 import type { Session } from "next-auth";
 import Link from "next/link";
 import { HiArrowUpRight, HiBars3, HiUserCircle } from "react-icons/hi2";
-import NavbarStatus from "~/components/NavbarStatus";
 import { Button } from "~/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "~/components/ui/sheet";
 import { ScrollArea } from "~/components/ui/scroll-area";
@@ -112,9 +111,6 @@ export default function MobileNavbar({ session }: { session?: Session | null }) 
                 <span>Sign in</span>
               </button>
             )}
-            <div className="mt-2 -ml-2 w-fit">
-              <NavbarStatus className="flex" />
-            </div>
           </div>
         </ScrollArea>
       </SheetContent>

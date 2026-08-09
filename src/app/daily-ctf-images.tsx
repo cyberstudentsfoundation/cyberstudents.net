@@ -15,19 +15,19 @@ export default function DailyCTFImages() {
   }, []);
 
   return (
-    <div className="relative flex w-full flex-col gap-4 md:w-fit md:flex-row lg:items-end">
-      <div className="intersect-once motion-safe:intersect:animate-float1 absolute left-44 top-54 w-44 shadow-xl motion-safe:will-change-transform md:left-auto md:right-104 md:top-32">
+    <div className="relative flex w-full flex-col gap-4 lg:w-fit lg:flex-row lg:items-end">
+      <div className="intersect-once motion-safe:intersect:animate-float1 absolute top-54 right-0 w-36 shadow-xl motion-safe:will-change-transform sm:w-44 lg:top-32 lg:right-104">
         <div className="intersect-once intersect:motion-translate-y-in-50 intersect:motion-opacity-in-[0%] intersect:motion-blur-in-xs intersect:motion-duration-[1.5s]">
           <Image src={dailyCTFRoles} alt="Example of CTF Star roles" className="rounded-lg" />
         </div>
       </div>
-      <div className="w-80">
+      <div className="w-full max-w-80">
         <Image src={dailyCTFLeaderboard} alt="Example of a daily CTF leaderboard" className="rounded-lg" />
       </div>
-      <div className="w-80 pb-6 md:w-96 md:pb-0 lg:w-md lg:pr-20">
+      <div className="w-full max-w-80 pb-6 lg:w-96 lg:max-w-none lg:pb-0 xl:w-md xl:pr-20">
         <Image src={dailyCTFChallenge} alt="Example of a daily CTF challenge" className="rounded-lg" />
       </div>
-      <div className="intersect-once motion-safe:intersect:animate-float2 absolute bottom-0 left-16 w-72 shadow-xl motion-safe:will-change-transform md:-top-5 md:left-auto md:right-4 md:w-80">
+      <div className="intersect-once motion-safe:intersect:animate-float2 absolute right-0 bottom-0 w-3/4 max-w-72 shadow-xl motion-safe:will-change-transform lg:-top-5 lg:right-4 lg:bottom-auto lg:w-80 lg:max-w-none">
         <div className="intersect-once intersect:-motion-translate-y-in-50 intersect:motion-opacity-in-[0%] intersect:motion-blur-in-xs intersect:motion-duration-[1.5s] intersect:motion-delay-[0.5s]">
           <Image src={dailyCTFWriteUp} alt="Example of a CTF write-up" className="rounded-lg" />
         </div>

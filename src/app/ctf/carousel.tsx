@@ -1,8 +1,13 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
+import { Maximize2 } from "lucide-react";
+
 import { Card, CardContent } from "~/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "~/components/ui/carousel";
-import { HiArrowUpRight } from "react-icons/hi2";
 import { cn } from "~/lib/utils";
+import { FullscreenCarouselDialog, type FullscreenCarouselChallenge } from "~/app/ctf/fullscreen-carousel-image";
 
 import imgLogicalExclusivity from "~/../public/curated-challenges/logical-exclusivity.png";
 import imgLoneGone from "~/../public/curated-challenges/long-gone.png";
@@ -22,7 +27,8 @@ const adventURL = (dirName: string) =>
 const challenges = [
   {
     title: "House of Santa Claus",
-    source: "Advent of CTF 2024 · Pwn",
+    source: "Advent of CTF 2024",
+    category: "Binary exploitation",
     description:
       "This advanced challenge has a binary with an off-by-null vulnerability due to incorrect bounds handling in a scanf call. Combined with the lack of zeroing for new allocations, this enables a poison null byte attack to create overlapping chunks. Through manipulating heap metadata, the player can gain arbitrary read/write on 16-bit aligned addresses.",
     image: imgHouseOfSantaClaus,
@@ -31,7 +37,8 @@ const challenges = [
   },
   {
     title: "ELForms",
-    source: "Advent of CTF 2024 · Web",
+    source: "Advent of CTF 2024",
+    category: "Web exploitation",
     description:
       "This challenge has a cross-site request forgery (CSRF) vulnerability in a web application which players had to exploit through the admin bot, while bypassing weak CSRF protections. It requires players to fully understand the application, along with various HTML and HTTP functionalities.",
     image: imgELForms,
@@ -40,7 +47,8 @@ const challenges = [
   },
   {
     title: "help",
-    source: "Advent of CTF 2024 · Pwn",
+    source: "Advent of CTF 2024",
+    category: "Binary exploitation",
     description:
       "This advanced heap exploitation challenge focuses on exploiting heap overflows and arbitrary read/write capabilities to gain code execution. It teaches how to manipulate heap metadata to leak memory addresses, craft fake chunks for arbitrary memory access, and ultimately hijack control flow through libc's exit handlers.",
     image: imgHelp,
@@ -49,7 +57,8 @@ const challenges = [
   },
   {
     title: "trng",
-    source: "Advent of CTF 2024 · Rev",
+    source: "Advent of CTF 2024",
+    category: "Reverse engineering",
     description:
       "This challenge requires players to reverse engineer a binary that includes a pseudo-random number generator (PRNG) function and reverse XOR shift operations.",
     image: imgTrng,
@@ -58,7 +67,8 @@ const challenges = [
   },
   {
     title: "hpjl",
-    source: "Advent of CTF 2024 · Pwn",
+    source: "Advent of CTF 2024",
+    category: "Binary exploitation",
     description:
       "This advanced challenge introduces key concepts in binary exploitation and shellcode execution under tight constraints. It requires creatively leveraging existing register values and memory contents, redirecting execution to a syscall instruction within libc using a ret-based ROP-like strategy.",
     image: imgHpjl,
@@ -67,7 +77,8 @@ const challenges = [
   },
   {
     title: "K.U.N.A.L Consulting",
-    source: "Advent of CTF 2024 · Web",
+    source: "Advent of CTF 2024",
+    category: "Web exploitation",
     description:
       "This challenge has a NoSQL injection vulnerability that allows attackers to bypass authentication by using binary search with regex patterns.",
     image: imgKUNALConsulting,
@@ -76,7 +87,8 @@ const challenges = [
   },
   {
     title: "Disoriented Santa",
-    source: "Advent of CTF 2024 · OSINT",
+    source: "Advent of CTF 2024",
+    category: "OSINT",
     description:
       "This challenge focuses on using open-source maps and metadata like OpenStreetMap with tools such as Overpass Turbo to locate a place in the world given a set of clues.",
     image: imgDisorientedSanta,
@@ -85,7 +97,8 @@ const challenges = [
   },
   {
     title: "Turning Complete",
-    source: "Daily CTF Round 6 · Crypto",
+    source: "Daily CTF Round 6",
+    category: "Cryptography",
     description:
       "This challenge requires players to brute-force an Enigma ciphertext with a known crib, simplified by having no plugboard and fixed settings – only rotor order and start positions need to be tested.",
     image: imgTurningComplete,
@@ -94,7 +107,8 @@ const challenges = [
   },
   {
     title: "Rusty Lock",
-    source: "Advent of CTF 2024 · Rev",
+    source: "Advent of CTF 2024",
+    category: "Reverse engineering",
     description:
       "This challenge is a typical crackme challenge written in Rust that requires players to reverse engineer a password check function.",
     image: imgRustyLock,
@@ -103,7 +117,8 @@ const challenges = [
   },
   {
     title: "long gone",
-    source: "Advent of CTF 2024 · Forensics",
+    source: "Advent of CTF 2024",
+    category: "Forensics",
     description:
       "This challenge introduces the basics of forensic investigation from a Linux disk image using Autopsy, and uses various tools to analyze file systems and recover deleted files.",
     image: imgLoneGone,
@@ -112,99 +127,121 @@ const challenges = [
   },
   {
     title: "Logical Exclusivity",
-    source: "Advent of CTF 2024 · Crypto",
+    source: "Advent of CTF 2024",
+    category: "Cryptography",
     description:
       "This challenge introduces the concepts of Caesar ciphers and XOR operations by combining the two techniques to create a simple encoding scheme.",
     image: imgLogicalExclusivity,
     alt: "Screenshot of CyberChef",
     url: adventURL("Day 01 - Logical Exclusivity"),
   },
-];
+] satisfies readonly FullscreenCarouselChallenge[];
 
-export default function ChallengesCarousel({ variant = "default" }: { variant?: "default" | "foundation" }) {
+export default function ChallengesCarousel({ variant = "default" }: { variant?: "default" | "foundation" | "home" }) {
   const isFoundation = variant === "foundation";
+  const isHome = variant === "home";
+  const [activeChallengeIndex, setActiveChallengeIndex] = useState<number | null>(null);
 
   return (
-    <Carousel className="w-full" opts={{ align: "start" }} aria-label="Past challenge highlights">
-      <CarouselContent>
-        {challenges.map((challenge, index) => (
-          <CarouselItem
-            key={challenge.title}
-            className="w-full basis-full md:basis-1/2 xl:basis-1/3"
-            aria-label={`${index + 1} of ${challenges.length}`}
-          >
-            <div className="h-full w-full p-1">
-              <Card
-                className={cn(
-                  "group h-full w-full overflow-hidden py-0",
-                  isFoundation &&
-                    "gap-0 border-white/10 bg-[#0a101a] text-gray-50 shadow-xl shadow-black/15 transition-colors hover:border-cyan-300/20",
-                )}
+    <>
+      <Carousel className="w-full" opts={{ align: "start" }} aria-label="Past challenge highlights">
+        <CarouselContent>
+          {challenges.map((challenge, index) => (
+            <CarouselItem
+              key={challenge.title}
+              className="w-full basis-full md:basis-1/2 xl:basis-1/3"
+              aria-label={`${index + 1} of ${challenges.length}`}
+            >
+              <button
+                type="button"
+                aria-label={`View ${challenge.title} challenge details`}
+                onClick={() => setActiveChallengeIndex(index)}
+                className="group h-full w-full cursor-pointer p-1 text-left focus-visible:rounded-xl focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:outline-none"
               >
-                <CardContent className="flex h-full flex-col px-0">
-                  <div className={cn("h-52 overflow-hidden", isFoundation && "h-44 sm:h-48")}>
-                    <Image
-                      src={challenge.image}
-                      alt={challenge.alt}
-                      className={cn(
-                        "h-full w-full object-cover object-top",
-                        isFoundation && "transition-transform duration-500 motion-safe:group-hover:scale-[1.02]",
-                      )}
-                    />
-                  </div>
-                  <div className={cn("px-4 py-3", isFoundation && "flex flex-1 flex-col p-5")}>
-                    <div className="group">
-                      <a
-                        href={challenge.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="rounded-sm focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-4 focus-visible:ring-offset-[#0a101a] focus-visible:outline-none"
-                      >
-                        <div className="float-right h-fit">
-                          <HiArrowUpRight
-                            className={cn(
-                              "mt-1 h-4 w-4 stroke-1 text-gray-400 transition-colors group-hover:text-gray-200",
-                              isFoundation && "text-gray-500 group-hover:text-cyan-200",
-                            )}
-                          />
-                        </div>
-                        <div className="w-fit">
-                          <p
-                            className={cn(
-                              "font-mono text-xs text-gray-400 uppercase",
-                              isFoundation && "tracking-wide text-cyan-300/75",
-                            )}
-                          >
-                            {challenge.source}
-                          </p>
-                          <h3 className="mb-2 text-lg font-semibold decoration-gray-400 underline-offset-3 transition-all group-hover:text-gray-200 group-hover:underline">
-                            {challenge.title}
-                          </h3>
-                        </div>
-                      </a>
+                <Card
+                  className={cn(
+                    "h-full w-full overflow-hidden py-0 transition-colors",
+                    isFoundation &&
+                      "gap-0 border-white/10 bg-[#0a101a] text-gray-50 shadow-xl shadow-black/15 group-hover:border-cyan-300/20",
+                    isHome &&
+                      "gap-0 border-slate-200! bg-white! text-slate-950! shadow-sm group-hover:border-cyan-600/25!",
+                  )}
+                >
+                  <CardContent className="flex h-full flex-col px-0">
+                    <div className={cn("relative h-52 overflow-hidden", (isFoundation || isHome) && "h-44 sm:h-48")}>
+                      <Image
+                        src={challenge.image}
+                        alt={challenge.alt}
+                        className={cn(
+                          "h-full w-full object-cover object-top",
+                          (isFoundation || isHome) &&
+                            "transition-transform duration-500 motion-safe:group-hover:scale-[1.02]",
+                        )}
+                      />
+                      <span className="absolute top-3 right-3 flex size-9 items-center justify-center rounded-full border border-white/15 bg-black/65 text-white opacity-100 shadow-lg backdrop-blur-sm transition-opacity sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-visible:opacity-100">
+                        <Maximize2 className="size-4" aria-hidden="true" />
+                      </span>
                     </div>
-                    <p className={cn("text-sm text-gray-300", isFoundation && "line-clamp-4 leading-6 text-gray-400")}>
-                      {challenge.description}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious
-        className={cn(
-          isFoundation &&
-            "size-10 border-white/15 bg-[#0a101a] text-gray-200 hover:bg-cyan-200 hover:text-gray-950 disabled:border-white/5 disabled:bg-white/[0.025]",
-        )}
+                    <div className={cn("px-4 py-3", (isFoundation || isHome) && "flex flex-1 flex-col p-5")}>
+                      <div className="w-fit">
+                        <p
+                          className={cn(
+                            "font-mono text-xs text-gray-400 uppercase",
+                            isFoundation && "tracking-wide text-cyan-300/75",
+                            isHome && "tracking-wide text-cyan-700",
+                          )}
+                        >
+                          {challenge.source} · {challenge.category}
+                        </p>
+                        <h3
+                          className={cn(
+                            "mb-2 text-lg font-semibold transition-colors group-hover:text-gray-200",
+                            isHome && "text-slate-950 group-hover:text-cyan-800",
+                          )}
+                        >
+                          {challenge.title}
+                        </h3>
+                      </div>
+                      <p
+                        className={cn(
+                          "text-sm text-gray-300",
+                          isFoundation && "line-clamp-4 leading-6 text-gray-400",
+                          isHome && "line-clamp-4 leading-6 text-slate-600",
+                        )}
+                      >
+                        {challenge.description}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </button>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious
+          className={cn(
+            isFoundation &&
+              "size-10 border-white/15 bg-[#0a101a] text-gray-200 hover:bg-cyan-200 hover:text-gray-950 disabled:border-white/5 disabled:bg-white/[0.025]",
+            isHome &&
+              "size-10 border-slate-300! bg-white! text-slate-700! hover:border-cyan-700! hover:bg-cyan-700! hover:text-white! disabled:border-slate-200! disabled:bg-slate-100! disabled:text-slate-400!",
+          )}
+        />
+        <CarouselNext
+          className={cn(
+            isFoundation &&
+              "size-10 border-white/15 bg-[#0a101a] text-gray-200 hover:bg-cyan-200 hover:text-gray-950 disabled:border-white/5 disabled:bg-white/[0.025]",
+            isHome &&
+              "size-10 border-slate-300! bg-white! text-slate-700! hover:border-cyan-700! hover:bg-cyan-700! hover:text-white! disabled:border-slate-200! disabled:bg-slate-100! disabled:text-slate-400!",
+          )}
+        />
+      </Carousel>
+
+      <FullscreenCarouselDialog
+        challenges={challenges}
+        activeIndex={activeChallengeIndex}
+        onActiveIndexChange={setActiveChallengeIndex}
+        onClose={() => setActiveChallengeIndex(null)}
       />
-      <CarouselNext
-        className={cn(
-          isFoundation &&
-            "size-10 border-white/15 bg-[#0a101a] text-gray-200 hover:bg-cyan-200 hover:text-gray-950 disabled:border-white/5 disabled:bg-white/[0.025]",
-        )}
-      />
-    </Carousel>
+    </>
   );
 }

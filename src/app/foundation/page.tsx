@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
 const impactStats = [
   { value: "3,000+", label: "community members", icon: Users },
-  { value: "85+", label: "countries represented", icon: Waypoints },
+  { value: "130+", label: "countries represented", icon: Waypoints },
   { value: "25", label: "challenges in our first Advent", icon: Flag },
   { value: "1,850", label: "solves in Advent 2024", icon: Target },
 ] as const;

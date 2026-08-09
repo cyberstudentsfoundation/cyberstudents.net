@@ -5,7 +5,6 @@ import type { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import wordmark from "../../public/wordmark.svg";
-import NavbarStatus from "~/components/NavbarStatus";
 import { FaDiscord } from "react-icons/fa";
 import AccountDropdown from "~/components/AccountDropdown";
 import MobileNavbar from "~/components/MobileNavbar";
@@ -179,7 +178,7 @@ export default function NavbarInner({ session }: { session: Session | null }) {
                                         >
                                           <div className="leading-none font-medium">Advent of CTF 2025</div>
                                           <p className={`line-clamp-2 ${navMutedText}`}>
-                                            <strong>LIVE</strong> now through December 31st - New challenges every day!
+                                            Twenty-five daily challenges, free hints, write-ups, and final leaderboards
                                           </p>
                                         </div>
                                       </Link>
@@ -232,7 +231,6 @@ export default function NavbarInner({ session }: { session: Session | null }) {
                   </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
-              <NavbarStatus />
             </div>
           </div>
           <div className="flex items-center">

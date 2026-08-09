@@ -336,7 +336,7 @@ export default function CTF() {
             <div className="flex w-full items-center gap-3 text-left md:w-49 md:flex-col md:items-center md:gap-2 md:text-center">
               <h2 className="w-[5.7425rem] text-right text-2xl font-bold md:text-center md:text-3xl">800+</h2>
               <p className="max-w-60 text-gray-300">
-                players from <strong>85+</strong> countries in past competitions
+                players from <strong>130+</strong> countries in past competitions
               </p>
             </div>
           </div>
