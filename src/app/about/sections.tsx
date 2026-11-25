@@ -121,7 +121,7 @@ const REPOS: {
   featured?: boolean;
 }[] = [
   {
-    name: "csd-web",
+    name: "cyberstudents.net",
     text: "The website you're reading and the Advent of CTF platform behind it, from the challenge browser to the leaderboards and the admin dashboard.",
     language: "TypeScript",
     license: "Apache-2.0",
@@ -164,7 +164,7 @@ const FEATURES = [
   "Write-ups and a public flag checker",
 ];
 
-// Counted from the repositories on 2026-11-23: TypeScript lines under src/ in csd-web, tRPC procedures under
+// Counted from the repositories on 2026-11-23: TypeScript lines under src/ in cyberstudents.net, tRPC procedures under
 // src/server, and challenge folders in Advent-of-CTF (2024) and csd-ctf (six rounds).
 const CODE_FIGURES = [
   { value: "20,000+", label: "Lines of TypeScript in this site" },

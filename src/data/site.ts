@@ -13,7 +13,7 @@ export const site = {
     adventWriteUps: "https://github.com/cyberstudentsfoundation/Advent-of-CTF",
     dailyCtfArchive: "https://github.com/cyberstudentsfoundation/csd-ctf",
     dailyCtfBot: "https://github.com/cyberstudentsfoundation/cyberstudents-ctf",
-    website: "https://github.com/cyberstudentsfoundation/csd-web",
+    website: "https://github.com/cyberstudentsfoundation/cyberstudents.net",
   },
 };
 
