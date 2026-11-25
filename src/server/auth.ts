@@ -1,4 +1,5 @@
 import { getServerSession, type DefaultSession, type NextAuthOptions } from "next-auth";
+import { unstable_rethrow } from "next/navigation";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { db } from "~/server/db";
 import DiscordProvider from "next-auth/providers/discord";
@@ -33,6 +34,7 @@ export const authOptions: NextAuthOptions = {
     DiscordProvider({
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,
+      issuer: "https://discord.com",
     }),
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
@@ -75,4 +77,28 @@ export const authOptions: NextAuthOptions = {
  *
  * @see https://next-auth.js.org/configuration/nextjs
  */
-export const getServerAuthSession = () => getServerSession(authOptions);
+/**
+ * Whether sign-in can work on this deployment. A deployment without the auth secret, the Discord OAuth app, or a
+ * database (such as a fresh Vercel project) hides the Sign in buttons instead of sending visitors to an error.
+ */
+export const authEnabled = Boolean(
+  process.env.NEXTAUTH_SECRET && process.env.DISCORD_CLIENT_ID && process.env.DATABASE_URL,
+);
+
+export const getServerAuthSession = async () => {
+  // Nothing to look up without the secret, the OAuth app, or a database, and NextAuth would log NO_SECRET on every page.
+  if (!authEnabled) return null;
+  // If the session can't be read (the database is unreachable, or a deployment has no NEXTAUTH_SECRET yet), treat
+  // the visitor as signed out instead of failing the whole page. This fails closed: protected routes see no session.
+  try {
+    return await getServerSession(authOptions);
+  } catch (error) {
+    // Let Next.js's own control-flow errors (dynamic rendering, redirects) through untouched.
+    unstable_rethrow(error);
+    console.error(
+      "[auth] session lookup failed, treating as signed out:",
+      error instanceof Error ? error.message : error,
+    );
+    return null;
+  }
+};

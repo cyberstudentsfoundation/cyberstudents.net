@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
-import LiquidGlassButton from "~/components/LiquidGlassButton";
 import { Tooltip, TooltipTrigger, TooltipContent } from "~/components/ui/tooltip";
 
 export const metadata: Metadata = {
@@ -90,17 +89,10 @@ export default function AdventLayout({ children }: { children: React.ReactNode }
               size="sm"
               variant="link"
               asChild
-              className="px-1.5 text-base hover:text-cyan-300 hover:no-underline sm:hidden sm:px-3"
+              className="px-1.5 text-base hover:text-cyan-300 hover:no-underline sm:px-3"
             >
-              <Link href="/advent/2025/register">Register</Link>
+              <Link href="/advent/2025/register">Rules</Link>
             </Button>
-            <LiquidGlassButton
-              href="/advent/2025/register"
-              className="text-base"
-              linkClassName="px-3 sm:px-4 ml-2 py-1 rounded-xl hidden sm:flex"
-            >
-              Register
-            </LiquidGlassButton>
           </div>
           {/* <div className="flex items-center">
           <AccountDropdown session={session} />

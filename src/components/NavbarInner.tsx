@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import type { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,7 +9,10 @@ import { FaDiscord } from "react-icons/fa";
 import AccountDropdown from "~/components/AccountDropdown";
 import MobileNavbar from "~/components/MobileNavbar";
 import { Button } from "~/components/ui/button";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui-old/tooltip2";
+import { ADVENT_LINKS, NAV_LINKS } from "~/components/nav-links";
+import { site } from "~/data/site";
+import { cn } from "~/lib/utils";
+import { useAdventYearRoute } from "~/components/route-gutters";
 
 import {
   NavigationMenu,
@@ -19,271 +22,86 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "~/components/ui/navigation-menu";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "~/components/ui/accordion";
 
-const LINKS: { name: string; href: string; disabled?: boolean }[] = [
-  { name: "Foundation", href: "/foundation" },
-  { name: "Learn", href: "/learn", disabled: true },
-  { name: "Practice", href: "/gym/challenges", disabled: true },
-] as const;
-
-export default function NavbarInner({ session }: { session: Session | null }) {
-  // Use Radix Accordion (shadcn wrapper) for smooth open/close animations
-  const [adventOpenValue, setAdventOpenValue] = useState<string | undefined>(undefined);
-
-  const navTextColor = "text-white";
-  const navMutedText = "text-gray-400";
-  const navHoverText = "hover:text-cyan-300";
-  const navHoverBg = "hover:bg-gray-800";
-  const navBorderColor = "border-gray-800";
-  const navDividerColor = "bg-white/20";
-  const navAccentBorder = "border-gray-600";
-
-  // const [alertVisible, setAlertVisible] = useState(false);
-
-  // useEffect(() => {
-  //   // localStorage alert dismissed check
-  //   const dismissedAlertValue = localStorage.getItem("dismissed-alert");
-  //   if (dismissedAlertValue !== "2025-12-14-security-notice") {
-  //     setAlertVisible(true);
-  //   }
-  // }, []);
-
+export default function NavbarInner({ session, authEnabled }: { session: Session | null; authEnabled: boolean }) {
+  // Narrow gutters on the Advent year pages (their own bar sits right below this one), Wide's gutters elsewhere.
+  const adventYear = useAdventYearRoute();
   return (
-    <>
-      {/* {alertVisible && (
-        <div id="alert" className="w-full bg-yellow-500/30 py-4">
-          <div className="mx-auto w-full max-w-(--breakpoint-2xl) pr-4 pl-4">
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <div className="mb-2 sm:mb-1">
-                  <span className="text-sm font-semibold tracking-wide text-yellow-300/90 uppercase">
-                    Security Notice
-                  </span>
-                  <button
-                    title="Close alert"
-                    className="float-right cursor-pointer sm:hidden"
-                    onClick={() => {
-                      localStorage.setItem("dismissed-alert", "2025-12-14-security-notice");
-                      setAlertVisible(false);
-                    }}
-                  >
-                    <XIcon className="h-5 w-5 transition-all hover:opacity-75" />
-                  </button>
-                </div>
-                <p className="mb-2 sm:mb-0">
-                  <strong>A third-party vulnerability caused temporary redirects to a spam/phishing site</strong> on Dec
-                  13&ndash;14. Your data is still secure; no actions are required by you.
-                </p>
-                <p>
-                  If you interacted with the spam/phishing site or wish to learn more, please read the announcement in
-                  our{" "}
-                  <a href="https://discord.gg/PQsJqzVT52" target="_blank" className="underline">
-                    Discord server
-                  </a>
-                  .
-                </p>
-              </div>
-              <button
-                title="Close alert"
-                className="hidden cursor-pointer sm:block"
-                onClick={() => {
-                  localStorage.setItem("dismissed-alert", "2025-12-14-security-notice");
-                  setAlertVisible(false);
-                }}
-              >
-                <XIcon className="h-5 w-5 transition-all hover:opacity-75" />
-              </button>
-            </div>
-          </div>
-        </div>
-      )} */}
+    <div className="sticky top-0 z-30 flex h-14 items-center justify-center border-b border-gray-800 bg-gray-900/75 py-2 text-white backdrop-blur-lg">
       <div
-        className={`sticky top-0 z-30 flex h-14 items-center justify-center border-b bg-gray-900/75 px-4 py-2 backdrop-blur-lg ${navBorderColor} ${navTextColor}`}
+        className={cn(
+          "flex w-full max-w-(--breakpoint-2xl) items-center justify-between",
+          adventYear ? "px-4" : "px-4 sm:px-8 md:px-10 xl:px-20",
+        )}
       >
-        <div className="flex w-full max-w-(--breakpoint-2xl) items-center justify-between">
-          <div className="flex items-center">
-            <Link href="/">
-              <Image src={wordmark} alt="CyberStudents Wordmark" priority className="h-6 w-auto sm:h-6.5" />
-            </Link>
-            <div className="ml-4 hidden items-center xl:flex">
-              {LINKS.map(({ name, href, disabled }) =>
-                disabled ? (
-                  <TooltipProvider key={name} delayDuration={0}>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          key={name}
-                          variant="link"
-                          asChild
-                          className={`text-base hover:no-underline ${navTextColor} ${
-                            !disabled ? navHoverText : "text-gray-500!"
-                          }`}
-                        >
-                          {disabled ? <span>{name}</span> : <Link href={href}>{name}</Link>}
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p className={`text-sm font-semibold text-gray-200`}>Coming Soon</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                ) : (
-                  <Button
-                    key={name}
-                    variant="link"
-                    asChild
-                    className={`text-base hover:text-cyan-300! hover:no-underline ${navTextColor}`}
+        <div className="flex items-center">
+          <Link href="/">
+            <Image src={wordmark} alt="CyberStudents" priority className="h-6 w-auto sm:h-6.5" />
+          </Link>
+          <div className="ml-4 hidden items-center lg:flex">
+            <NavigationMenu navigationMenuViewportClassName="border-gray-800!">
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger
+                    triggerMode="click"
+                    className="bg-transparent! text-base text-white ring-offset-white hover:bg-gray-800! focus-visible:ring-0 focus-visible:ring-gray-300 focus-visible:ring-offset-2 focus-visible:outline-hidden"
                   >
-                    {disabled ? <span>{name}</span> : <Link href={href}>{name}</Link>}
-                  </Button>
-                ),
-              )}
-              <NavigationMenu navigationMenuViewportClassName="border-gray-800!">
-                <NavigationMenuList>
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger
-                      triggerMode="click"
-                      className={`bg-transparent! text-base ring-offset-white hover:bg-gray-800! focus-visible:ring-0 focus-visible:ring-gray-300 focus-visible:ring-offset-2 focus-visible:outline-hidden ${navTextColor}`}
-                    >
-                      Competitions
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent className="border-gray-800! bg-gray-900! text-gray-50!">
-                      <ul className="flex w-[400px] flex-col gap-1 p-4 md:w-[500px] lg:w-[600px]">
-                        <li className="relative">
-                          <Accordion
-                            type="single"
-                            collapsible
-                            value={adventOpenValue}
-                            onValueChange={(v) => setAdventOpenValue((v ?? undefined) as string | undefined)}
-                          >
-                            <AccordionItem value="advent" className="border-0">
-                              <AccordionTrigger
-                                className={`rounded-md p-0 pr-2 hover:no-underline ${navHoverBg} ${navTextColor}`}
-                              >
-                                <div className="w-full cursor-pointer px-4 py-3 text-left transition-all">
-                                  <div className="mb-1 leading-none font-medium">Advent of CTF</div>
-                                  <p className={`line-clamp-2 ${navMutedText}`}>
-                                    Solve daily beginner-friendly challenges every December
-                                  </p>
-                                </div>
-                              </AccordionTrigger>
-                              <AccordionContent className="pb-1">
-                                <ul className="ml-3 flex flex-col">
-                                  <li>
-                                    <NavigationMenuLink asChild>
-                                      <Link href="/advent/2025" passHref>
-                                        <div
-                                          className={`rounded-tr-md rounded-br-md border-l-2 px-4 py-2 transition-all ${navHoverBg} ${navTextColor} ${navAccentBorder}`}
-                                        >
-                                          <div className="leading-none font-medium">Advent of CTF 2025</div>
-                                          <p className={`line-clamp-2 ${navMutedText}`}>
-                                            Twenty-five daily challenges, free hints, write-ups, and final leaderboards
-                                          </p>
-                                        </div>
-                                      </Link>
-                                    </NavigationMenuLink>
-                                  </li>
-                                  <li>
-                                    <NavigationMenuLink asChild>
-                                      <Link href="/advent/2024" passHref>
-                                        <div
-                                          className={`rounded-tr-md rounded-br-md border-l-2 px-4 py-2 transition-all ${navHoverBg} ${navTextColor} ${navAccentBorder}`}
-                                        >
-                                          <div className="leading-none font-medium">Advent of CTF 2024</div>
-                                          <p className={`line-clamp-2 ${navMutedText}`}>
-                                            Our inaugural Advent of CTF event hosted in December 2024
-                                          </p>
-                                        </div>
-                                      </Link>
-                                    </NavigationMenuLink>
-                                  </li>
-                                </ul>
-                              </AccordionContent>
-                            </AccordionItem>
-                          </Accordion>
-                        </li>
-
-                        <li>
+                    Advent of CTF
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent className="border-gray-800! bg-gray-900! text-gray-50!">
+                    <ul className="flex w-[400px] flex-col gap-1 p-3">
+                      {ADVENT_LINKS.map(({ name, href, description }) => (
+                        <li key={href}>
                           <NavigationMenuLink asChild>
-                            <Link href="/ctf" passHref>
-                              <div className={`rounded-md px-4 py-3 transition-all ${navHoverBg}`}>
-                                <div className="mb-1 leading-none font-medium">CSD CTF</div>
-                                <p className={`line-clamp-2 ${navMutedText}`}>
-                                  Our premier weekend-long CTF competition hosted every summer
-                                </p>
-                              </div>
+                            <Link
+                              href={href}
+                              className="block rounded-md px-4 py-3 transition-colors hover:bg-gray-800"
+                            >
+                              <div className="mb-1 leading-none font-medium">{name}</div>
+                              <p className="line-clamp-2 text-sm text-gray-400">{description}</p>
                             </Link>
                           </NavigationMenuLink>
                         </li>
-                        <li>
-                          <a href="https://discord.com/invite/cyberstudents-916144903686336513" target="_blank">
-                            <div className={`rounded-md px-4 py-3 transition-all ${navHoverBg}`}>
-                              <div className="mb-1 leading-none font-medium">Daily CTF</div>
-                              <p className={`line-clamp-2 ${navMutedText}`}>
-                                Practice with community challenges every day with monthly rounds
-                              </p>
-                            </div>
-                          </a>
-                        </li>
-                      </ul>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
-            </div>
+                      ))}
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+            {NAV_LINKS.map(({ name, href }) => (
+              <Button
+                key={href}
+                variant="link"
+                asChild
+                className="text-base text-white hover:text-cyan-300! hover:no-underline"
+              >
+                <Link href={href}>{name}</Link>
+              </Button>
+            ))}
           </div>
-          <div className="flex items-center">
-            <AccountDropdown session={session} tone="dark" />
-            <div className={`mr-5 hidden h-6 w-px xl:block ${navDividerColor}`} />
-            <a
-              href="https://discord.com/invite/cyberstudents-916144903686336513"
-              target="_blank"
-              className="hidden xl:block"
-            >
-              <div className="mr-2 flex items-center font-semibold text-gray-300 transition-colors hover:text-white">
-                <FaDiscord className="mr-2 mb-px h-6 w-6" />
-                <span className="hidden 2xl:block">Join our Discord community</span>
-                <span className="block 2xl:hidden">Discord</span>
-              </div>
-            </a>
-            <MobileNavbar session={session} />
-          </div>
+        </div>
+        <div className="flex items-center">
+          {authEnabled && (
+            <>
+              <AccountDropdown session={session} tone="dark" />
+              <div className="mr-5 hidden h-6 w-px bg-white/20 lg:block" />
+            </>
+          )}
+          {/* The full label fits from 1280 px up (a 14 inch MacBook is about 1512 px wide); below that the links
+              share the bar with it, so it shortens instead of wrapping. */}
+          <a
+            href={site.discord}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden items-center gap-2 rounded-lg bg-[#5865f2] px-3 py-1.5 font-semibold whitespace-nowrap text-white transition-colors hover:bg-[#4752c4] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300 lg:flex"
+          >
+            <FaDiscord className="size-5 shrink-0" aria-hidden="true" />
+            <span className="hidden xl:inline">Join our Discord community</span>
+            <span className="xl:hidden">Join our Discord</span>
+          </a>
+          <MobileNavbar session={session} authEnabled={authEnabled} />
         </div>
       </div>
-    </>
+    </div>
   );
 }
-
-const ListItem = React.forwardRef<
-  React.ComponentRef<"a">,
-  React.ComponentPropsWithoutRef<"a"> & { external?: boolean; disabled?: boolean }
->(({ title, children, href, external, disabled, ...props }, ref) => {
-  return (
-    <li>
-      {disabled ? (
-        <div className="rounded-md px-4 py-3">
-          <div className="mb-1 leading-none font-medium text-gray-500">{title}</div>
-          <p className="line-clamp-2 text-gray-500">{children}</p>
-        </div>
-      ) : external ? (
-        <a ref={ref as unknown as React.Ref<HTMLAnchorElement>} href={href!} target="_blank" {...props}>
-          <div className="rounded-md px-4 py-3 transition-all hover:bg-gray-800">
-            <div className="mb-1 leading-none font-medium">{title}</div>
-            <p className="line-clamp-2 text-gray-400">{children}</p>
-          </div>
-        </a>
-      ) : (
-        <NavigationMenuLink asChild>
-          <Link ref={ref as unknown as React.Ref<HTMLAnchorElement>} href={href!} {...props} passHref>
-            <div className="rounded-md px-4 py-3 transition-all hover:bg-gray-800">
-              <div className="mb-1 leading-none font-medium">{title}</div>
-              <p className="line-clamp-2 text-gray-400">{children}</p>
-            </div>
-          </Link>
-        </NavigationMenuLink>
-      )}
-    </li>
-  );
-});
-ListItem.displayName = "ListItem";

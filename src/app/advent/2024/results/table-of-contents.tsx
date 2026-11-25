@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 
 const SECTIONS = [
-  { id: "a-note-on-the-delay-of-prizes", title: "A note on the delay of prizes" },
   { id: "final-leaderboard-high-school-college-division", title: "Final leaderboard: High School/College Division" },
   { id: "final-leaderboard-open-write-up-division", title: "Final leaderboard: Open - Write-Up Division" },
   { id: "format", title: "Format" },

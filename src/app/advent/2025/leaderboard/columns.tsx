@@ -31,7 +31,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
       );
     },
     cell: ({ row }) => {
-      const { id, name, displayName, linkedin, image } = row.original;
+      const { id, displayName, linkedin, image } = row.original;
 
       if (!linkedin?.startsWith("/") && !linkedin?.endsWith("/") && linkedin?.includes("/")) {
         console.warn(`Invalid LinkedIn username for user ${displayName} (${id}): ${linkedin}`);
@@ -45,10 +45,10 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
             src={image?.replace(".gif", ".png") ?? "https://cdn.discordapp.com/embed/avatars/5.png"}
             width={64}
             height={64}
-            alt={`Profile Picture for ${displayName || name}`}
+            alt={`Profile Picture for ${displayName}`}
             className="h-6 w-6 rounded-full"
           />
-          <span className="max-w-52 truncate text-gray-200">{displayName || name}</span>
+          <span className="max-w-52 truncate text-gray-200">{displayName}</span>
           {cleanedLinkedin && (
             <a
               href={`https://linkedin.com/in/${cleanedLinkedin}`}

@@ -364,3 +364,67 @@
     clip-path: polygon(0 0, 100% 0, 0 100%);
   }
 }
+
+/* Homepage motion (src/app/_home, src/components/PhraseTransitions.tsx). */
+@keyframes phrase-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.35em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes progress-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes tile-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes confetti {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  55% {
+    opacity: 1;
+    transform: translate(var(--dx), var(--dy)) rotate(calc(var(--r) * 0.6));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(var(--dx) * 1.15), calc(var(--dy) + 240px)) rotate(var(--r));
+  }
+}
+
+@keyframes demo-ripple {
+  from {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.6);
+  }
+}
+
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -22;
+  }
+}

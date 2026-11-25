@@ -1,17 +1,8 @@
-import { getServerAuthSession } from "~/server/auth";
-import { api } from "~/trpc/server";
-import RegisterForm from "./form";
 import { HiExclamationCircle } from "react-icons/hi2";
 import { Alert, AlertTitle, AlertDescription } from "~/components/ui/alert";
 import Link from "next/link";
 
 export default async function Register() {
-  const session = await getServerAuthSession();
-
-  let user = null;
-  if (session?.user) {
-    user = await api.user.me();
-  }
 
   return (
     <main className="mx-4">
@@ -195,7 +186,13 @@ export default async function Register() {
               </div>
             </div>
             <div className="flex w-full max-w-prose justify-center xl:sticky xl:top-24 xl:max-w-xl xl:self-start">
-              <RegisterForm session={session} user={user} />
+              <div className="py-8 text-gray-200">
+                <h2 className="mb-4 text-2xl font-bold">Registration is closed</h2>
+                <p>
+                  Advent of CTF 2024 ended on December 31, 2024. You don&rsquo;t need an account to open the challenges
+                  or check a flag.
+                </p>
+              </div>
             </div>
           </div>
         </div>

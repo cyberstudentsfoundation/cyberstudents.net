@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import NounCat from "~/../public/noun-cat-7700924.svg";
 import NounCatBow from "~/../public/noun-cat-7700924-bow.svg";
-import { getServerAuthSession } from "~/server/auth";
+import { authEnabled, getServerAuthSession } from "~/server/auth";
 import { Separator } from "~/components/ui/separator";
 import SignInOutButton from "./sign-in-out-button";
 
@@ -58,8 +58,12 @@ export default async function NotFound() {
             >
               Discord
             </a>
-            <Separator orientation="vertical" className="mx-4 h-6 w-px bg-gray-600 dark:bg-gray-600" />
-            <SignInOutButton session={session} />
+            {authEnabled && (
+              <>
+                <Separator orientation="vertical" className="mx-4 h-6 w-px bg-gray-600 dark:bg-gray-600" />
+                <SignInOutButton session={session} />
+              </>
+            )}
           </div>
         </div>
       </div>

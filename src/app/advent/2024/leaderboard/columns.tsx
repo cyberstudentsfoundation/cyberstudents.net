@@ -30,7 +30,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
       );
     },
     cell: ({ row }) => {
-      const { name, image } = row.original;
+      const { displayName: name, image } = row.original;
 
       return (
         <div className="flex items-center gap-2 py-1">

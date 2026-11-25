@@ -1,58 +1,50 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Transition } from "@headlessui/react";
-import { Button } from "~/components/ui/button";
 import { HiArrowPath } from "react-icons/hi2";
 
 const phraseList = ["students", "teachers", "professionals", "together"];
+const LAST = phraseList.length - 1;
 
+/**
+ * "with students" → "with teachers" → "with professionals" → "together".
+ *
+ * Each phrase is a fresh element (keyed by index) whose CSS animation starts from opacity 0 with
+ * `animation-fill-mode: both`, so the new word is never painted at full opacity before its entrance runs. The
+ * previous version toggled Headless UI transitions on always-mounted spans, which let the incoming word flash for a
+ * frame. The restart button is positioned outside the text flow so it does not push the centred line off centre.
+ */
 export default function PhraseTransitions() {
-  const [currentPhrase, setCurrentPhrase] = useState(0);
+  const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (currentPhrase < phraseList.length - 1) {
-        setCurrentPhrase(currentPhrase + 1);
-      } else {
-        clearInterval(interval);
-      }
-    }, 2500);
+    if (current >= LAST) return;
+    // 1.6 s per phrase (was 2.5 s). The entrance animation takes 0.7 s of that.
+    const id = window.setTimeout(() => setCurrent((c) => c + 1), 1600);
+    return () => window.clearTimeout(id);
+  }, [current]);
 
-    return () => clearInterval(interval);
-  }, [currentPhrase]);
+  const done = current === LAST;
 
   return (
-    <>
-      <span>
-        <Transition show={currentPhrase !== 3} className={`inline-block transition-all`} as={"div"}>
-          with&nbsp;
-        </Transition>
-        {phraseList.map((phrase, index) => (
-          <span key={phrase}>
-            <Transition
-              show={currentPhrase === index}
-              className={`inline-block text-cyan-300 transition-all motion-safe:will-change-transform ${currentPhrase !== index ? "hidden" : ""}`}
-              enter="transition duration-700 transform"
-              enterFrom="motion-safe:opacity-0 motion-safe:-translate-y-10"
-              enterTo="motion-safe:opacity-100 motion-safe:translate-y-0"
-              as={"div"}
-            >
-              {phrase}
-            </Transition>
-          </span>
-        ))}
-      </span>
-      <Button
-        size="icon"
-        variant="ghost"
-        className={`ml-2 h-8 w-8 rounded-full text-gray-300 opacity-0 transition-opacity duration-300 hover:bg-white/10! focus-visible:opacity-100 group-hover:opacity-100 ${currentPhrase !== 3 ? "opacity-0!" : ""}`}
-        disabled={currentPhrase !== 3}
-        title="Restart animation"
-        onClick={() => setCurrentPhrase(0)}
+    <span className="relative inline-block whitespace-nowrap">
+      {!done && <span>with&nbsp;</span>}
+      <span
+        key={current}
+        className="inline-block text-cyan-300 motion-safe:animate-[phrase-in_700ms_cubic-bezier(0.2,0.7,0.2,1)_both]"
       >
-        <HiArrowPath className="h-4 w-4" />
-      </Button>
-    </>
+        {phraseList[current]}
+      </span>
+      <button
+        type="button"
+        title="Restart animation"
+        aria-label="Restart animation"
+        disabled={!done}
+        onClick={() => setCurrent(0)}
+        className="absolute top-1/2 left-full ml-2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full font-sans text-gray-300 opacity-0 transition-opacity duration-300 group-hover:opacity-100 hover:bg-white/10 focus-visible:opacity-100 disabled:pointer-events-none disabled:opacity-0!"
+      >
+        <HiArrowPath className="size-4" aria-hidden="true" />
+      </button>
+    </span>
   );
 }

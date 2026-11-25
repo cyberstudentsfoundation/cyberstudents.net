@@ -1,9 +1,9 @@
 import React from "react";
-import Markdoc, { renderers } from "@markdoc/markdoc";
+import Markdoc, { renderers, type Config } from "@markdoc/markdoc";
 import Alert from "~/components/Alert";
 import { cn } from "~/lib/utils";
 
-const config = {
+const config: Config = {
   tags: {
     alert: {
       render: "Alert",

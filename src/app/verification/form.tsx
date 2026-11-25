@@ -335,7 +335,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                       required
                     />
                   </div>
-                  {/* {isTJHSST ? (
+                  {isTJHSST ? (
                     <div className="rounded-md border border-gray-700 bg-gray-800 p-4">
                       <p className="mb-2">
                         We have detected your institution as:
@@ -368,7 +368,7 @@ export default function VerificationForm({ session }: { session: Session | null 
                         Please contact GodderE2D for questions regarding this experimental feature.
                       </p>
                     </div>
-                  ) : null} */}
+                  ) : null}
                   <div className="grid w-full items-center gap-1.5">
                     <Label htmlFor="country" className="text-base">
                       School or university year

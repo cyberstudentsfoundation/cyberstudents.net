@@ -1,6 +1,7 @@
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
-import { redirect } from "next/navigation";
+import { logDbFallback } from "~/lib/advent-fallback";
+import { ArchiveUnavailable } from "../../archive-unavailable";
 import Challenges from "./challenges";
 import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
 import Banner from "../banner";
@@ -8,16 +9,14 @@ import Banner from "../banner";
 export default async function Register() {
   const session = await getServerAuthSession();
 
-  // Uncomment for next event
-  // 11/29/25: honestly, let logged out people preview challenges & even download links
-  // just no instanced challenges ofc, and no hints so we encourage them to sign up
-
-  if (!session?.user) redirect("/advent/2025/register?showError=true");
-
-  const { events } = await api.user.me();
-  if (!events.includes("aoc2025")) redirect("/advent/2025/register?showError=true");
-
-  const eventChallenges = await api.challenge.fetch({ event: "aoc2025", fetchExtended: !!session?.user }); // change back to  for next event
+  // Both Advent events have ended, so challenges are open to everyone (the router allows anonymous extended
+  // fetches once eventEnd has passed). To gate a live event again, redirect unregistered users here.
+  // Without a reachable database, show a short notice instead of an error page.
+  const eventChallenges = await api.challenge.fetch({ event: "aoc2025", fetchExtended: true }).catch((e: unknown) => {
+    logDbFallback("advent/2025/challenges", e);
+    return null;
+  });
+  if (!eventChallenges) return <ArchiveUnavailable year={2025} />;
 
   // let user = null;
   // if (session?.user) {

@@ -31,6 +31,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Badge } from "~/components/ui/badge";
+import { CommunityWriteUps } from "~/app/advent/community-write-ups";
 
 const CATEGORY_COLOR_MAP: Record<string, string> = {
   "Web exploitation": "blue",
@@ -75,10 +76,14 @@ export default function Challenges({
   const [focusedChallenge, setFocusedChallenge] = useState<string | null>(initialChallengeId);
 
   const submitFlagMutation = api.challenge.submitFlag.useMutation();
+  const checkFlagMutation = api.challenge.checkFlag.useMutation();
+
+  // After the event ends anyone can check flags (nothing is recorded) and the user's rank stops changing.
+  const eventEnded = !!eventChallenges && new Date(eventChallenges.eventEnd).getTime() < Date.now();
 
   const getLeaderboardQuery = api.event.getLeaderboard.useQuery(
     { event: "aoc2024", onlyShowCurrentUser: true },
-    { refetchInterval: 10_000 },
+    { enabled: !!session?.user, refetchInterval: eventEnded ? false : 10_000 },
   );
 
   const [writeUpsShown, setWriteUpsShown] = useState<string[]>([]);
@@ -237,10 +242,12 @@ export default function Challenges({
                                         }
                                         width={128}
                                         height={128}
-                                        alt={`Profile Picture for ${attempt.user.name}`}
+                                        alt={`Profile Picture for ${attempt.user.displayName}`}
                                         className="h-5 w-5 rounded-full"
                                       />
-                                      <span className="max-w-32 truncate text-gray-200">{attempt.user.name}</span>
+                                      <span className="max-w-32 truncate text-gray-200">
+                                        {attempt.user.displayName}
+                                      </span>
                                     </td>
                                     <td className="pr-4 text-gray-400">
                                       {dayjs(attempt.solvedAt.getTime()).format("M/DD h:mm a")}
@@ -339,7 +346,13 @@ export default function Challenges({
                       <div className="mt-8 text-gray-400 lg:mt-0">
                         <h2 className="mb-1.5 flex items-center gap-1.5 text-lg font-bold text-gray-400">
                           <HiFlag className="h-5 w-5" />
-                          <span>{challenge.challengeAttempt?.solvedAt ? "Re-check flag" : "Submit flag"}</span>
+                          <span>
+                            {eventEnded
+                              ? "Check a flag"
+                              : challenge.challengeAttempt?.solvedAt
+                                ? "Re-check flag"
+                                : "Submit flag"}
+                          </span>
                         </h2>
                         <form
                           className="flex w-full gap-3 rounded-md bg-gray-700 px-3 py-2"
@@ -349,6 +362,24 @@ export default function Challenges({
                             const input = document.getElementById(`submit-flag-${challenge.id}`) as HTMLInputElement;
 
                             if (!input.value?.trim()) return;
+
+                            if (eventEnded) {
+                              try {
+                                const correct = await checkFlagMutation.mutateAsync({
+                                  challenge: challenge.id,
+                                  flag: input.value,
+                                });
+
+                                if (correct) toast.success("That flag is correct.", { position: "top-center" });
+                                else toast.error("Sorry, that flag is incorrect.", { position: "top-center" });
+                              } catch (error) {
+                                toast.error(error instanceof Error ? error.message : "Could not check that flag.", {
+                                  position: "top-center",
+                                });
+                              }
+
+                              return;
+                            }
                             const oldIsSolved = !!challenge.challengeAttempt?.solvedAt;
 
                             const result = await submitFlagMutation.mutateAsync(
@@ -384,20 +415,29 @@ export default function Challenges({
                             key={challenge.id}
                             id={`submit-flag-${challenge.id}`}
                             required
-                            disabled={!challenge.submissionsEnabled}
+                            disabled={!eventEnded && !challenge.submissionsEnabled}
                             placeholder={
-                              challenge.submissionsEnabled ? "csd{FLAG}" : "Flag submissions are temporarily disabled."
+                              eventEnded || challenge.submissionsEnabled
+                                ? "csd{FLAG}"
+                                : "Flag submissions are temporarily disabled."
                             }
                             className="border-0 bg-gray-700 font-mono text-gray-200"
                           />
                           <Button
                             type="submit"
-                            disabled={!challenge.submissionsEnabled || !session?.user}
+                            disabled={
+                              eventEnded ? checkFlagMutation.isPending : !challenge.submissionsEnabled || !session?.user
+                            }
                             className="min-w-20 bg-gray-200 text-gray-800 hover:bg-gray-200/80"
                           >
-                            {challenge.challengeAttempt?.solvedAt ? "Check" : "Submit"}
+                            {eventEnded || challenge.challengeAttempt?.solvedAt ? "Check" : "Submit"}
                           </Button>
                         </form>
+                        {eventEnded && (
+                          <p className="mt-2 text-sm text-gray-400">
+                            This event has ended. Anyone can check a flag here, but no points are awarded.
+                          </p>
+                        )}
                         <div className="mt-4 flex items-center gap-1.5 text-sm">
                           <HiOutlineChatBubbleLeftRight className="h-5 w-5 shrink-0 text-gray-400" />
                           <span>
@@ -463,6 +503,7 @@ export default function Challenges({
                             </p>
                           )}
                         </div>
+                        <CommunityWriteUps year={2024} title={challenge.title} publishDate={challenge.publishDate} />
                       </div>
                     )}
                   </div>

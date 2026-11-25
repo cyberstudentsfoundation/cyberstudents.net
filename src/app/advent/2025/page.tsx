@@ -2,6 +2,7 @@ import { HiChevronLeft, HiOutlineAcademicCap, HiOutlineLifebuoy, HiOutlineTrophy
 // import { getServerAuthSession } from "~/server/auth";
 import Link from "next/link";
 import { api } from "~/trpc/server";
+import { logDbFallback, previewFallback } from "~/lib/advent-fallback";
 import Image from "next/image";
 import icsred from "~/../public/icsred.png";
 import Countdown from "~/components/Countdown";
@@ -12,7 +13,7 @@ import { LuBinary } from "react-icons/lu";
 import { BiNetworkChart } from "react-icons/bi";
 import wordmark from "~/../public/wordmark.svg";
 import { HiArrowRight, HiArrowUpRight } from "react-icons/hi2";
-import ChallengesCarousel from "~/app/ctf/carousel";
+import ChallengesCarousel from "./carousel";
 import LiquidGlassButton from "~/components/LiquidGlassButton";
 import CustomSnowfall from "./custom-snowfall";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
@@ -46,6 +47,7 @@ import {
 import SnowBackground from "~/app/advent/2025/snow-background";
 import Banner from "./banner";
 import ctftimeLogo from "~/../public/ctftime-logo.png";
+import { frameworkCategories, frameworkNames, type FrameworkKind } from "~/data/frameworks";
 import verialabsLogo from "~/../public/verialabs.png";
 import ctfguideLogo from "~/../public/ctfguide.png";
 import apisecLogo from "~/../public/apisec.png";
@@ -68,6 +70,48 @@ import pfp_godder from "~/../public/staff-pfps/decidueye.png";
 import pfp_vipin from "~/../public/staff-pfps/vipin_atl.png";
 import pfp_vy from "~/../public/staff-pfps/vy.png";
 import pfp_wjaaaaaaat from "~/../public/staff-pfps/wjaaaaaaat.png";
+
+const CATEGORY_STYLES: Record<
+  string,
+  { icon: React.ComponentType<{ className?: string }>; color: string; borderColor: string }
+> = {
+  "Web exploitation": {
+    icon: CgBrowser,
+    color: "bg-blue-500/10 text-blue-500 border-blue-500/20",
+    borderColor: "border-blue-500/35!",
+  },
+  "Reverse engineering": {
+    icon: FaGear,
+    color: "bg-pink-500/10 text-pink-500 border-pink-500/20",
+    borderColor: "border-pink-500/35!",
+  },
+  "Binary exploitation": {
+    icon: LuBinary,
+    color: "bg-red-500/10 text-red-500 border-red-500/20",
+    borderColor: "border-red-500/35!",
+  },
+  Forensics: {
+    icon: FaMagnifyingGlassChart,
+    color: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
+    borderColor: "border-yellow-500/35!",
+  },
+  Cryptography: {
+    icon: FaTableCellsRowLock,
+    color: "bg-lime-500/10 text-lime-500 border-lime-500/20",
+    borderColor: "border-lime-500/35!",
+  },
+  Miscellaneous: {
+    icon: BiNetworkChart,
+    color: "bg-purple-500/10 text-purple-500 border-purple-500/20",
+    borderColor: "border-purple-500/35!",
+  },
+};
+
+const ALIGNMENT_COLORS: Record<FrameworkKind, string> = {
+  nice: "bg-sky-500/10! text-sky-500!",
+  mitre: "bg-orange-500/10! text-orange-500!",
+  ap: "bg-green-500/10! text-green-500!",
+};
 
 const CHALLENGE_DEVELOPERS = [
   {
@@ -115,279 +159,21 @@ export default async function Advent2025() {
     { name: "OSINT", icon: <BiNetworkChart className="h-6 w-6" /> },
   ];
 
-  const ctfCategories = [
-    {
-      name: "Web exploitation",
-      icon: CgBrowser,
-      description:
-        "Find and exploit vulnerabilities in web applications, such as SQL injection, cross-site scripting (XSS), and more.",
-      color: "bg-blue-500/10 text-blue-500 border-blue-500/20",
-      borderColor: "border-blue-500/35!",
-      alignments: [
-        { name: "PR-VAM", description: "Vulnerability Assessment (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        { name: "PR-CDA", description: "Cybersecurity Defense Analysis (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        { name: "SP-DEV", description: "Software Development (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        { name: "SP-TST", description: "Test and Evaluation (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        // { name: "SP-SYS", description: "Systems Development (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        {
-          name: "T1190",
-          description: "Exploit Public-Facing Application (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "T1505.003",
-          description: "Server Software Component: Web Shell (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "T1071.001",
-          description: "Application Layer Protocol: Web Protocols (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        // {
-        //   name: "T1105",
-        //   description: "Ingress Tool Transfer (MITRE ATT&CK)",
-        //   color: "bg-orange-500/10! text-orange-500!",
-        // },
-        {
-          name: "AP-1.A",
-          description: "Identify vulnerabilities, threats, and attack methods (AP® Cybersecurity)",
-          color: "bg-green-500/10! text-green-500!",
-        },
-        {
-          name: "AP-1.B",
-          description: "Determine how adversaries exploit vulnerabilities (AP® Cybersecurity)",
-          color: "bg-green-500/10! text-green-500!",
-        },
-        {
-          name: "AP-1.C",
-          description: "Evaluate the likelihood and impact of risks (AP® Cybersecurity)",
-          color: "bg-green-500/10! text-green-500!",
-        },
-      ],
-    },
-    {
-      name: "Reverse engineering",
-      icon: FaGear,
-      description:
-        "Analyze and reverse engineer binaries and other source code to understand their functionality, find vulnerabilities, and exploit them.",
-      color: "bg-pink-500/10 text-pink-500 border-pink-500/20",
-      borderColor: "border-pink-500/35!",
-      alignments: [
-        { name: "AN-EXP", description: "Exploitation Analysis (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        { name: "SP-DEV", description: "Software Development (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        { name: "SP-TST", description: "Test and Evaluation (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        { name: "SP-TRD", description: "Technology R&D (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        {
-          name: "T1059",
-          description: "Command and Scripting Interpreter (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "T1106",
-          description: "Native API (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "T1027",
-          description: "Obfuscated Files or Information (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "T1204",
-          description: "User Execution (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "AP-1.B",
-          description: "Determine how adversaries exploit vulnerabilities to compromise assets (AP® Cybersecurity)",
-          color: "bg-green-500/10! text-green-500!",
-        },
-        {
-          name: "AP-3.B",
-          description: "Determine strategies and methods to detect attacks (AP® Cybersecurity)",
-          color: "bg-green-500/10! text-green-500!",
-        },
-      ],
-    },
-    {
-      name: "Binary exploitation",
-      icon: LuBinary,
-      description:
-        "Identify and exploit vulnerabilities in compiled binaries, such as buffer overflows, format string vulnerabilities, and more.",
-      color: "bg-red-500/10 text-red-500 border-red-500/20",
-      borderColor: "border-red-500/35!",
-      alignments: [
-        { name: "AN-EXP", description: "Exploitation Analysis (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        { name: "PR-VAM", description: "Vulnerability Assessment (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        { name: "SP-ARC", description: "Systems Architecture (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        { name: "SP-TST", description: "Test and Evaluation (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        { name: "SP-SYS", description: "Systems Development (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        {
-          name: "T1548",
-          description: "Abuse Elevation Control Mechanism (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "T1055",
-          description: "Process Injection (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "T1068",
-          description: "Exploitation for Privilege Escalation (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "T1203",
-          description: "Exploitation for Client Execution (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "AP-1.B",
-          description: "Determine how adversaries exploit vulnerabilities (AP® Cybersecurity)",
-          color: "bg-green-500/10! text-green-500!",
-        },
-        {
-          name: "AP-2.B",
-          description: "Determine layered security controls that mitigate vulnerabilities (AP® Cybersecurity)",
-          color: "bg-green-500/10! text-green-500!",
-        },
-      ],
-    },
-    {
-      name: "Forensics",
-      icon: FaMagnifyingGlassChart,
-      description:
-        "Analyze digital evidence, such as memory dumps, disk images, and network traffic, to uncover hidden information and artifacts.",
-      color: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
-      borderColor: "border-yellow-500/35!",
-      alignments: [
-        { name: "IN-FOR", description: "Digital Forensics (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        { name: "IN-INV", description: "Cyber Investigation (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        { name: "PR-CDA", description: "Cybersecurity Defense Analysis (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        {
-          name: "T1005",
-          description: "Data from Local System (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "T1036",
-          description: "Masquerading (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "T1082",
-          description: "System Information Discovery (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "T1049",
-          description: "System Network Connections Discovery (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "AP-3.A",
-          description: "Identify methods for monitoring systems and detecting attacks (AP® Cybersecurity)",
-          color: "bg-green-500/10! text-green-500!",
-        },
-        {
-          name: "AP-3.D",
-          description: "Detect and classify cyberattacks by analyzing digital evidence (AP® Cybersecurity)",
-          color: "bg-green-500/10! text-green-500!",
-        },
-      ],
-    },
-    {
-      name: "Cryptography",
-      icon: FaTableCellsRowLock,
-      description:
-        "Solve challenges related to cryptographic algorithms and implementations, including encryption, decryption, and key management.",
-      color: "bg-lime-500/10 text-lime-500 border-lime-500/20",
-      borderColor: "border-lime-500/35!",
-      alignments: [
-        { name: "SP-DEV", description: "Software Development (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        { name: "SP-ARC", description: "Systems Architecture (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        { name: "SP-TRD", description: "Technology R&D (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        { name: "SP-RSK", description: "Risk Management (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        {
-          name: "T1573.001",
-          description: "Symmetric Cryptography (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "T1573.002",
-          description: "Asymmetric Cryptography (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "T1486",
-          description: "Data Encrypted for Impact (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "T1027",
-          description: "Obfuscated Files or Information (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "AP-2.A",
-          description: "Identify security controls and explain how they mitigate risks (AP® Cybersecurity)",
-          color: "bg-green-500/10! text-green-500!",
-        },
-        {
-          name: "AP-2.C",
-          description: "Evaluate the impact of protective risk-management strategies (AP® Cybersecurity)",
-          color: "bg-green-500/10! text-green-500!",
-        },
-      ],
-    },
-    {
-      name: "Miscellaneous",
-      icon: BiNetworkChart,
-      description:
-        "A diverse category that includes more creative challenges, such as open-source intelligence (OSINT), jails, blue-team OS images, and more.",
-      color: "bg-purple-500/10 text-purple-500 border-purple-500/20",
-      borderColor: "border-purple-500/35!",
-      alignments: [
-        { name: "AN-TWA", description: "Threat Analysis (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        { name: "AN-ASA", description: "All-Source Analysis (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        { name: "PR-CDA", description: "Cybersecurity Defense Analysis (NICE)", color: "bg-sky-500/10! text-sky-500!" },
-        {
-          name: "T1595",
-          description: "Active Scanning (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "T1596",
-          description: "Search Open Websites/Domains (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "T1598",
-          description: "Phishing for Information (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "T1087",
-          description: "Account Discovery (MITRE ATT&CK)",
-          color: "bg-orange-500/10! text-orange-500!",
-        },
-        {
-          name: "AP-4.A",
-          description: "Develop clear, shared team objectives for a cybersecurity task (AP® Cybersecurity)",
-          color: "bg-green-500/10! text-green-500!",
-        },
-        {
-          name: "AP-1.A",
-          description: "Identify vulnerabilities, threats, and attack methods (AP® Cybersecurity)",
-          color: "bg-green-500/10! text-green-500!",
-        },
-      ],
-    },
-  ];
+  const ctfCategories = frameworkCategories.map((category) => ({
+    ...category,
+    ...CATEGORY_STYLES[category.name]!,
+    alignments: category.alignments.map((a) => ({
+      name: a.kind === "ap" ? `AP-${a.code}` : a.code,
+      description: `${a.title} (${frameworkNames[a.kind]})`,
+      color: ALIGNMENT_COLORS[a.kind],
+    })),
+  }));
 
-  const eventChallenges = await api.challenge.fetchPreview({ event: "aoc2025" });
+  // Falls back to src/data if the database is unreachable, so the page still renders (see src/lib/advent-fallback.ts).
+  const eventChallenges = await api.challenge.fetchPreview({ event: "aoc2025" }).catch((e: unknown) => {
+    logDbFallback("advent/2025", e);
+    return previewFallback("aoc2025");
+  });
 
   return (
     <main className="">
@@ -411,9 +197,10 @@ export default async function Advent2025() {
                   advent of ctf<span className="ml-5 font-sans font-light text-cyan-300">2025</span>
                 </h1>
                 <p className="mt-8 text-lg">
-                  We&rsquo;re back with our second annual Advent of CTF! Every day from December 1st to 25th, solve
-                  beginner-oriented gamified cybersecurity challenges for free. Get familiar with capture the flag
-                  competitions and cyber concepts from a wide range of popular categories.
+                  Our second annual Advent of CTF ran from December 1 to 31, 2025, with new beginner-oriented challenges
+                  coming out daily until the 25th. All 24 challenges are still open to play for free, no account needed.
+                  Get familiar with capture the flag competitions and cyber concepts from a wide range of popular
+                  categories.
                 </p>
                 <ul className="mt-8 mb-8 text-lg">
                   <li className="mb-6">
@@ -459,11 +246,15 @@ export default async function Advent2025() {
               </p> */}
                 <div className="flex flex-col items-center gap-8 sm:flex-row sm:gap-4">
                   <div className="flex w-full flex-col items-center sm:items-start">
-                    <LiquidGlassButton href="/advent/2025/register" className="flex items-center gap-1 text-lg">
-                      Register
+                    <LiquidGlassButton href="/advent/2025/challenges" className="flex items-center gap-1 text-lg">
+                      Browse the challenges
                       <HiArrowRight className="ml-0.5 h-3 w-3 stroke-1" />
                     </LiquidGlassButton>
-                    <div className="mt-2 w-fit text-sm text-gray-300">Registration is open through 12/31.</div>
+                    <div className="mt-2 w-fit text-sm text-gray-300">
+                      <Link href="/advent/2025/leaderboard" className="underline underline-offset-3 hover:text-white">
+                        Final leaderboard
+                      </Link>
+                    </div>
                   </div>
                   {/* <div className="shrink-0">
                     <p className="mb-1 text-center text-gray-200 sm:text-left">Sponsored by:</p>
@@ -723,18 +514,18 @@ export default async function Advent2025() {
               <h2 className="mb-1 font-mono font-medium tracking-wider text-cyan-300 uppercase">
                 Over $12,000 worth of prizes
               </h2>
-              <h1 className="mb-4 text-3xl font-bold">Compete in three divisions</h1>
+              <h1 className="mb-4 text-3xl font-bold">Four divisions</h1>
               <p className="mb-4 text-lg">
-                Advent of CTF will feature a Student Division and a High School Division with prizes exclusive for
-                students, along with an Open Division and Write-Up Division for everyone.
+                Advent of CTF 2025 had a College Division and a High School Division with prizes exclusive for students,
+                along with an Open Division and Write-Up Division for everyone.
               </p>
               <p className="mb-2 text-lg">
-                We also have a raffle for all participants who solve at least one challenge to win up to{" "}
+                There was also a raffle for all participants who solved at least one challenge to win up to{" "}
                 <strong>$5,000</strong> worth of APIsec certifications!
               </p>
               <p className="text-sm text-gray-400">
-                Prizes are subject to change. Players may not claim prizes from multiple divisions. See the registration
-                page for full details. ASCP, CASA, and ACP are certifications offered by APIsec University.
+                Players could not claim prizes from multiple divisions. See the rules page for full details. ASCP, CASA,
+                and ACP are certifications offered by APIsec University.
               </p>
               {/* <div className="mt-8 flex h-full w-full items-center justify-center rounded-xl border-2 border-dashed border-gray-700 px-2 py-4 text-gray-400">
                 Interested in&nbsp;
@@ -1045,8 +836,8 @@ export default async function Advent2025() {
                 <p className="text-lg">
                   Advent of CTF features a wide range of challenges of varying difficulties across six of the most
                   popular, practical, and relevant categories within cybersecurity. These categories reflect those
-                  present in other CTFs and practical training environments. Regardless of your skill level, we promise
-                  that there will be something for you to learn and enjoy this holiday season.
+                  present in other CTFs and practical training environments. Whatever your skill level, there is
+                  something here for you to learn from.
                 </p>
               </div>
               <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
@@ -1113,8 +904,7 @@ export default async function Advent2025() {
                                     >
                                       AP® Cybersecurity
                                     </a>
-                                    . CyberStudents Learn will use these alignments in the future to develop
-                                    supplementary learning materials and resources for each topic.
+                                    .
                                   </span>
                                   <span className="mt-4 block">
                                     Hover over each alignment on desktop for more information.
@@ -1151,8 +941,8 @@ export default async function Advent2025() {
             <div className="mx-auto mb-16 w-full max-w-3xl md:text-center">
               <h1 className="mb-2 text-3xl font-bold">Our past competitions</h1>
               <p className="text-lg">
-                We&rsquo;ve hosted many competitions directed to students and beginners over the last three years.
-                Explore our past competitions and challenges to learn more and practice your skills.
+                We&rsquo;ve hosted competitions for students and beginners since 2024. Explore our past competitions and
+                challenges to learn more and practice your skills.
               </p>
             </div>
             <div className="mb-32 grid grid-flow-row grid-cols-1 gap-x-9 gap-y-16 sm:grid-cols-2 xl:grid-cols-3 xl:gap-y-24">
@@ -1163,9 +953,8 @@ export default async function Advent2025() {
                   </div>
                   <h2 className="mb-2 text-2xl font-bold">Advent of CTF 2024</h2>
                   <p className="mb-4 text-lg">
-                    Last December, we hosted the same month-long beginner-friendly CTF competition with challenges
-                    released daily and US$280 up for grabs. We&rsquo;re excited to bring new challenges and prizes for
-                    you this year!
+                    In December 2024, we hosted our first month-long beginner-friendly CTF competition with challenges
+                    released daily and US$280 up for grabs. 780 players from 85 countries took part.
                   </p>
                   <Button className="bg-gray-100 text-base hover:bg-gray-300" asChild>
                     <Link href="/advent/2024/results">
@@ -1261,7 +1050,7 @@ export default async function Advent2025() {
                         <br />
                         prizes sponsored by
                       </p>
-                      <Link href="/advent/2024/results#a-note-on-the-delay-of-prizes">
+                      <Link href="/advent/2024/results">
                         <Image src={icsred} alt="ICSRED Logo" className="h-32 w-32 rounded-lg opacity-70" />
                       </Link>
                     </div>
@@ -1307,10 +1096,7 @@ export default async function Advent2025() {
             <div className="flex max-w-(--breakpoint-2xl) flex-col items-center gap-10 overflow-x-hidden px-4 py-16 sm:px-8 md:px-10 xl:px-20">
               <div className="mx-auto flex w-full max-w-4xl flex-col sm:text-center">
                 <h1 className="mb-4 text-3xl font-bold">Discover past CTF challenges</h1>
-                <p className="mb-4 text-lg">
-                  Get a taste of some of the challenges you&rsquo;ll come across in Advent of CTF this year from our
-                  past competitions.
-                </p>
+                <p className="mb-4 text-lg">A few challenges from our past competitions, with write-ups.</p>
                 <div className="flex flex-col justify-center gap-4 sm:flex-row sm:items-center">
                   <Button className="bg-gray-100 hover:bg-gray-300" asChild>
                     <a href="https://github.com/cyberstudentsacademy/Advent-of-CTF" target="_blank">
@@ -1368,16 +1154,15 @@ export default async function Advent2025() {
               </p>
             </div>
             <div className="flex w-full flex-col items-start lg:self-stretch">
-              <h2 className="mb-1 font-mono font-medium tracking-wider text-cyan-300 uppercase">
-                CyberStudents Foundation
-              </h2>
+              <h2 className="mb-1 font-mono font-medium tracking-wider text-cyan-300 uppercase">CyberStudents</h2>
               <h1 className="mb-4 text-3xl font-bold">Our vision</h1>
               <p className="mb-4 text-base sm:text-lg">
-                Advent of CTF challenges, along with all of our other challenges, will be archived and available for
-                free forever in our Gym for aspiring players, teams, and educators to practice and learn from. These
-                challenges are designed to be aligned with educational curriculums and frameworks, and will be
-                integrated into our platform as practical, supplemental, and engaging materials alongside various styles
-                of labs.
+                Advent of CTF challenges, along with all of our other challenges, stay available for free in our{" "}
+                <Link href="/challenges" className="underline underline-offset-3 hover:text-cyan-300">
+                  challenge archive
+                </Link>{" "}
+                for players, teams, and educators to practice and learn from. Each category is aligned with educational
+                frameworks so the challenges can be used alongside coursework.
               </p>
               <p className="mb-4 text-base sm:text-lg">
                 Our goal is to streamline the process of learning cybersecurity skills (and related concepts) for
@@ -1413,8 +1198,8 @@ export default async function Advent2025() {
             {/* <div className="mb-16 flex items-center justify-center text-gray-300">and more&hellip;</div> */}
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <Button className="bg-gray-100 text-base hover:bg-gray-300" asChild>
-                <Link href="/advent/2025/register">
-                  Register
+                <Link href="/advent/2025/challenges">
+                  Browse the challenges
                   <HiArrowRight className="mb-0.5 stroke-1" />
                 </Link>
               </Button>
@@ -1428,8 +1213,7 @@ export default async function Advent2025() {
                   <span>Discord</span>
                 </Button>
               </a>
-              {/* TODO: change to actual event link */}
-              <a href="https://ctftime.org/ctf/1218" target="_blank">
+              <a href="https://ctftime.org/event/3022" target="_blank" rel="noopener noreferrer">
                 <Button
                   tabIndex={-1}
                   className="flex w-full items-center bg-[#e3000b]! text-base text-gray-200! hover:bg-[#e3000b]/70!"

@@ -45,12 +45,13 @@ export default function AdventLayout({ children }: { children: React.ReactNode }
               <HiOutlineMegaphone className="h-5 w-5 stroke-2" />
               <AlertTitle>Advent of CTF 2024 has ended; thank you for playing!</AlertTitle>
               <AlertDescription className="mt-2 text-gray-300">
-                See final leaderboards, prizes, write-ups, statistics, and a note on the delay of prizes in{" "}
+                All challenges are still open, and anyone can check a flag. See final leaderboards, prizes, write-ups
+                and statistics in{" "}
                 <Link
                   className="font-semibold underline transition-all hover:text-cyan-300"
                   href="/advent/2024/results"
                 >
-                  <span>this article.</span>
+                  <span>the results article.</span>
                 </Link>
               </AlertDescription>
             </Alert>

@@ -8,11 +8,13 @@
  */
 
 import { initTRPC, TRPCError } from "@trpc/server";
+import { revalidateTag } from "next/cache";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
+import { VISITOR_CACHE_TAG } from "~/server/visitor-cache";
 
 /**
  * 1. CONTEXT
@@ -107,7 +109,7 @@ export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
   });
 });
 
-export const adminProcedure = t.procedure.use(async ({ ctx, next }) => {
+export const adminProcedure = t.procedure.use(async ({ ctx, next, type }) => {
   if (!ctx.session?.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
@@ -121,5 +123,8 @@ export const adminProcedure = t.procedure.use(async ({ ctx, next }) => {
     throw new TRPCError({ code: "FORBIDDEN" });
   }
 
-  return next({ ctx });
+  const result = await next({ ctx });
+  // Admin edits change challenges, write-ups, and users, so signed-out visitors should see them right away.
+  if (type === "mutation" && result.ok) revalidateTag(VISITOR_CACHE_TAG);
+  return result;
 });

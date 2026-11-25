@@ -1,5 +1,7 @@
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
+import { logDbFallback } from "~/lib/advent-fallback";
+import { ArchiveUnavailable } from "../../archive-unavailable";
 // import { redirect } from "next/navigation";
 import Challenges from "./challenges";
 import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
@@ -14,7 +16,12 @@ export default async function Register() {
   // const { events } = await api.user.me();
   // if (!events.includes("aoc2024")) redirect("/advent/2024/register?showError=true");
 
-  const eventChallenges = await api.challenge.fetch({ event: "aoc2024", fetchExtended: true }); // change back to !!session?.user for next event
+  // Without a reachable database, show a short notice instead of an error page.
+  const eventChallenges = await api.challenge.fetch({ event: "aoc2024", fetchExtended: true }).catch((e: unknown) => {
+    logDbFallback("advent/2024/challenges", e);
+    return null;
+  });
+  if (!eventChallenges) return <ArchiveUnavailable year={2024} />;
 
   // let user = null;
   // if (session?.user) {

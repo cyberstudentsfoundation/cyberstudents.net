@@ -1,10 +1,9 @@
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { writeFile } from "node:fs/promises";
-import { createHash } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { verificationSubmitSchema } from "~/lib/schemas";
 import { env } from "~/env";
-import cuid from "cuid";
 import { sendNotification } from "~/server/send-notification";
 
 export const verificationRouter = createTRPCRouter({
@@ -29,7 +28,8 @@ export const verificationRouter = createTRPCRouter({
       throw new TRPCError({ message: "Invalid birthdate", code: "FORBIDDEN" });
     }
 
-    const id = cuid();
+    // A random UUID: unguessable, unlike the old cuid package (deprecated as insecure).
+    const id = randomUUID();
 
     let idFileName: string | null = null;
 

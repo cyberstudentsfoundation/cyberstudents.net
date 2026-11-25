@@ -45,6 +45,11 @@ export const submitFlagSchema = z.object({
   flag: z.string(),
 });
 
+export const checkFlagSchema = z.object({
+  challenge: z.string().max(64),
+  flag: z.string().max(200),
+});
+
 export const getLeaderboardSchema = z.object({
   event: z.string(),
   onlyShowCurrentUser: z.boolean(),

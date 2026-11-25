@@ -1,5 +1,5 @@
 import React from "react";
-import { getServerAuthSession } from "~/server/auth";
+import { authEnabled, getServerAuthSession } from "~/server/auth";
 import NavbarInner from "~/components/NavbarInner";
 
 // const components: { title: string; href: string; description: string; external?: boolean; disabled?: boolean }[] = [
@@ -22,7 +22,8 @@ import NavbarInner from "~/components/NavbarInner";
 // ];
 
 export default async function Navbar() {
-  const session = await getServerAuthSession();
+  // A database outage must not take down every page: fall back to the signed-out navbar.
+  const session = await getServerAuthSession().catch(() => null);
 
-  return <NavbarInner session={session} />;
+  return <NavbarInner session={session} authEnabled={authEnabled} />;
 }

@@ -41,16 +41,14 @@ export default async function Register() {
               </h1>
               <div className="prose prose-gray prose-invert">
                 <p>
-                  Advent of CTF 2025 has ended. Thank you to everyone who participated! A full post detailing challenges
-                  and statistics will be published soon.
+                  Advent of CTF 2025 has ended. Thank you to everyone who participated! All challenges are still open to
+                  play, and anyone can check a flag on the <a href="/advent/2025/challenges">challenges page</a>.
                 </p>
                 <hr />
                 <p>
-                  This event will run from <strong>December 1, 2025 8:00 PM</strong> to{" "}
-                  <strong>December 31, 2025 11:59 PM</strong> (EST). You can register anytime before the event ends.
-                </p>
-                <p>
-                  <strong>The following competition guidelines are subject to change ahead of the event.</strong>
+                  This event ran from <strong>December 1, 2025 8:00 PM</strong> to{" "}
+                  <strong>December 31, 2025 11:59 PM</strong> (EST). The rules below are kept as they were during the
+                  event.
                 </p>
                 <h2>Challenges</h2>
                 <p>
@@ -213,19 +211,19 @@ export default async function Register() {
                       <td rowSpan={3}>Write-Up</td>
                       <td>Best well-written</td>
                       <td>
-                        <strong>$25</strong> + CASA, ACP (APIsec) + CTFGuide Pro (3 mo)
+                        <strong>$75</strong> + CASA, ACP (APIsec)
                       </td>
                     </tr>
                     <tr>
                       <td className="ps-[0.5714286em]">Best technical</td>
                       <td>
-                        <strong>$25</strong> + CASA, ACP (APIsec) + CTFGuide Pro (3 mo)
+                        <strong>$75</strong> + CASA, ACP (APIsec)
                       </td>
                     </tr>
                     <tr>
                       <td className="ps-[0.5714286em]">Best unintended solution</td>
                       <td>
-                        <strong>$25</strong> + CASA, ACP (APIsec) + CTFGuide Pro (3 mo)
+                        <strong>$75</strong> + CASA, ACP (APIsec)
                       </td>
                     </tr>
                     <tr>
@@ -407,7 +405,18 @@ export default async function Register() {
                 thumbClassName="dark:bg-gray-600"
               >
                 <a id="form" className="scroll-mt-26" />
-                <RegisterForm session={session} user={user} />
+                {session ? (
+                  <RegisterForm session={session} user={user} />
+                ) : (
+                  <div className="py-8 text-gray-200">
+                    <h2 className="mb-4 text-2xl font-bold">Registration is closed</h2>
+                    <p className="mb-4">
+                      Advent of CTF 2025 ended on December 31, 2025. You don&rsquo;t need an account to open the
+                      challenges or check a flag.
+                    </p>
+                    <p>Registered players can still sign in from the menu to update their leaderboard display name.</p>
+                  </div>
+                )}
                 {/* <h1 className="mt-8 mb-4 text-2xl font-bold">Registration</h1>
                 <Alert className="my-2 bg-red-500/50! text-gray-100! dark:bg-red-500">
                   <HiExclamationCircle className="h-5 w-5" />

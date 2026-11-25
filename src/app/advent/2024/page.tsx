@@ -2,6 +2,7 @@ import { HiOutlineAcademicCap, HiOutlineLifebuoy, HiOutlineTrophy } from "react-
 // import { getServerAuthSession } from "~/server/auth";
 import Link from "next/link";
 import { api } from "~/trpc/server";
+import { logDbFallback, previewFallback } from "~/lib/advent-fallback";
 import Image from "next/image";
 import icsred from "~/../public/icsred.png";
 import Countdown from "~/components/Countdown";
@@ -19,7 +20,11 @@ export default async function Advent2024() {
   //   user = await api.user.me();
   // }
 
-  const eventChallenges = await api.challenge.fetchPreview({ event: "aoc2024" });
+  // Falls back to src/data if the database is unreachable, so the page still renders (see src/lib/advent-fallback.ts).
+  const eventChallenges = await api.challenge.fetchPreview({ event: "aoc2024" }).catch((e: unknown) => {
+    logDbFallback("advent/2024", e);
+    return previewFallback("aoc2024");
+  });
 
   return (
     <main className="mx-4">
@@ -87,7 +92,7 @@ export default async function Advent2024() {
                 </div>
                 <div className="flex items-center gap-4">
                   <p className="text-gray-400">Sponsored by</p>
-                  <Link href="/advent/2024#a-note-on-the-delay-of-prizes">
+                  <Link href="/advent/2024/results">
                     <Image src={icsred} alt="ICSRED Logo" className="h-32 w-32 rounded-lg opacity-70" />
                   </Link>
                 </div>

@@ -17,12 +17,10 @@ const config = {
         permanent: true,
       },
 
-      // 1. EXACT /advent → /advent/2025
-      {
-        source: "/advent",
-        destination: "/advent/2025",
-        permanent: false,
-      },
+      // Retired pages (2026 overhaul)
+      { source: "/foundation", destination: "/about", permanent: false },
+      { source: "/ctf", destination: "/advent", permanent: false },
+      { source: "/ctf/:path*", destination: "/advent", permanent: false },
 
       // 2. ONLY redirect specific subroutes to /advent/2024/*
       {
@@ -69,6 +67,13 @@ const config = {
         protocol: "https",
         hostname: "*.googleusercontent.com",
         port: "",
+      },
+      {
+        // YouTube thumbnails for community write-up videos (src/data/writeups.ts)
+        protocol: "https",
+        hostname: "i.ytimg.com",
+        port: "",
+        pathname: "/vi/**",
       },
     ],
   },

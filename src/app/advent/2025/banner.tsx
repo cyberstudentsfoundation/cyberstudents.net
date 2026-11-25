@@ -13,17 +13,15 @@ export default function Banner({ className, rootClassName }: { className?: strin
         )}
       >
         <HiOutlineMegaphone className="h-5 w-5 stroke-2" />
-        <AlertTitle>Advent of CTF 2025 has ended; thank you for playing!</AlertTitle>
+        <AlertTitle>Advent of CTF 2025 ended on December 31, 2025. Thank you for playing!</AlertTitle>
         <AlertDescription className="mt-2 text-gray-300">
-          Winners and prizes will be announced soon pending verification. Write-up submissions will open shortly here
-          and in our{" "}
-          <a
+          All challenges are still open, and anyone can check a flag. See the{" "}
+          <Link
             className="underline decoration-gray-500 underline-offset-3 transition-all hover:decoration-gray-400"
-            href="https://discord.com/invite/cyberstudents-916144903686336513"
-            target="_blank"
+            href="/advent/2025/leaderboard"
           >
-            Discord server
-          </a>
+            final leaderboard
+          </Link>
           .
         </AlertDescription>
       </Alert>

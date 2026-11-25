@@ -59,7 +59,7 @@ export default function CyberstartArchiveScroll() {
   }, [isVisible, paused, prefersReducedMotion]);
 
   return (
-    <div className="mx-auto w-full max-w-5xl xl:min-w-196">
+    <div className="w-full">
       <ScrollArea
         ref={ref}
         thumbClassName="dark:bg-zinc-800"
@@ -85,7 +85,7 @@ export default function CyberstartArchiveScroll() {
           )}
         </div>
       </ScrollArea>
-      <p className="mt-3 text-center text-sm leading-6 text-gray-300">
+      <p className="mt-3 text-sm leading-6 text-gray-400">
         The{" "}
         <a
           href="https://discord.gg/ERwjhnAKw8"
@@ -95,7 +95,7 @@ export default function CyberstartArchiveScroll() {
         >
           #cyberstart-challenge-help
         </a>{" "}
-        archive—the CyberStart help forum that featured 174 challenges
+        archive, a help forum that covered 174 CyberStart challenges.
       </p>
     </div>
   );

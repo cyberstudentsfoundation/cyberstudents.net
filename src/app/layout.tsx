@@ -2,7 +2,6 @@ import "~/styles/globals.css";
 
 import type { Metadata } from "next";
 import { Figtree, DM_Serif_Text, DM_Mono } from "next/font/google";
-import localFont from "next/font/local";
 // import { GeistMono } from "geist/font/mono";
 // import { ViewTransitions } from "next-view-transitions";
 import { TRPCReactProvider } from "~/trpc/react";
@@ -10,13 +9,15 @@ import Navbar from "~/components/Navbar";
 import Footer from "~/components/Footer";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "~/components/ui/sonner";
-import { env } from "~/env";
+import { site } from "~/data/site";
 
+// Absolute URLs for social cards and the sitemap. On Vercel, NEXTAUTH_URL is replaced by VERCEL_URL, which has no
+// scheme and would make `new URL` throw, so the public site address is used instead.
 export const metadata: Metadata = {
-  metadataBase: new URL(env.NEXTAUTH_URL),
+  metadataBase: new URL(site.url),
   title: "CyberStudents",
   description:
-    "We create opportunities for cybersecurity students via learning resources, certification pathways, CTFs, and more. Play in our beginner-focused daily cyber CTF challenges and events throughout the year. Join thousands of other students in our community today.",
+    "CyberStudents is a student-run cybersecurity community on Discord. We write and host capture the flag competitions, including Advent of CTF, and publish every challenge and write-up.",
   icons: [
     { rel: "icon", type: "image/png", url: "/favicon-96x96.png", sizes: "96x96" },
     { rel: "icon", type: "image/svg+xml", url: "/favicon.svg" },
@@ -54,18 +55,13 @@ const dmMono = DM_Mono({
   variable: "--font-dm-mono",
 });
 
-const mokoto = localFont({
-  src: "../../public/Mokoto.ttf",
-  variable: "--font-mokoto",
-  display: "swap",
-});
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     // <ViewTransitions>
     <html
       lang="en"
-      className={`${figtree.className} ${figtree.variable} ${dmSerifText.variable} ${dmMono.variable} ${mokoto.variable} scroll-smooth`}
+      className={`${figtree.className} ${figtree.variable} ${dmSerifText.variable} ${dmMono.variable} scroll-smooth`}
     >
       <body>
         <TRPCReactProvider>

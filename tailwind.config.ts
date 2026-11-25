@@ -67,7 +67,6 @@ const config = {
         sans: ["var(--font-figtree)", ...defaultTheme.fontFamily.sans],
         serif: ["var(--font-dm-serif-text)", ...defaultTheme.fontFamily.serif],
         mono: ["var(--font-dm-mono)", ...defaultTheme.fontFamily.mono],
-        mokoto: ["var(--font-mokoto)", ...defaultTheme.fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {
