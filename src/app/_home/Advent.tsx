@@ -15,7 +15,7 @@ import { TextLink, Wide } from "./ui";
 const FIGURES = [
   { value: "50", label: "Challenges written by our team" },
   { value: "2,000+", label: "Players have joined in" },
-  { value: "100+", label: "Countries represented" },
+  { value: "129", label: "Countries represented" },
   { value: "$12,000+", label: "In prizes and vouchers" },
 ];
 

@@ -1,6 +1,8 @@
 // Advent of CTF 2024, copied from the table in the public write-ups repository:
 // https://github.com/cyberstudentsfoundation/Advent-of-CTF/blob/main/README.md (read 2026-11-23).
-// "Vip3r" in that table is Vipin's old handle and is shown as Vipin here.
+// "Vip3r" in that table is Vipin's old handle and is shown as Vipin here. Three cells of that table are wrong and are
+// corrected here from the platform database and the 2024 results page, which agree: help (day 23) is by Kolmus, trng
+// (day 18) was worth 120 points, and K.U.N.A.L Consulting (day 22) 115.
 
 export type Advent2024Challenge = {
   day: number;
@@ -45,12 +47,12 @@ export const advent2024: Advent2024Challenge[] = [
   row(15, "JETS", "Web exploitation", 70, "GodderE2D", ".jstr_"),
   row(16, "Jingle Bell ROP", "Binary exploitation", 105, "Vipin", "elijah5399"),
   row(17, "Santa's Plane", "OSINT", 80, "Logix", ".jstr_"),
-  row(18, "trng", "Reverse engineering", 100, "Kolmus", "raul_26"),
+  row(18, "trng", "Reverse engineering", 120, "Kolmus", "raul_26"),
   row(19, "interns", "Cryptography", 150, "Vipin", "zarnex"),
   row(20, "Lost Santa", "OSINT", 80, "Logix", "raul_26"),
   row(21, "hpjl", "Binary exploitation", 125, "Kolmus", "Kolmus"),
-  row(22, "K.U.N.A.L Consulting", "Web exploitation", 130, "GodderE2D", "GodderE2D"),
-  row(23, "help", "Binary exploitation", 150, "GodderE2D", "Kolmus"),
+  row(22, "K.U.N.A.L Consulting", "Web exploitation", 115, "GodderE2D", "GodderE2D"),
+  row(23, "help", "Binary exploitation", 150, "Kolmus", "Kolmus"),
   row(24, "ELForms", "Web exploitation", 130, "GodderE2D", "GodderE2D"),
   row(25, "House of Santa Claus", "Binary exploitation", 200, "Kolmus", "Kolmus"),
 ];

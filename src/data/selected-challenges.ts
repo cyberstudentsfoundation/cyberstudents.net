@@ -30,7 +30,8 @@ export type SelectedChallenge = {
 const advent2024 = (dir: string) =>
   `https://github.com/cyberstudentsfoundation/Advent-of-CTF/blob/main/2024/${encodeURIComponent(dir)}/README.md`;
 
-// Ordered hardest first, as in the original carousel. Points and authors from the Advent of CTF write-ups README.
+// Ordered hardest first, as in the original carousel. Points and authors match the platform database and the 2024
+// results page.
 export const selectedChallenges: SelectedChallenge[] = [
   {
     title: "House of Santa Claus",
@@ -62,7 +63,7 @@ export const selectedChallenges: SelectedChallenge[] = [
     title: "help",
     event: "Advent of CTF 2024, Day 23",
     category: "Binary exploitation",
-    author: "GodderE2D",
+    author: "Kolmus",
     points: 150,
     summary: "Heap overflows and fake chunks, ending in a hijack of libc's exit handlers.",
     description:
@@ -76,7 +77,7 @@ export const selectedChallenges: SelectedChallenge[] = [
     event: "Advent of CTF 2024, Day 22",
     category: "Web exploitation",
     author: "GodderE2D",
-    points: 130,
+    points: 115,
     summary: "Bypassing a login with NoSQL injection by binary searching the password with regex patterns.",
     description:
       "This challenge has a NoSQL injection vulnerability that allows attackers to bypass authentication by using binary search with regex patterns.",
@@ -102,7 +103,7 @@ export const selectedChallenges: SelectedChallenge[] = [
     event: "Advent of CTF 2024, Day 18",
     category: "Reverse engineering",
     author: "Kolmus",
-    points: 100,
+    points: 120,
     summary: "Reversing a binary's pseudo-random number generator and undoing its XOR-shift operations.",
     description:
       "This challenge requires players to reverse engineer a binary that includes a pseudo-random number generator (PRNG) function and reverse XOR shift operations.",

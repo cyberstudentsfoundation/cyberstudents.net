@@ -28,7 +28,7 @@ const POSTER: Record<number, { accent: string; ring: string; figures: { value: s
     accent: "text-cyan-300",
     ring: "border-cyan-300/30 md:rotate-[-1deg]",
     figures: [
-      { value: "25", label: "Challenges" },
+      { value: "24", label: "Challenges" },
       { value: "4", label: "Prize Divisions" },
       { value: "$12,000+", label: "In Prizes" },
       { value: "5", label: "Sponsors" },

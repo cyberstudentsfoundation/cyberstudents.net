@@ -4,6 +4,7 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/
 import { TRPCError } from "@trpc/server";
 import { challengeFetchPreviewSchema, challengeFetchSchema, checkFlagSchema, submitFlagSchema } from "~/lib/schemas";
 import { sendNotification } from "~/server/send-notification";
+import { authorHandle } from "~/data/author-handles";
 import { cachedForVisitors } from "~/server/visitor-cache";
 
 function matchFlag(
@@ -123,7 +124,7 @@ async function fetchEventChallenges(
 
         author: {
           id: challenge.author.id,
-          name: challenge.author.name,
+          name: authorHandle(challenge.author.name),
           image: challenge.author.image,
         },
 

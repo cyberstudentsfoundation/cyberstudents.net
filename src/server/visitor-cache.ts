@@ -20,6 +20,12 @@ const LIVE_EVENT_SECONDS = 60;
 export const VISITOR_CACHE_TAG = "visitor-data";
 
 /**
+ * Vercel keeps the data cache across deployments, so each deployment gets its own entries. Otherwise a change to what a
+ * loader returns would only show up once the old copy expired, up to six hours later.
+ */
+const DEPLOYMENT = process.env.VERCEL_DEPLOYMENT_ID ?? process.env.VERCEL_GIT_COMMIT_SHA ?? "local";
+
+/**
  * Serves what a signed-out visitor sees from Vercel's data cache instead of the database. Visitors and search crawlers
  * then rarely wake the database, which matters on Neon's free plan, where every hour it is awake counts against a
  * monthly allowance. Pass only loaders that ignore the session, because the result is shared by everyone.
@@ -35,7 +41,7 @@ export async function cachedForVisitors<T>(
 ): Promise<T> {
   const read = unstable_cache(
     async () => gzipSync(superjson.stringify(await load())).toString("base64"),
-    ["visitor", query, event, JSON.stringify(input)],
+    ["visitor", DEPLOYMENT, query, event, JSON.stringify(input)],
     {
       revalidate: FINISHED_EVENTS.has(event) ? FINISHED_EVENT_SECONDS : LIVE_EVENT_SECONDS,
       tags: [VISITOR_CACHE_TAG],

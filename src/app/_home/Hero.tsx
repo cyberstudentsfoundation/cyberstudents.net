@@ -83,7 +83,7 @@ const EXTRA: Shot = {
 
 const STATS = [
   { value: "5,200+", label: "Members" },
-  { value: "2,200+", label: "High School and College Students" },
+  { value: "2,500+", label: "High School and College Students" },
   { value: "130+", label: "Countries" },
   { value: "105", label: "Challenges Written" },
 ];

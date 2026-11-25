@@ -26,7 +26,7 @@ export const stats: {
   rows: [
     { label: "Founded", value: "December 2, 2021" },
     { label: "Discord members", value: "5,200+" },
-    { label: "In high school or college", value: "2,200+" },
+    { label: "In high school or college", value: "2,500+" },
     { label: "Countries", value: "130+" },
     { label: "Challenges written", value: "105" },
   ],

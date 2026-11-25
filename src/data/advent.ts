@@ -21,9 +21,9 @@ export const adventYears: AdventYear[] = [
     dates: "Dec 1 to 31, 2025",
     // 25 were planned; day 22 was cancelled (see src/data/advent-2025.ts).
     challenges: 24,
-    // More than 1,500 players, and more countries than 2024's 85.
+    // More than 1,500 players. Countries: 119 in the database for 2025, and 129 across both years with 2024's 85.
     players: "1,500+",
-    countries: "85+",
+    countries: "119",
     prizes: "Over $12,000 in cash and certification vouchers",
     sponsors: "OtterSec, Veria Labs, CTFGuide, APIsec University, gen.xyz",
     ctftime: "https://ctftime.org/event/3022",

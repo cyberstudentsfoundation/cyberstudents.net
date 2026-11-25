@@ -4,9 +4,8 @@
 // Day 22 was cancelled: its row is titled CANCELLED, has submissions turned off, and its description reads "This
 // challenge has been cancelled due to internal issues." So 24 challenges were played.
 //
-// Authors: the database stores account names. qvipin is Vipin, thee2d is GodderE2D, a_person9852 is a_person, and
-// flocto is flocto. Days 6, 16, and 25 (_avyra) and 8, 18, and 21 (7000x887143) have no author here, because neither
-// account has a display name and nothing confirms which of the credited handles they are.
+// Authors: the database stores account names, mapped to handles in src/data/author-handles.ts. qvipin is Vipin, thee2d
+// is GodderE2D, a_person9852 is a_person, _avyra is vy, 7000x887143 is wjaaaaaaat, and flocto is flocto.
 //
 // Points are left out on purpose: 2025 used dynamic scoring, so a challenge's points still change as people solve it.
 
@@ -39,9 +38,9 @@ export const advent2025: Advent2025Challenge[] = [
     id: "cmis5mnyc007hk0zuf06wr2us",
   },
   { day: 5, title: "Kramazon", category: "Web exploitation", author: "GodderE2D", id: "cmitna7sq003nk0r0cxm33tea" },
-  { day: 6, title: "KDNU-3B", category: "Binary exploitation", id: "cmiv0xwkm0005k0k7xyvsdhju" },
+  { day: 6, title: "KDNU-3B", category: "Binary exploitation", author: "vy", id: "cmiv0xwkm0005k0k7xyvsdhju" },
   { day: 7, title: "Failed Exfil", category: "Binary exploitation", author: "Vipin", id: "cmiwcslma002mk0k8gutgsh25" },
-  { day: 8, title: "Log Folly", category: "Cryptography", id: "cmixv9ssc006qk0mw0kypyy41" },
+  { day: 8, title: "Log Folly", category: "Cryptography", author: "wjaaaaaaat", id: "cmixv9ssc006qk0mw0kypyy41" },
   { day: 9, title: "Time To Escalate", category: "Miscellaneous", author: "Vipin", id: "cmiz97cgq00abk0lv185eybb4" },
   {
     day: 10,
@@ -61,7 +60,7 @@ export const advent2025: Advent2025Challenge[] = [
     id: "cmj6hkgmh000bk003l6p5xmrz",
   },
   { day: 15, title: "Image Security", category: "Forensics", author: "a_person", id: "cmj6k31n8001dk01624fpq9sf" },
-  { day: 16, title: "FrostByte", category: "Binary exploitation", id: "cmj99r2nf0083k02uc3apn6ph" },
+  { day: 16, title: "FrostByte", category: "Binary exploitation", author: "vy", id: "cmj99r2nf0083k02uc3apn6ph" },
   {
     day: 17,
     title: "Guide My Drone Tonight",
@@ -69,10 +68,16 @@ export const advent2025: Advent2025Challenge[] = [
     author: "flocto",
     id: "cmjarc57o00bsk001ae6cmsms",
   },
-  { day: 18, title: "Sealed for Delivery", category: "Cryptography", id: "cmjc61k2g00dgk0274wwi70sz" },
+  {
+    day: 18,
+    title: "Sealed for Delivery",
+    category: "Cryptography",
+    author: "wjaaaaaaat",
+    id: "cmjc61k2g00dgk0274wwi70sz",
+  },
   { day: 19, title: "Trust Issues", category: "Miscellaneous", author: "Vipin", id: "cmjdjvvpm00fnk003iiwg9hk0" },
   { day: 20, title: "Custom Packaging", category: "Forensics", author: "Vipin", id: "cmjf00x2d00hyk02pew4v01yo" },
-  { day: 21, title: "Escape Assist", category: "Cryptography", id: "cmjgfwudw00knk02pdd9fvkdf" },
+  { day: 21, title: "Escape Assist", category: "Cryptography", author: "wjaaaaaaat", id: "cmjgfwudw00knk02pdd9fvkdf" },
   { day: 22, title: "Cancelled", category: "", cancelled: true },
   { day: 23, title: "Solwanna", category: "Miscellaneous", author: "flocto", id: "cmjjfvrso00otk0155khys7vp" },
   {
@@ -82,7 +87,7 @@ export const advent2025: Advent2025Challenge[] = [
     author: "Vipin",
     id: "cmjglsaht00jvk003qpohz2ig",
   },
-  { day: 25, title: "The Final RCE", category: "Binary exploitation", id: "cmjm5xxhc002uk06nisuw8ek0" },
+  { day: 25, title: "The Final RCE", category: "Binary exploitation", author: "vy", id: "cmjm5xxhc002uk06nisuw8ek0" },
 ];
 
 /** Where a 2025 challenge opens: its own page in the challenge browser when the id is known. */

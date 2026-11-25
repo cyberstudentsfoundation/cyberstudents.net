@@ -37,7 +37,7 @@ const PANELS: {
 }[] = [
   {
     title: "Advent of CTF",
-    text: "A month-long beginner CTF that we've held every December since 2024, with a new challenge each day, two free hints for every one, and prizes from our sponsors. More than 2,000 players from over 100 countries have taken part so far.",
+    text: "A month-long beginner CTF that we've held every December since 2024, with a new challenge each day, two free hints for every one, and prizes from our sponsors. More than 2,000 players from 129 countries have taken part so far.",
     href: "/advent",
     linkText: "About Advent of CTF",
     image: elforms,
